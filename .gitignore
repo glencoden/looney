@@ -1,0 +1,9 @@
+.turbo
+dist
+node_modules
+.idea
+.env
+.DS_Store
+npm-debug.log*
+
+calendar-credentials.json

@@ -1,6 +1,6 @@
 export default function Button() {
     return (
-        <div>
+        <div onClick={() => console.log('glen was here')}>
             Knopf
         </div>
     )

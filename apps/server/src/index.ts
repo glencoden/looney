@@ -1,22 +1,16 @@
-import { API_PORT, createContext } from '@repo/api/adapter'
-import { appRouter } from '@repo/api/router'
-import * as trpcExpress from '@trpc/server/adapters/express'
+import { API_PORT } from '@repo/api'
+import { trpcExpressAdapter } from '@repo/api/adapter'
 import express from 'express'
 import cors from 'cors'
 
 const app = express()
 
-app.options('*', cors())
+app.use(cors({ origin: ['http://localhost:5173'], credentials: true }))
 
-app.use(cors())
+app.use('/trpc', trpcExpressAdapter)
 
 app.get('/', (_req, res) => {
-    res.send('Hello, world!')
+    res.send('Glen was here.')
 })
-
-app.use('/trpc', trpcExpress.createExpressMiddleware({
-    router: appRouter,
-    createContext,
-}))
 
 app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}.`))

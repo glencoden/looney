@@ -1,4 +1,4 @@
-import { TRPCQueryClientProvider } from '@repo/api/provider/client-side'
+import { TRPCQueryClientProvider } from '@repo/api/provider'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'

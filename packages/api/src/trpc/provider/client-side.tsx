@@ -1,20 +1,19 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCReact } from '@trpc/react-query'
-import { type ReactNode, useState } from 'react'
-import { AppRouter } from '../router'
-
-export const API_PORT = 5555 // TODO: from where in the mono repo should this be exported?
+import { type FC, type PropsWithChildren, useState } from 'react'
+import { API_PORT } from '../../index.js'
+import type { TRPCRouter } from '../router/index.js'
 
 const getBaseUrl = () => {
     return `http://localhost:${API_PORT}`
 }
 
-export const api = createTRPCReact<AppRouter>()
+export const api = createTRPCReact<TRPCRouter>()
 
-export function TRPCQueryClientProvider({
+export const TRPCQueryClientProvider: FC<PropsWithChildren> = ({
     children,
-}: Readonly<{ children: ReactNode }>) {
+}) => {
     const [queryClient] = useState(() => new QueryClient())
 
     const [trpcClient] = useState(() =>

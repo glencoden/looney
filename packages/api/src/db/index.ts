@@ -2,7 +2,7 @@ import 'dotenv/config'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import { strict as assert } from 'node:assert'
 import postgres from 'postgres'
-import { setlistsTable } from './schema/setlistsTable'
+import { setlistsTable } from './schema/setlistsTable.js'
 
 const connectionString = process.env.DATABASE_URL
 
@@ -12,6 +12,6 @@ const schema = {
     setlistsTable
 }
 
-export const client = postgres(connectionString, { prepare: false })
+const client = postgres(connectionString, { prepare: false })
 
 export const db = drizzle(client, { schema })

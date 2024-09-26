@@ -1,22 +1,19 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { httpBatchLink, loggerLink } from '@trpc/client'
-import { createTRPCReact } from '@trpc/react-query'
 import { type FC, type PropsWithChildren, useState } from 'react'
 import { API_PORT } from '../../index.js'
-import type { TRPCRouter } from '../router/index.js'
+import { api } from '../client/index.js'
 
 const getBaseUrl = () => {
     return `http://localhost:${API_PORT}`
 }
 
-export const api = createTRPCReact<TRPCRouter>()
-
 export const TRPCQueryClientProvider: FC<PropsWithChildren> = ({
     children,
 }) => {
-    const [queryClient] = useState(() => new QueryClient())
+    const [ queryClient ] = useState(() => new QueryClient())
 
-    const [trpcClient] = useState(() =>
+    const [ trpcClient ] = useState(() =>
         api.createClient({
             links: [
                 loggerLink({
@@ -31,7 +28,7 @@ export const TRPCQueryClientProvider: FC<PropsWithChildren> = ({
                         return fetch(url, {
                             ...options,
                             credentials: 'include',
-                        });
+                        })
                     },
                 }),
             ],
@@ -40,7 +37,10 @@ export const TRPCQueryClientProvider: FC<PropsWithChildren> = ({
 
     return (
         <QueryClientProvider client={queryClient}>
-            <api.Provider client={trpcClient} queryClient={queryClient}>
+            <api.Provider
+                client={trpcClient}
+                queryClient={queryClient as unknown as Parameters<typeof api.Provider>[0]['queryClient']}
+            >
                 {children}
             </api.Provider>
         </QueryClientProvider>

@@ -13,21 +13,26 @@
             "types": "./dist/index.d.ts"
         },
         "./adapter": {
-            "import": "./dist/trpc/adapter/express.js",
-            "require": "./dist/trpc/adapter/express.js",
-            "types": "./dist/trpc/adapter/express.d.ts"
+            "import": "./dist/trpc/adapter/index.js",
+            "require": "./dist/trpc/adapter/index.js",
+            "types": "./dist/trpc/adapter/index.d.ts"
         },
         "./provider": {
-            "import": "./dist/trpc/provider/client-side.jsx",
-            "require": "./dist/trpc/provider/client-side.jsx",
-            "types": "./dist/trpc/provider/client-side.d.ts"
+            "import": "./dist/trpc/provider/index.jsx",
+            "require": "./dist/trpc/provider/index.jsx",
+            "types": "./dist/trpc/provider/index.d.ts"
+        },
+        "./client": {
+            "import": "./dist/trpc/client/index.js",
+            "require": "./dist/trpc/client/index.js",
+            "types": "./dist/trpc/client/index.d.ts"
         }
     },
     "scripts": {
         "build": "tsc",
         "dev": "tsc --watch",
         "db:generate": "drizzle-kit generate",
-        "db:migrate": "tsx ./script/migrate-database.ts",
+        "db:migrate": "tsx ./scripts/migrate-database.ts",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "devDependencies": {

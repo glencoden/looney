@@ -1,15 +1,12 @@
 import { initTRPC } from '@trpc/server'
-import * as trpcExpress from '@trpc/server/adapters/express'
+import type * as trpcExpress from '@trpc/server/adapters/express'
 import { ZodError } from 'zod'
 import { initDatabase } from '../db/index.js'
 
 export const initCreateContext = (databaseUrl: string) => {
     const db = initDatabase(databaseUrl)
 
-    return ({
-        req,
-        res,
-    }: trpcExpress.CreateExpressContextOptions) => {
+    return ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
         return { db }
     }
 }
@@ -23,7 +20,9 @@ const t = initTRPC.context<Context>().create({
             data: {
                 ...shape.data,
                 zodError:
-                    error.cause instanceof ZodError ? error.cause.flatten() : null,
+                    error.cause instanceof ZodError
+                        ? error.cause.flatten()
+                        : null,
             },
         }
     },

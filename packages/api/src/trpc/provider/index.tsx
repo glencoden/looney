@@ -11,9 +11,9 @@ const getBaseUrl = () => {
 export const TRPCQueryClientProvider: FC<PropsWithChildren> = ({
     children,
 }) => {
-    const [ queryClient ] = useState(() => new QueryClient())
+    const [queryClient] = useState(() => new QueryClient())
 
-    const [ trpcClient ] = useState(() =>
+    const [trpcClient] = useState(() =>
         api.createClient({
             links: [
                 loggerLink({
@@ -39,7 +39,11 @@ export const TRPCQueryClientProvider: FC<PropsWithChildren> = ({
         <QueryClientProvider client={queryClient}>
             <api.Provider
                 client={trpcClient}
-                queryClient={queryClient as unknown as Parameters<typeof api.Provider>[0]['queryClient']}
+                queryClient={
+                    queryClient as unknown as Parameters<
+                        typeof api.Provider
+                    >[0]['queryClient']
+                }
             >
                 {children}
             </api.Provider>

@@ -3,7 +3,7 @@ import postgres from 'postgres'
 import { setlistsTable } from './schema/setlistsTable.js'
 
 const schema = {
-    setlistsTable
+    setlistsTable,
 }
 
 export const initDatabase = (connectionString: string) => {

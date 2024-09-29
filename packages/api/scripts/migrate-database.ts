@@ -1,4 +1,5 @@
-import 'dotenv/config'
+const dotenv = await import('dotenv')
+dotenv.config({ path: '../../.env' })
 import { drizzle } from 'drizzle-orm/postgres-js'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
 import { strict as assert } from 'node:assert'

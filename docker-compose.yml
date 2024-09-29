@@ -11,7 +11,9 @@ services:
       - "5555:5555"
     environment:
       NODE_ENV: production
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgresql://postgres:postgres@host.docker.internal:54322/postgres
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   cloud:
     build:
@@ -32,5 +34,27 @@ services:
     image: looney-sing:latest
     ports:
       - "3001:3001"
+    environment:
+      NODE_ENV: production
+
+  tool:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: looney-tool
+    image: looney-tool:latest
+    ports:
+      - "3002:3002"
+    environment:
+      NODE_ENV: production
+
+  website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: looney-website
+    image: looney-website:latest
+    ports:
+      - "3003:3003"
     environment:
       NODE_ENV: production

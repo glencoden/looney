@@ -96,6 +96,9 @@ importers:
       '@remix-run/react':
         specifier: ^2.12.1
         version: 2.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)
+      '@repo/api':
+        specifier: workspace:*
+        version: link:../../packages/api
       compression:
         specifier: ^1.7.4
         version: 1.7.4

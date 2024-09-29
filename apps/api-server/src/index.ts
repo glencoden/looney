@@ -1,5 +1,6 @@
 if (process.env.NODE_ENV !== 'production') {
-    await import('dotenv/config')
+    const dotenv = await import('dotenv')
+    dotenv.config({ path: '../../.env' })
 }
 import { API_PORT } from '@repo/api'
 import { trpcExpressAdapter } from '@repo/api/adapter'
@@ -13,7 +14,7 @@ assert(databaseUrl !== undefined, 'Database URL is required')
 
 const app = express()
 
-app.use(cors({ origin: ['http://localhost:5173'], credentials: true }))
+app.use(cors({ origin: ['http://localhost:3000'], credentials: true }))
 
 app.use('/trpc', trpcExpressAdapter({ databaseUrl }))
 

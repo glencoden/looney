@@ -7,10 +7,11 @@ catalog:
     '@types/react-dom': ^18.3.0
     '@types/express': ^4.17.21
     typescript: ^5.1.6
-    eslint: ^8
     react: ^18.3.1
     react-dom: ^18.3.1
     express: ^4.19.2
+    eslint: ^8
+    tailwindcss: ^3.4.4
     #    Remix
     '@remix-run/express': ^2.12.1
     '@remix-run/node': ^2.12.1
@@ -22,5 +23,7 @@ catalog:
     '@remix-run/dev': ^2.12.1
     '@types/compression': ^1.7.5
     '@types/morgan': ^1.9.9
+    autoprefixer: ^10.4.19
+    postcss: ^8.4.38
     vite: ^5.1.0
     vite-tsconfig-paths: ^4.2.1

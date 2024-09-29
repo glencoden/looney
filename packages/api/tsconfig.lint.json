@@ -4,6 +4,6 @@
         "jsx": "preserve",
         "outDir": "./dist"
     },
-    "include": ["src/**/*.ts", "src/**/*.tsx"],
-    "exclude": ["**/*.test.ts", "**/*.spec.ts"]
+    "include": ["./**/*.ts", "./**/*.tsx"],
+    "exclude": ["node_modules", "dist", ".turbo"]
 }

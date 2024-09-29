@@ -1,18 +1,20 @@
 {
     "name": "@repo/ui",
     "version": "1.0.0",
-    "description": "",
     "exports": {
         "./Button": "./src/Button.tsx"
     },
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+    "dependencies": {
+        "@repo/eslint-config": "workspace:*",
+        "@repo/typescript-config": "workspace:*",
+        "@radix-ui/react-slot": "^1.1.0",
+        "class-variance-authority": "^0.7.0",
+        "clsx": "^2.1.1",
+        "react": "catalog:",
+        "tailwind-merge": "^2.5.2"
     },
     "devDependencies": {
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:"
-    },
-    "dependencies": {
-        "react": "^18.3.1"
     }
 }

@@ -13,6 +13,6 @@
         "@types/react-dom": "catalog:"
     },
     "dependencies": {
-        "react": "catalog:"
+        "react": "^18.3.1"
     }
 }

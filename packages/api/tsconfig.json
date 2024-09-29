@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        /* base options */
+        /* Base options */
         "esModuleInterop": true,
         "skipLibCheck": true,
         "target": "es2022",
@@ -10,27 +10,27 @@
         "isolatedModules": true,
         "verbatimModuleSyntax": true,
 
-        /* strictness */
+        /* Strictness */
         "strict": true,
         "noUncheckedIndexedAccess": true,
         "noImplicitOverride": true,
 
-        /* transpiling with TypeScript */
+        /* Transpiling with TypeScript */
         "module": "NodeNext",
         "sourceMap": true,
         "jsx": "preserve",
 
-        /* building a library */
+        /* Building a library */
         "declaration": true,
 
-        /* for a monorepo */
+        /* For a monorepo */
         "composite": true,
         "declarationMap": true,
 
-        /* code runs in the DOM */
+        /* Code runs in the DOM */
         "lib": ["es2022", "dom", "dom.iterable"],
 
-        /* paths */
+        /* Paths */
         "outDir": "./dist"
     },
     "include": ["./**/*.ts", "./**/*.tsx"],

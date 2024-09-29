@@ -1,5 +1,6 @@
 .turbo
 dist
+build
 node_modules
 .idea
 .env

@@ -5,7 +5,7 @@
     "license": "ISC",
     "type": "module",
     "scripts": {
-        "build": "tsc && echo \"No build necessary if tsx works in Docker\"",
+        "build": "tsc",
         "start": "tsx src/index.ts",
         "dev": "tsx watch src/index.ts",
         "test": "echo \"Error: no test specified\" && exit 1"

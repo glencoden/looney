@@ -1,4 +1,6 @@
-import 'dotenv/config'
+if (process.env.NODE_ENV !== 'production') {
+    await import('dotenv/config')
+}
 import { API_PORT } from '@repo/api'
 import { trpcExpressAdapter } from '@repo/api/adapter'
 import express from 'express'
@@ -7,7 +9,7 @@ import { strict as assert } from 'node:assert'
 
 const databaseUrl = process.env.DATABASE_URL
 
-assert(databaseUrl !== undefined, 'Database connection string is required')
+assert(databaseUrl !== undefined, 'Database URL is required')
 
 const app = express()
 

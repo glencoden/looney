@@ -1,6 +1,5 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
-    parser: '@typescript-eslint/parser',
     parserOptions: {
         project: ['./packages/*/tsconfig.json', './apps/*/tsconfig.json'],
     },
@@ -42,5 +41,5 @@ module.exports = {
             },
         ],
     },
-    ignorePatterns: ['dist', 'node_modules', 'scripts'],
+    ignorePatterns: ['node_modules', 'scripts', 'dist', 'build'],
 }

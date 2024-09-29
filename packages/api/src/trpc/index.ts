@@ -1,12 +1,13 @@
 import { initTRPC } from '@trpc/server'
-import type * as trpcExpress from '@trpc/server/adapters/express'
+// import type * as trpcExpress from '@trpc/server/adapters/express'
 import { ZodError } from 'zod'
 import { initDatabase } from '../db/index.js'
 
 export const initCreateContext = (databaseUrl: string) => {
     const db = initDatabase(databaseUrl)
 
-    return ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
+    // { req, res }: trpcExpress.CreateExpressContextOptions
+    return () => {
         return { db }
     }
 }

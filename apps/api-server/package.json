@@ -13,7 +13,7 @@
     "dependencies": {
         "@repo/api": "workspace:*",
         "cors": "^2.8.5",
-        "express": "^4.19.2"
+        "express": "catalog:"
     },
     "devDependencies": {
         "@repo/eslint-config": "workspace:*",
@@ -22,7 +22,7 @@
         "@types/express": "catalog:",
         "@types/node": "^20.14.9",
         "dotenv": "^16.4.5",
-        "eslint": "^8.38.0",
+        "eslint": "catalog:",
         "tsx": "^4.19.1",
         "typescript": "catalog:"
     }

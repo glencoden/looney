@@ -9,3 +9,18 @@ catalog:
     typescript: ^5.1.6
     eslint: ^8
     react: ^18.3.1
+    react-dom: ^18.3.1
+    express: ^4.19.2
+    #    Remix
+    '@remix-run/express': ^2.12.1
+    '@remix-run/node': ^2.12.1
+    '@remix-run/react': ^2.12.1
+    compression: ^1.7.4
+    cross-env: ^7.0.3
+    isbot: ^4.1.0
+    morgan: ^1.10.0
+    '@remix-run/dev': ^2.12.1
+    '@types/compression': ^1.7.5
+    '@types/morgan': ^1.9.9
+    vite: ^5.1.0
+    vite-tsconfig-paths: ^4.2.1

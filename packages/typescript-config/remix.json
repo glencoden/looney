@@ -5,6 +5,7 @@
         "jsx": "react-jsx",
         "module": "ESNext",
         "moduleResolution": "Bundler",
+        "moduleDetection": "force",
         "allowJs": true,
         "forceConsistentCasingInFileNames": true,
         "baseUrl": ".",
@@ -12,13 +13,5 @@
             "~/*": ["./app/*"]
         },
         "noEmit": true
-    },
-    "include": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/.server/**/*.ts",
-        "**/.server/**/*.tsx",
-        "**/.client/**/*.ts",
-        "**/.client/**/*.tsx"
-    ]
+    }
 }

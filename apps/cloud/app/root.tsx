@@ -8,6 +8,7 @@ import {
 import type { LinksFunction } from '@remix-run/node'
 
 import './tailwind.css'
+import '@repo/ui/styles.css'
 import { TRPCQueryClientProvider } from '@repo/api/provider'
 
 export const links: LinksFunction = () => [

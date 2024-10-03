@@ -10,7 +10,7 @@ export const buttonVariants = cva(
         variants: {
             variant: {
                 default:
-                    'bg-slate-800 text-white active:bg-slate-500 hover:bg-slate-500 transition-colors transition-opacity duration-75',
+                    'bg-green-300 text-amber-800 active:bg-slate-500 hover:bg-slate-500 transition-colors transition-opacity duration-75',
                 secondary:
                     'bg-white border border-slate-800 text-slate-800 active:bg-slate-300 hover:bg-slate-300 font-medium uppercase disabled:bg-slate-100 disabled:text-slate-300 disabled:border-none transition-colors transition-opacity duration-75',
                 light: 'bg-white text-slate-800 active:bg-slate-300 hover:bg-slate-300 transition-colors transition-opacity duration-75',

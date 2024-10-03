@@ -12,7 +12,7 @@ catalog:
     express: ^4.19.2
     eslint: ^8
     tailwindcss: ^3.4.4
-    #    Remix
+    #    Remix add as catalogs/remix
     '@remix-run/express': ^2.12.1
     '@remix-run/node': ^2.12.1
     '@remix-run/react': ^2.12.1

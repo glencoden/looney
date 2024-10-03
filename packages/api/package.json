@@ -1,31 +1,27 @@
 {
     "name": "@repo/api",
     "version": "1.0.0",
-    "description": "",
-    "license": "ISC",
     "type": "module",
-    "types": "dist/index.d.ts",
-    "module": "dist/index.js",
     "exports": {
         ".": {
-            "import": "./dist/src/index.js",
-            "require": "./dist/src/index.js",
-            "types": "./dist/src/index.d.ts"
+            "import": "./dist/index.js",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
         },
         "./adapter": {
-            "import": "./dist/src/trpc/adapter/index.js",
-            "require": "./dist/src/trpc/adapter/index.js",
-            "types": "./dist/src/trpc/adapter/index.d.ts"
+            "import": "./dist/trpc/adapter/index.js",
+            "require": "./dist/trpc/adapter/index.js",
+            "types": "./dist/trpc/adapter/index.d.ts"
         },
         "./provider": {
-            "import": "./dist/src/trpc/provider/index.jsx",
-            "require": "./dist/src/trpc/provider/index.jsx",
-            "types": "./dist/src/trpc/provider/index.d.ts"
+            "import": "./dist/trpc/provider/index.jsx",
+            "require": "./dist/trpc/provider/index.jsx",
+            "types": "./dist/trpc/provider/index.d.ts"
         },
         "./client": {
-            "import": "./dist/src/trpc/client/index.js",
-            "require": "./dist/src/trpc/client/index.js",
-            "types": "./dist/src/trpc/client/index.d.ts"
+            "import": "./dist/trpc/client/index.js",
+            "require": "./dist/trpc/client/index.js",
+            "types": "./dist/trpc/client/index.d.ts"
         }
     },
     "scripts": {

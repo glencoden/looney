@@ -1,11 +1,19 @@
 {
     "name": "@repo/ui",
     "version": "1.0.0",
+    "type": "module",
     "exports": {
-        "./Button": "./src/Button.tsx"
+        "./styles.css": "./dist/styles.css",
+        "./Button": "./src/Button.tsx",
+        "./Spinner": "./src/Spinner.tsx"
     },
     "scripts": {
+        "build": "tailwindcss -i ./src/styles.css -o dist/styles.css --minify",
+        "dev": "tailwindcss -i ./src/styles.css -o dist/styles.css --watch",
         "lint": "eslint . --max-warnings 0"
+    },
+    "peerDependencies": {
+        "react": "catalog:"
     },
     "dependencies": {
         "@radix-ui/react-slot": "^1.1.0",
@@ -14,12 +22,14 @@
         "@repo/typescript-config": "workspace:*",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
-        "react": "catalog:",
         "tailwind-merge": "^2.5.2"
     },
     "devDependencies": {
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
-        "eslint": "catalog:"
+        "autoprefixer": "catalog:",
+        "eslint": "catalog:",
+        "postcss": "catalog:",
+        "tailwindcss": "catalog:"
     }
 }

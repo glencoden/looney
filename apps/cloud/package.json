@@ -16,6 +16,7 @@
         "@remix-run/react": "catalog:",
         "@repo/api": "workspace:*",
         "@repo/ui": "workspace:*",
+        "@supabase/supabase-js": "catalog:",
         "compression": "catalog:",
         "cross-env": "catalog:",
         "express": "catalog:",

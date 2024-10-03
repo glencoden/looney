@@ -8,10 +8,6 @@
         "moduleDetection": "force",
         "allowJs": true,
         "forceConsistentCasingInFileNames": true,
-        "baseUrl": ".",
-        "paths": {
-            "~/*": ["./app/*"]
-        },
         "noEmit": true
     }
 }

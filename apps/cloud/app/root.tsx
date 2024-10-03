@@ -10,6 +10,8 @@ import type { LinksFunction } from '@remix-run/node'
 import './tailwind.css'
 import '@repo/ui/styles.css'
 import { TRPCQueryClientProvider } from '@repo/api/provider'
+import { ReactNode } from 'react'
+import { supabase } from '~/lib/supabase.client'
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -24,29 +26,33 @@ export const links: LinksFunction = () => [
     },
 ]
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children }: { children: ReactNode }) {
     return (
-        <TRPCQueryClientProvider>
-            <html lang='en'>
-                <head>
-                    <meta charSet='utf-8' />
-                    <meta
-                        name='viewport'
-                        content='width=device-width, initial-scale=1'
-                    />
-                    <Meta />
-                    <Links />
-                </head>
-                <body>
-                    {children}
-                    <ScrollRestoration />
-                    <Scripts />
-                </body>
-            </html>
-        </TRPCQueryClientProvider>
+        <html lang='en'>
+            <head>
+                <meta charSet='utf-8' />
+                <meta
+                    name='viewport'
+                    content='width=device-width, initial-scale=1'
+                />
+                <Meta />
+                <Links />
+            </head>
+            <body>
+                {children}
+                <ScrollRestoration />
+                <Scripts />
+            </body>
+        </html>
     )
 }
 
 export default function App() {
-    return <Outlet />
+    // TODO: poll for expired session - const { data, error } = await supabase.auth.refreshSession() - prevent new users: https://supabase.com/dashboard/project/dcibaxifomntyinzrptm/settings/auth
+
+    return (
+        <TRPCQueryClientProvider supabaseClient={supabase}>
+            <Outlet />
+        </TRPCQueryClientProvider>
+    )
 }

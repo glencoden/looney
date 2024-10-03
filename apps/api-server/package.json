@@ -12,12 +12,15 @@
     },
     "dependencies": {
         "@repo/api": "workspace:*",
+        "@supabase/supabase-js": "catalog:",
+        "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "express": "catalog:"
     },
     "devDependencies": {
         "@repo/eslint-config": "workspace:*",
         "@repo/typescript-config": "workspace:*",
+        "@types/cookie-parser": "^1.4.7",
         "@types/cors": "^2.8.17",
         "@types/express": "catalog:",
         "@types/node": "^20.14.9",

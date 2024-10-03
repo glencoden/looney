@@ -42,11 +42,13 @@
         "node-telegram-bot-api": "^0.66.0",
         "postgres": "^3.4.4",
         "react": "catalog:",
+        "superjson": "^2.2.1",
         "zod": "^3.23.8"
     },
     "devDependencies": {
         "@repo/eslint-config": "workspace:*",
         "@repo/typescript-config": "workspace:*",
+        "@supabase/supabase-js": "catalog:",
         "@types/express": "catalog:",
         "@types/node-telegram-bot-api": "^0.64.7",
         "@types/react": "^18.3.9",

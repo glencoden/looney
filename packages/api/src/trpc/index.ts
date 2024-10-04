@@ -1,39 +1,29 @@
-import { SupabaseClient } from '@supabase/supabase-js'
 import { initTRPC, TRPCError } from '@trpc/server'
 import type * as trpcExpress from '@trpc/server/adapters/express'
 import superjson from 'superjson'
 import { ZodError } from 'zod'
-import { initDatabase } from '../db/index.js'
+import { db } from '../db/index.js'
+import { supabase } from '../lib/supabase.js'
 
-export type InitCreateContextParams = Readonly<{
-    databaseUrl: string
-    supabaseClient: SupabaseClient
-}>
+export const createContext = async ({
+    req,
+}: trpcExpress.CreateExpressContextOptions) => {
+    const accessToken = req.headers['authorization']?.replace('Bearer ', '')
 
-export const initCreateContext = ({
-    databaseUrl,
-    supabaseClient,
-}: InitCreateContextParams) => {
-    const db = initDatabase(databaseUrl)
-
-    return async ({ req }: trpcExpress.CreateExpressContextOptions) => {
-        const accessToken = req.headers['authorization']?.replace('Bearer ', '')
-
-        if (!accessToken) {
-            return { db, user: null }
-        }
-
-        const { data, error } = await supabaseClient.auth.getUser(accessToken)
-
-        if (error) {
-            throw new Error(error.message)
-        }
-
-        return { db, user: data.user }
+    if (!accessToken) {
+        return { db, user: null }
     }
+
+    const { data, error } = await supabase.auth.getUser(accessToken)
+
+    if (error) {
+        throw new Error(error.message)
+    }
+
+    return { db, user: data.user }
 }
 
-type Context = Awaited<ReturnType<ReturnType<typeof initCreateContext>>>
+type Context = Awaited<ReturnType<typeof createContext>>
 
 const t = initTRPC.context<Context>().create({
     transformer: superjson,

@@ -1,8 +1,7 @@
-const dotenv = await import('dotenv')
-dotenv.config({ path: '../../.env' })
 import { drizzle } from 'drizzle-orm/postgres-js'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
 import { strict as assert } from 'node:assert'
+// @ts-ignore
 import postgres from 'postgres'
 
 const connectionString = process.env.DATABASE_URL

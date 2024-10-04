@@ -1,6 +1,19 @@
 {
     "$schema": "https://turbo.build/schema.json",
+    "globalEnv": ["NODE_ENV"],
+    "envMode": "loose",
     "tasks": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": ["dist"],
+            "env": [
+                "DATABASE_URL",
+                "SUPABASE_URL",
+                "SUPABASE_ANON_KEY",
+                "TELEGRAM_BOT_TOKEN",
+                "LOONEY_CHAT_ID"
+            ]
+        },
         "dev": {
             "cache": false,
             "persistent": true
@@ -8,9 +21,13 @@
         "lint": {
             "dependsOn": ["^lint"]
         },
-        "build": {
-            "dependsOn": ["^build"],
-            "outputs": ["dist"]
+        "db:generate": {
+            "dependsOn": ["^db:generate"],
+            "env": ["DATABASE_URL"]
+        },
+        "db:migrate": {
+            "dependsOn": ["^db:migrate"],
+            "env": ["DATABASE_URL"]
         }
     }
 }

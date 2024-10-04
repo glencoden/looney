@@ -2,11 +2,13 @@
     "name": "looney-monorepo",
     "version": "1.0.0",
     "scripts": {
-        "dev": "turbo dev",
-        "lint": "turbo lint",
+        "dev": "dotenv -- turbo dev",
+        "lint": "prettier --write . && turbo lint",
         "build": "turbo build",
         "db:start": "supabase start",
         "db:stop": "supabase stop",
+        "db:generate": "dotenv -- turbo db:generate",
+        "db:migrate": "dotenv -- turbo db:migrate",
         "docker:start": "docker compose up -d --build && docker system prune -f",
         "docker:stop": "docker compose down --rmi local",
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,6 +17,8 @@
     "license": "ISC",
     "packageManager": "pnpm@9.11.0",
     "devDependencies": {
+        "dotenv": "^16.4.5",
+        "dotenv-cli": "^7.4.2",
         "prettier": "^3.3.3",
         "prettier-plugin-tailwindcss": "^0.6.8",
         "turbo": "^2.1.2"

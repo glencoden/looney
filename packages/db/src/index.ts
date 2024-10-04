@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/postgres-js'
 import { strict as assert } from 'node:assert'
 import postgres from 'postgres'
-import { setlistsTable } from './schema/setlistsTable.js'
+import { setlistsTable } from './schema/index.js'
 
 const databaseUrl = process.env.DATABASE_URL
 

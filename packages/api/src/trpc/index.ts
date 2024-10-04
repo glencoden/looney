@@ -1,8 +1,8 @@
+import { db } from '@repo/db'
 import { initTRPC, TRPCError } from '@trpc/server'
 import type * as trpcExpress from '@trpc/server/adapters/express'
 import superjson from 'superjson'
 import { ZodError } from 'zod'
-import { db } from '../db/index.js'
 import { supabase } from '../lib/supabase.js'
 
 export const createContext = async ({

@@ -1,4 +1,4 @@
-import { setlistsTable } from '@repo/db/schema'
+import { setlistsTable } from '@repo/db'
 import { protectedProcedure } from '../../index.js'
 
 export const setlistRouter = {

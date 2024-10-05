@@ -7,19 +7,14 @@
             "import": "./dist/index.js",
             "require": "./dist/index.js",
             "types": "./dist/index.d.ts"
-        },
-        "./schema": {
-            "import": "./dist/schema/index.js",
-            "require": "./dist/schema/index.js",
-            "types": "./dist/schema/index.d.ts"
         }
     },
     "scripts": {
         "build": "tsc",
         "dev": "tsc --watch",
         "lint": "eslint . --max-warnings 0",
-        "db:generate": "drizzle-kit generate",
-        "db:migrate": "tsx ./scripts/migrate-database.ts",
+        "db:generate": "pnpm build && drizzle-kit generate",
+        "db:migrate": "dotenv -e ../../.env -- tsx ./scripts/migrate-database.ts",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
@@ -31,9 +26,13 @@
     "devDependencies": {
         "@repo/eslint-config": "workspace:*",
         "@repo/typescript-config": "workspace:*",
+        "@types/node": "catalog:",
+        "dotenv": "catalog:",
+        "dotenv-cli": "catalog:",
         "drizzle-kit": "^0.24.2",
         "eslint": "catalog:",
         "eslint-plugin-drizzle": "^0.2.3",
+        "tsx": "^4.19.1",
         "typescript": "catalog:"
     }
 }

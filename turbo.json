@@ -20,14 +20,6 @@
         },
         "lint": {
             "dependsOn": ["^lint"]
-        },
-        "db:generate": {
-            "dependsOn": ["^db:generate"],
-            "env": ["DATABASE_URL"]
-        },
-        "db:migrate": {
-            "dependsOn": ["^db:migrate"],
-            "env": ["DATABASE_URL"]
         }
     }
 }

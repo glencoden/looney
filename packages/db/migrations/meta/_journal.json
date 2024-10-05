@@ -15,6 +15,13 @@
       "when": 1728123282850,
       "tag": "0001_sparkling_legion",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1728136334079,
+      "tag": "0002_nifty_iron_fist",
+      "breakpoints": true
     }
   ]
 }

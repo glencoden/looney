@@ -6,13 +6,10 @@ import {
     uuid,
     varchar,
 } from 'drizzle-orm/pg-core'
-import { setlistsTable } from './setlistsTable.js'
 
 export const songsTable = pgTable('song', {
     id: uuid('id').primaryKey().defaultRandom(),
-    setlistId: uuid('setlist_id')
-        .notNull()
-        .references(() => setlistsTable.id, { onDelete: 'cascade' }),
+    artist: varchar('artist', { length: 255 }).notNull(),
     title: varchar('title', { length: 255 }).notNull(),
     lyrics: text('lyrics').notNull(),
     isFavorite: boolean('is_favorite').notNull().default(false),

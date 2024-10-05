@@ -3,6 +3,8 @@
     "version": "1.0.0",
     "type": "module",
     "exports": {
+        "./constants": "./src/CONSTANTS.ts",
+        "./helpers": "./src/helpers/index.ts",
         "./styles.css": "./dist/styles.css",
         "./Button": "./src/Button.tsx",
         "./Spinner": "./src/Spinner.tsx"

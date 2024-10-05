@@ -2,7 +2,7 @@ import { useNavigate } from '@remix-run/react'
 import Button from '@repo/ui/Button'
 import { supabase } from '~/lib/supabase.client'
 
-export default function Logout() {
+export default function Signout() {
     const navigate = useNavigate()
 
     const logout = async () => {

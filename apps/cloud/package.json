@@ -15,6 +15,7 @@
         "@remix-run/node": "catalog:",
         "@remix-run/react": "catalog:",
         "@repo/api": "workspace:*",
+        "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
         "@supabase/supabase-js": "catalog:",
         "compression": "catalog:",
@@ -23,7 +24,8 @@
         "isbot": "catalog:",
         "morgan": "catalog:",
         "react": "catalog:",
-        "react-dom": "catalog:"
+        "react-dom": "catalog:",
+        "zod": "catalog:"
     },
     "devDependencies": {
         "@remix-run/dev": "catalog:",

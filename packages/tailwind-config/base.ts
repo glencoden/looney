@@ -2,10 +2,13 @@ import type { Config } from 'tailwindcss'
 
 export default {
     theme: {
+        container: {
+            center: true,
+        },
         extend: {
             fontFamily: {
                 sans: [
-                    '"Inter"',
+                    '"Poppins"',
                     'ui-sans-serif',
                     'system-ui',
                     'sans-serif',
@@ -17,5 +20,5 @@ export default {
             },
         },
     },
-    plugins: [],
+    plugins: [require('@tailwindcss/forms')],
 } satisfies Omit<Config, 'content'>

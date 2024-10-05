@@ -7,6 +7,11 @@
             "import": "./dist/index.js",
             "require": "./dist/index.js",
             "types": "./dist/index.d.ts"
+        },
+        "./queries": {
+            "import": "./dist/queries/index.js",
+            "require": "./dist/queries/index.js",
+            "types": "./dist/queries/index.d.ts"
         }
     },
     "scripts": {
@@ -21,7 +26,7 @@
         "drizzle-orm": "^0.33.0",
         "drizzle-zod": "^0.5.1",
         "postgres": "^3.4.4",
-        "zod": "^3.23.8"
+        "zod": "catalog:"
     },
     "devDependencies": {
         "@repo/eslint-config": "workspace:*",

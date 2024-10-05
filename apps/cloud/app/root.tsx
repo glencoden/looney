@@ -4,13 +4,16 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
+    useNavigate,
 } from '@remix-run/react'
-import type { LinksFunction } from '@remix-run/node'
+import type { LinksFunction, MetaFunction } from '@remix-run/node'
 
 import './tailwind.css'
 import '@repo/ui/styles.css'
 import { TRPCQueryClientProvider } from '@repo/api/provider'
-import { ReactNode } from 'react'
+import { FONT_SANS_URL } from '@repo/ui/constants'
+import { ReactNode, useEffect } from 'react'
+import { useEffectEvent } from '~/hooks/useEffectEvent'
 import { supabase } from '~/lib/supabase.client'
 
 export const links: LinksFunction = () => [
@@ -22,7 +25,7 @@ export const links: LinksFunction = () => [
     },
     {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+        href: FONT_SANS_URL,
     },
 ]
 
@@ -47,8 +50,31 @@ export function Layout({ children }: { children: ReactNode }) {
     )
 }
 
+export const meta: MetaFunction = () => {
+    return [
+        { title: 'Looney Cloud' },
+        { name: 'description', content: 'Console for Looneytunez cloud.' },
+    ]
+}
+
 export default function App() {
-    // TODO: poll for expired session - const { data, error } = await supabase.auth.refreshSession() - prevent new users: https://supabase.com/dashboard/project/dcibaxifomntyinzrptm/settings/auth
+    const navigate = useNavigate()
+
+    const redirectToSignin = useEffectEvent(async () => {
+        const { data } = await supabase.auth.getSession()
+
+        if (
+            data.session === null ||
+            data.session.expires_at === undefined ||
+            new Date(data.session.expires_at * 1000) < new Date()
+        ) {
+            navigate('/signin')
+        }
+    })
+
+    useEffect(() => {
+        void redirectToSignin()
+    }, [redirectToSignin])
 
     return (
         <TRPCQueryClientProvider supabaseClient={supabase}>

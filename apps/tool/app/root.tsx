@@ -10,6 +10,7 @@ import type { LinksFunction } from '@remix-run/node'
 import './tailwind.css'
 import '@repo/ui/styles.css'
 import { TRPCQueryClientProvider } from '@repo/api/provider'
+import { FONT_SANS_URL } from '@repo/ui/constants'
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -20,7 +21,7 @@ export const links: LinksFunction = () => [
     },
     {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+        href: FONT_SANS_URL,
     },
 ]
 

@@ -6,6 +6,8 @@ import {
     uuid,
     varchar,
 } from 'drizzle-orm/pg-core'
+import { createSelectSchema } from 'drizzle-zod'
+import { z } from 'zod'
 
 export const songsTable = pgTable('song', {
     id: uuid('id').primaryKey().defaultRandom(),
@@ -16,3 +18,7 @@ export const songsTable = pgTable('song', {
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),
 })
+
+export const SongSchema = createSelectSchema(songsTable)
+
+export type Song = z.infer<typeof SongSchema>

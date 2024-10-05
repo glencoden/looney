@@ -5,14 +5,16 @@ import { lipsTable as lipsSchema } from './schema/lipsTable.js'
 import { sessionsTable as sessionsSchema } from './schema/sessionsTable.js'
 import { setlistsTable as setlistsSchema } from './schema/setlistsTable.js'
 import { setlistsToSongsTable as setlistsToSongsSchema } from './schema/setlistsToSongsTable.js'
-import { songsTable as songsSchema } from './schema/songsTable.js'
+import * as songsSchema from './schema/songsTable.js'
 
 const databaseUrl = process.env.DATABASE_URL
 
 assert(databaseUrl !== undefined, 'Database URL is required')
 
 export const setlistsTable = setlistsSchema
-export const songsTable = songsSchema
+export const songsTable = songsSchema.songsTable
+export const SongSchema = songsSchema.SongSchema
+export const SongInsertSchema = songsSchema.SongInsertSchema
 export const setlistsToSongsTable = setlistsToSongsSchema
 export const sessionsTable = sessionsSchema
 export const lipsTable = lipsSchema

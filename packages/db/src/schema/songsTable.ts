@@ -6,7 +6,7 @@ import {
     uuid,
     varchar,
 } from 'drizzle-orm/pg-core'
-import { createSelectSchema } from 'drizzle-zod'
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
 
 export const songsTable = pgTable('song', {
@@ -20,5 +20,7 @@ export const songsTable = pgTable('song', {
 })
 
 export const SongSchema = createSelectSchema(songsTable)
+export const SongInsertSchema = createInsertSchema(songsTable)
 
 export type Song = z.infer<typeof SongSchema>
+export type SongInsert = z.infer<typeof SongInsertSchema>

@@ -1,2 +1,5 @@
 export { getSongs } from './getSongs.js'
 export { getSong } from './getSong.js'
+export { createSong } from './createSong.js'
+export { updateSong } from './updateSong.js'
+export { deleteSong } from './deleteSong.js'

@@ -1,6 +1,5 @@
 import { asc } from 'drizzle-orm'
-import { db } from '../index.js'
-import { songsTable } from '../schema/songsTable.js'
+import { db, songsTable } from '../index.js'
 
 export const getSongs = () => {
     return db

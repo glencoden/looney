@@ -6,8 +6,8 @@
         "./constants": "./src/CONSTANTS.ts",
         "./helpers": "./src/helpers/index.ts",
         "./styles.css": "./dist/styles.css",
-        "./Button": "./src/Button.tsx",
-        "./Spinner": "./src/Spinner.tsx"
+        "./Button": "./src/components/Button.tsx",
+        "./Spinner": "./src/components/Spinner.tsx"
     },
     "scripts": {
         "build": "tailwindcss -i ./src/styles.css -o dist/styles.css --minify",

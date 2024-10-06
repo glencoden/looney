@@ -1,5 +1,4 @@
-import { db } from '../index.js'
-import { SongInsert, songsTable } from '../schema/songsTable.js'
+import { db, SongInsert, songsTable } from '../index.js'
 
 export const createSong = async (song: SongInsert) => {
     const result = await db

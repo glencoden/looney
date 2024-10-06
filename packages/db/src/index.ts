@@ -1,23 +1,41 @@
 import { drizzle } from 'drizzle-orm/postgres-js'
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { strict as assert } from 'node:assert'
 import postgres from 'postgres'
+import { z } from 'zod'
 import { lipsTable as lipsSchema } from './schema/lipsTable.js'
 import { sessionsTable as sessionsSchema } from './schema/sessionsTable.js'
 import { setlistsTable as setlistsSchema } from './schema/setlistsTable.js'
 import { setlistsToSongsTable as setlistsToSongsSchema } from './schema/setlistsToSongsTable.js'
-import * as songsSchema from './schema/songsTable.js'
+import { songsTable as songsSchema } from './schema/songsTable.js'
 
-const databaseUrl = process.env.DATABASE_URL
-
-assert(databaseUrl !== undefined, 'Database URL is required')
+/**
+ * Table schema
+ */
 
 export const setlistsTable = setlistsSchema
-export const songsTable = songsSchema.songsTable
-export const SongSchema = songsSchema.SongSchema
-export const SongInsertSchema = songsSchema.SongInsertSchema
+export const songsTable = songsSchema
 export const setlistsToSongsTable = setlistsToSongsSchema
 export const sessionsTable = sessionsSchema
 export const lipsTable = lipsSchema
+
+/**
+ * Zod schema
+ */
+
+export const SongSchema = createSelectSchema(songsTable)
+export const SongInsertSchema = createInsertSchema(songsTable)
+
+/**
+ * Types
+ */
+
+export type Song = z.infer<typeof SongSchema>
+export type SongInsert = z.infer<typeof SongInsertSchema>
+
+/**
+ * Database client
+ */
 
 const schema = {
     setlistsSchema,
@@ -26,6 +44,10 @@ const schema = {
     sessionsSchema,
     lipsSchema,
 }
+
+const databaseUrl = process.env.DATABASE_URL
+
+assert(databaseUrl !== undefined, 'Database URL is required')
 
 const client = postgres(databaseUrl, { prepare: false })
 

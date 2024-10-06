@@ -1,4 +1,4 @@
-import { cn } from './helpers/cn'
+import { cn } from '../helpers'
 
 export default function Spinner({ light }: Readonly<{ light?: boolean }>) {
     return (

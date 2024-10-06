@@ -1,6 +1,5 @@
 import { eq } from 'drizzle-orm'
-import { db } from '../index.js'
-import { Song, songsTable } from '../schema/songsTable.js'
+import { db, Song, songsTable } from '../index.js'
 
 export const getSong = async (songId: Song['id']) => {
     const result = await db

@@ -4,10 +4,11 @@ import {
     LoaderFunctionArgs,
     redirect,
 } from '@remix-run/node'
-import { Form, Link, useLoaderData } from '@remix-run/react'
+import { Form, Link, useLoaderData, useNavigation } from '@remix-run/react'
 import { SongSchema } from '@repo/db'
 import { getSong, updateSong } from '@repo/db/queries'
 import Button from '@repo/ui/Button'
+import { cn } from '@repo/ui/helpers'
 import { z } from 'zod'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -43,8 +44,15 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 export default function SongEdit() {
     const { song } = useLoaderData<typeof loader>()
 
+    const navigation = useNavigation()
+    const isLoading = navigation.state !== 'idle'
+
     return (
-        <div className='flex h-[80vh] flex-grow flex-col space-y-4'>
+        <div
+            className={cn('flex h-[80vh] flex-grow flex-col space-y-4', {
+                'animate-pulse': isLoading,
+            })}
+        >
             <h2>Edit Song</h2>
 
             <Form method='post' className='flex flex-grow flex-col gap-4'>
@@ -54,6 +62,7 @@ export default function SongEdit() {
                     name='artist'
                     placeholder='Artist'
                     type='text'
+                    disabled={isLoading}
                 />
 
                 <input
@@ -62,6 +71,7 @@ export default function SongEdit() {
                     name='title'
                     placeholder='Title'
                     type='text'
+                    disabled={isLoading}
                 />
 
                 <textarea
@@ -70,12 +80,22 @@ export default function SongEdit() {
                     aria-label='Lyrics'
                     name='lyrics'
                     placeholder='Lyrics'
+                    disabled={isLoading}
                 />
 
-                <Button type='submit'>Update</Button>
-                <Button asChild type='button'>
-                    <Link to={`/songs/${song.id}`}>Cancel</Link>
-                </Button>
+                {isLoading ? (
+                    <div className='flex gap-3'>
+                        <Button type='button'>Save</Button>
+                        <Button type='button'>Cancel</Button>
+                    </div>
+                ) : (
+                    <div className='flex gap-3'>
+                        <Button type='submit'>Save</Button>
+                        <Button asChild type='button'>
+                            <Link to={`/songs/${song.id}`}>Cancel</Link>
+                        </Button>
+                    </div>
+                )}
             </Form>
         </div>
     )

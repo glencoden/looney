@@ -1,24 +1,104 @@
-import { json } from '@remix-run/node'
-import { Link, NavLink, Outlet, useLoaderData } from '@remix-run/react'
+import { json, LoaderFunctionArgs } from '@remix-run/node'
+import {
+    Form,
+    Link,
+    NavLink,
+    Outlet,
+    useLoaderData,
+    useNavigate,
+    useNavigation,
+    useSubmit,
+} from '@remix-run/react'
 import { getSongs } from '@repo/db/queries'
 import Button from '@repo/ui/Button'
 import { cn } from '@repo/ui/helpers'
+import Spinner from '@repo/ui/Spinner'
+import { useEffect, useRef } from 'react'
 
-export const loader = async () => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+    const url = new URL(request.url)
+    const q = url.searchParams.get('q')
+
     const songs = await getSongs()
-    return json({ songs })
+
+    return json({ songs, q })
 }
 
 export default function Songs() {
-    const { songs } = useLoaderData<typeof loader>()
+    const { songs, q } = useLoaderData<typeof loader>()
+
+    const navigate = useNavigate()
+    const navigation = useNavigation()
+
+    const isLoading =
+        navigation.location?.pathname === '/songs' &&
+        navigation.state !== 'idle'
+
+    const isSearching =
+        navigation.location &&
+        new URLSearchParams(navigation.location.search).has('q')
+
+    const submit = useSubmit()
+
+    useEffect(() => {
+        const searchField = document.getElementById('song-search')
+        if (searchField instanceof HTMLInputElement) {
+            searchField.value = q || ''
+        }
+    }, [q])
+
+    const searchTimeoutIdRef = useRef<ReturnType<typeof setTimeout>>()
 
     return (
-        <div className='px-main py-main container flex min-h-dvh border-2 border-amber-500'>
+        <div
+            className={cn(
+                'px-main py-main container flex min-h-dvh border-2 border-amber-500',
+                {
+                    'animate-pulse': isLoading && !isSearching,
+                },
+            )}
+        >
             <section className='space-y-4'>
+                <Button asChild type='button'>
+                    <Link to='/'>Back</Link>
+                </Button>
+
                 <h1>Songs</h1>
 
+                <Form
+                    method='get'
+                    onChange={(event) => {
+                        if (searchTimeoutIdRef.current) {
+                            clearTimeout(searchTimeoutIdRef.current)
+                        }
+                        const isFirstSearch = q === null
+                        const currentTarget = event.currentTarget
+
+                        searchTimeoutIdRef.current = setTimeout(() => {
+                            submit(currentTarget, {
+                                replace: !isFirstSearch,
+                            })
+                        }, 400)
+                    }}
+                >
+                    {isSearching && <Spinner />}
+                    <input
+                        id='song-search'
+                        aria-label='Song search input'
+                        defaultValue={q || ''}
+                        name='q'
+                        placeholder='Search'
+                        type='search'
+                        onBlur={() => {
+                            if (q === '') {
+                                navigate('/songs')
+                            }
+                        }}
+                    />
+                </Form>
+
                 <Button asChild>
-                    <Link to='/songs/create'>New Song</Link>
+                    <Link to='/songs/create'>New</Link>
                 </Button>
 
                 <ul>

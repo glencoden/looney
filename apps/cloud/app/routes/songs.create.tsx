@@ -1,8 +1,9 @@
 import { ActionFunctionArgs, redirect } from '@remix-run/node'
-import { Form, Link } from '@remix-run/react'
+import { Form, Link, useNavigation } from '@remix-run/react'
 import { SongInsertSchema } from '@repo/db'
 import { createSong } from '@repo/db/queries'
 import Button from '@repo/ui/Button'
+import { cn } from '@repo/ui/helpers'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData()
@@ -18,9 +19,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 }
 
 export default function SongsCreate() {
+    const navigation = useNavigation()
+    const isLoading = navigation.state !== 'idle'
+
     return (
-        <div className='flex-grow'>
-            <h2>Create Song</h2>
+        <div
+            className={cn('flex-grow', {
+                'animate-pulse': isLoading,
+            })}
+        >
+            <h2>New Song</h2>
 
             <Form method='post' className='flex flex-col gap-4'>
                 <input
@@ -28,6 +36,7 @@ export default function SongsCreate() {
                     name='artist'
                     placeholder='Artist'
                     type='text'
+                    disabled={isLoading}
                 />
 
                 <input
@@ -35,6 +44,7 @@ export default function SongsCreate() {
                     name='title'
                     placeholder='Title'
                     type='text'
+                    disabled={isLoading}
                 />
 
                 <textarea
@@ -42,12 +52,22 @@ export default function SongsCreate() {
                     aria-label='Lyrics'
                     name='lyrics'
                     placeholder='Lyrics'
+                    disabled={isLoading}
                 />
 
-                <Button type='submit'>Create</Button>
-                <Button asChild type='button'>
-                    <Link to='/songs'>Cancel</Link>
-                </Button>
+                {isLoading ? (
+                    <div className='flex gap-3'>
+                        <Button type='button'>Create</Button>
+                        <Button type='button'>Cancel</Button>
+                    </div>
+                ) : (
+                    <div className='flex gap-3'>
+                        <Button type='submit'>Create</Button>
+                        <Button asChild type='button'>
+                            <Link to='/songs'>Cancel</Link>
+                        </Button>
+                    </div>
+                )}
             </Form>
         </div>
     )

@@ -1,15 +1,17 @@
-import { json, LoaderFunctionArgs } from '@remix-run/node'
+import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node'
 import {
     Form,
     Link,
     NavLink,
     Outlet,
+    useFetcher,
     useLoaderData,
     useNavigate,
     useNavigation,
     useSubmit,
 } from '@remix-run/react'
-import { getSongs } from '@repo/db/queries'
+import { SongSchema } from '@repo/db'
+import { getSongs, updateSong } from '@repo/db/queries'
 import Button from '@repo/ui/Button'
 import { cn } from '@repo/ui/helpers'
 import Spinner from '@repo/ui/Spinner'
@@ -56,11 +58,29 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     return json({ songs, q })
 }
 
+export const action = async ({ request }: ActionFunctionArgs) => {
+    const formData = await request.formData()
+    const formValues = Object.fromEntries(formData)
+    const songUpdate = SongSchema.pick({
+        id: true,
+        isFavorite: true,
+    }).parse({
+        id: formValues.id,
+        isFavorite: formValues.favorite === 'true',
+    })
+
+    await updateSong(songUpdate)
+
+    return null
+}
+
 export default function Songs() {
     const { songs, q } = useLoaderData<typeof loader>()
 
     const navigate = useNavigate()
     const navigation = useNavigation()
+    const submit = useSubmit()
+    const fetcher = useFetcher()
 
     const isLoading =
         navigation.location?.pathname === '/songs' &&
@@ -69,8 +89,6 @@ export default function Songs() {
     const isSearching =
         navigation.location &&
         new URLSearchParams(navigation.location.search).has('q')
-
-    const submit = useSubmit()
 
     useEffect(() => {
         const searchField = document.getElementById('song-search')
@@ -137,8 +155,51 @@ export default function Songs() {
                 </Button>
 
                 <ul>
-                    {songs.map(({ id, artist, title }) => (
-                        <li key={id}>
+                    {songs.map(({ id, artist, title, isFavorite }) => (
+                        <li key={id} className='flex items-center gap-2'>
+                            <fetcher.Form method='post'>
+                                <input type='hidden' name='id' value={id} />
+                                <Button
+                                    variant='ghost'
+                                    aria-label={
+                                        isFavorite
+                                            ? 'Remove from favorites'
+                                            : 'Add to favorites'
+                                    }
+                                    name='favorite'
+                                    value={isFavorite ? 'false' : 'true'}
+                                    type={
+                                        fetcher.state !== 'idle'
+                                            ? 'button'
+                                            : 'submit'
+                                    }
+                                >
+                                    <div
+                                        className={cn(
+                                            'h-4 w-4 rounded border-2 border-blue-800',
+                                            {
+                                                'bg-blue-500': (() => {
+                                                    if (
+                                                        fetcher.state !==
+                                                            'idle' &&
+                                                        fetcher.formData?.get(
+                                                            'id',
+                                                        ) === id
+                                                    ) {
+                                                        return (
+                                                            fetcher.formData?.get(
+                                                                'favorite',
+                                                            ) === 'true'
+                                                        )
+                                                    }
+                                                    return isFavorite
+                                                })(),
+                                            },
+                                        )}
+                                    />
+                                </Button>
+                            </fetcher.Form>
+
                             <NavLink
                                 to={`/songs/${id}`}
                                 className={({ isActive, isPending }) =>

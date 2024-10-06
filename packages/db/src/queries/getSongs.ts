@@ -10,5 +10,5 @@ export const getSongs = () => {
             isFavorite: songsTable.isFavorite,
         })
         .from(songsTable)
-        .orderBy(asc(songsTable.artist))
+        .orderBy(asc(songsTable.artist), asc(songsTable.title))
 }

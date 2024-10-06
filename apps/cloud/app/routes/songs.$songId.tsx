@@ -66,6 +66,11 @@ export default function Song() {
             </section>
 
             <h2>{song.artist}</h2>
+            <div
+                className={cn('h-4 w-4 rounded border-2 border-blue-800', {
+                    'bg-blue-500': song.isFavorite,
+                })}
+            />
             <h3>{song.title}</h3>
 
             <p className='whitespace-pre'>{song.lyrics}</p>

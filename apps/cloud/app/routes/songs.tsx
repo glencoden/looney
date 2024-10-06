@@ -15,6 +15,38 @@ import { cn } from '@repo/ui/helpers'
 import Spinner from '@repo/ui/Spinner'
 import { useEffect, useRef } from 'react'
 
+function SearchHighlight({
+    text,
+    searchString,
+}: Readonly<{
+    text: string
+    searchString: string | null
+}>) {
+    if (!searchString) {
+        return <>{text}</>
+    }
+
+    const regex = new RegExp(searchString, 'gi')
+
+    const highlights = text.match(regex) || []
+    const parts = text.split(regex)
+
+    return (
+        <>
+            {parts.map((part, index) => {
+                const highlight = highlights[index]
+
+                return (
+                    <span key={index}>
+                        {part}
+                        {highlight && <mark>{highlight}</mark>}
+                    </span>
+                )
+            })}
+        </>
+    )
+}
+
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     const url = new URL(request.url)
     const q = url.searchParams.get('q')
@@ -71,6 +103,14 @@ export default function Songs() {
                         if (searchTimeoutIdRef.current) {
                             clearTimeout(searchTimeoutIdRef.current)
                         }
+                        const isEmptySearch = event.currentTarget.q.value === ''
+
+                        if (isEmptySearch) {
+                            event.currentTarget.q.blur()
+                            navigate('/songs')
+                            return
+                        }
+
                         const isFirstSearch = q === null
                         const currentTarget = event.currentTarget
 
@@ -78,7 +118,7 @@ export default function Songs() {
                             submit(currentTarget, {
                                 replace: !isFirstSearch,
                             })
-                        }, 400)
+                        }, 500)
                     }}
                 >
                     {isSearching && <Spinner />}
@@ -89,11 +129,6 @@ export default function Songs() {
                         name='q'
                         placeholder='Search'
                         type='search'
-                        onBlur={() => {
-                            if (q === '') {
-                                navigate('/songs')
-                            }
-                        }}
                     />
                 </Form>
 
@@ -113,7 +148,10 @@ export default function Songs() {
                                     })
                                 }
                             >
-                                {artist} - {title}
+                                <SearchHighlight
+                                    text={`${artist} - ${title}`}
+                                    searchString={q}
+                                />
                             </NavLink>
                         </li>
                     ))}

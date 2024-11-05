@@ -15,6 +15,7 @@ import { FONT_SANS_URL } from '@repo/ui/constants'
 import { ReactNode, useEffect } from 'react'
 import { useEffectEvent } from '~/hooks/useEffectEvent'
 import { supabase } from '~/lib/supabase.client'
+import { SYLLABLE_CHAR } from '~/CONSTANTS'
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -27,9 +28,32 @@ export const links: LinksFunction = () => [
         rel: 'stylesheet',
         href: FONT_SANS_URL,
     },
+    { rel: 'modulepreload', href: '/vendor/hyphenator.js' },
+    { rel: 'modulepreload', href: '/vendor/hyphenator-patterns/de.js' },
+    { rel: 'modulepreload', href: '/vendor/hyphenator-patterns/en-gb.js' },
+    { rel: 'modulepreload', href: '/vendor/hyphenator-patterns/en-us.js' },
 ]
 
 export function Layout({ children }: { children: ReactNode }) {
+    useEffect(() => {
+        // @ts-expect-error Hyphenator is not typed
+        Hyphenator.config({
+            hyphenchar: SYLLABLE_CHAR,
+            minwordlength: 0,
+            enablecache: false,
+        })
+
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            e.returnValue = false
+        }
+
+        window.addEventListener('beforeunload', handleBeforeUnload)
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload)
+        }
+    }, [])
+
     return (
         <html lang='en'>
             <head>
@@ -40,6 +64,22 @@ export function Layout({ children }: { children: ReactNode }) {
                 />
                 <Meta />
                 <Links />
+                <script
+                    type='text/javascript'
+                    src='/vendor/hyphenator.js'
+                ></script>
+                <script
+                    type='text/javascript'
+                    src='/vendor/hyphenator-patterns/de.js'
+                ></script>
+                <script
+                    type='text/javascript'
+                    src='/vendor/hyphenator-patterns/en-gb.js'
+                ></script>
+                <script
+                    type='text/javascript'
+                    src='/vendor/hyphenator-patterns/en-us.js'
+                ></script>
             </head>
             <body>
                 {children}

@@ -4,6 +4,8 @@ import { SongInsertSchema } from '@repo/db'
 import { createSong } from '@repo/db/queries'
 import Button from '@repo/ui/Button'
 import { cn } from '@repo/ui/helpers'
+import { useState } from 'react'
+import { SYLLABLE_CHAR } from '~/CONSTANTS'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData()
@@ -21,6 +23,22 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function SongsCreate() {
     const navigation = useNavigation()
     const isLoading = navigation.state !== 'idle'
+
+    const [language, setLanguage] = useState('en-us')
+
+    const findSyllables = () => {
+        const lyricsElement = document.getElementById('lyrics')
+
+        if (!lyricsElement || !(lyricsElement instanceof HTMLTextAreaElement)) {
+            return
+        }
+
+        const lyrics = lyricsElement.value
+        const consolidated = lyrics.replace(new RegExp(SYLLABLE_CHAR, 'g'), '')
+
+        // @ts-expect-error Hyphenator is not typed
+        lyricsElement.value = Hyphenator.hyphenate(consolidated, language)
+    }
 
     return (
         <div
@@ -47,8 +65,22 @@ export default function SongsCreate() {
                     disabled={isLoading}
                 />
 
+                <Button type='button' onClick={findSyllables}>
+                    Find syllables
+                </Button>
+
+                <select
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value)}
+                >
+                    <option value='en-us'>English</option>
+                    <option value='en-gb'>English (UK)</option>
+                    <option value='de'>German</option>
+                </select>
+
                 <textarea
-                    className='min-h-48'
+                    id='lyrics'
+                    className='min-h-[60dvh]'
                     aria-label='Lyrics'
                     name='lyrics'
                     placeholder='Lyrics'

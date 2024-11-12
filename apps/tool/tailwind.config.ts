@@ -1,5 +1,5 @@
-import type { Config } from 'tailwindcss'
 import baseConfig from '@repo/tailwind-config/base'
+import type { Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
 
 export default {
@@ -7,6 +7,9 @@ export default {
     presets: [baseConfig],
     theme: {
         extend: {
+            fontFamily: {
+                sans: ['Avant Garde Gothic EF', 'sans-serif'],
+            },
             textShadow: {
                 DEFAULT: '1px 2px 2px var(--tw-shadow-color)',
             },

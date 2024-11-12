@@ -389,10 +389,16 @@ export default function Index() {
     console.log('transformY', transformY)
 
     return (
-        <div className='flex h-screen flex-col items-center justify-center px-12'>
+        <div className='relativeflex h-screen cursor-none flex-col items-center justify-center'>
+            <img
+                src='/logo-white.png'
+                alt='Logo'
+                className='absolute right-12 top-12 w-40'
+            />
+
             <h1
                 className={cn(
-                    'mb-80 text-yellow-400 opacity-0 transition-opacity duration-1000',
+                    'duration-[1.5s]e absolute left-1/2 top-20 w-full -translate-x-1/2 px-72 text-center text-yellow-400 opacity-0 transition-opacity',
                     {
                         'opacity-100':
                             isFirst('line') && !isThirdOrHigher('word'),
@@ -402,11 +408,20 @@ export default function Index() {
                 {selectedText?.title ?? 'Looney tool'}
             </h1>
 
-            {prev && <JoinedLine line={prev} />}
-
-            {current && <JoinedLine line={current} index={index} />}
-
-            {next && <JoinedLine line={next} className='opacity-60' />}
+            <section className='absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden px-12'>
+                <div
+                    className={cn({
+                        'transition-transform duration-300': transformY > 0,
+                    })}
+                    style={{
+                        transform: `translateY(-${transformY / 3}%)`,
+                    }}
+                >
+                    <JoinedLine line={prev} className='opacity-10' />
+                    <JoinedLine line={current} index={index} />
+                    <JoinedLine line={next} className='opacity-60' />
+                </div>
+            </section>
         </div>
     )
 }

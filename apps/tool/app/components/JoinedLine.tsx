@@ -7,63 +7,63 @@ export default function JoinedLine({
     index,
     className,
 }: Readonly<{
-    line: Line
+    line: Line | null
     index?: Index
     className?: string
 }>) {
-    if (!index) {
-        return (
-            <p className={cn('text-center text-white', className)}>
-                {line.words
-                    .map((word) =>
-                        word.syllables
-                            .map((syllable) => syllable.letters)
-                            .join(''),
-                    )
-                    .join(' ')}
-            </p>
-        )
-    }
-
     let highlight = ''
-    let rest = ''
+    let regular = ''
 
-    line.words.forEach((word, wIndex) => {
-        if (wIndex === index.word) {
-            word.syllables.forEach((syllable, sIndex) => {
-                let letters = syllable.letters
+    if (line) {
+        if (!index) {
+            regular = line.words
+                .map((word) =>
+                    word.syllables.map((syllable) => syllable.letters).join(''),
+                )
+                .join(' ')
+        } else {
+            line.words.forEach((word, wIndex) => {
+                if (wIndex === index.word) {
+                    word.syllables.forEach((syllable, sIndex) => {
+                        let letters = syllable.letters
 
-                if (sIndex === word.syllables.length - 1) {
-                    letters += ' '
-                }
+                        if (sIndex === word.syllables.length - 1) {
+                            letters += ' '
+                        }
 
-                if (sIndex > index.syllable) {
-                    rest += letters
+                        if (sIndex > index.syllable) {
+                            regular += letters
+                            return
+                        }
+                        highlight += letters
+                    })
                     return
                 }
-                highlight += letters
+
+                let joined = word.syllables
+                    .map((syllable) => syllable.letters)
+                    .join('')
+
+                if (wIndex < line.words.length - 1) {
+                    joined += ' '
+                }
+
+                if (wIndex > index.word) {
+                    regular += joined
+                    return
+                }
+
+                highlight += joined
             })
-            return
         }
-
-        let joined = word.syllables.map((syllable) => syllable.letters).join('')
-
-        if (wIndex < line.words.length - 1) {
-            joined += ' '
-        }
-
-        if (wIndex > index.word) {
-            rest += joined
-            return
-        }
-
-        highlight += joined
-    })
+    }
 
     return (
-        <p className={cn('text-center text-white', className)}>
-            <span className='text-red-400'>{highlight}</span>
-            <span>{rest}</span>
+        <p className={cn('h-[180px] text-center text-white', className)}>
+            {highlight.length > 0 && (
+                <span className='text-red-400'>{highlight}</span>
+            )}
+            {regular.length > 0 && <span>{regular}</span>}
         </p>
     )
 }

@@ -9,20 +9,17 @@ import {
 } from '@remix-run/react'
 
 import { TRPCQueryClientProvider } from '@repo/api/provider'
-import { FONT_SANS_URL } from '@repo/ui/constants'
 import { useEffect } from 'react'
-import './tailwind.css'
+import './styles/fonts.css'
+import './styles/tailwind.css'
 
 export const links: LinksFunction = () => [
-    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     {
-        rel: 'preconnect',
-        href: 'https://fonts.gstatic.com',
+        rel: 'preload',
+        href: '/fonts/AvantGardGothEF-Med.otf',
+        as: 'font',
+        type: 'font/otf',
         crossOrigin: 'anonymous',
-    },
-    {
-        rel: 'stylesheet',
-        href: FONT_SANS_URL,
     },
 ]
 
@@ -50,7 +47,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Meta />
                 <Links />
             </head>
-            <body className='text-shadow bg-blue-800 text-[70px] shadow-stone-950'>
+            <body className='text-shadow bg-blue-800 text-[70px] font-medium shadow-stone-950'>
                 {children}
                 <ScrollRestoration />
                 <Scripts />

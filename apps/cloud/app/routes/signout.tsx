@@ -7,16 +7,18 @@ export default function Signout() {
 
     const logout = async () => {
         await supabase.auth.signOut()
-        navigate('/')
+        navigate('/signin')
     }
 
     return (
-        <Button
-            onClick={() => {
-                void logout()
-            }}
-        >
-            logout
-        </Button>
+        <div className='flex min-h-dvh flex-col items-center justify-center'>
+            <Button
+                onClick={() => {
+                    void logout()
+                }}
+            >
+                logout
+            </Button>
+        </div>
     )
 }

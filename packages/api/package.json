@@ -18,6 +18,11 @@
             "require": "./dist/trpc/provider/index.jsx",
             "types": "./dist/trpc/provider/index.d.ts"
         },
+        "./router": {
+            "import": "./dist/trpc/router/index.js",
+            "require": "./dist/trpc/router/index.js",
+            "types": "./dist/trpc/router/index.d.ts"
+        },
         "./client": {
             "import": "./dist/trpc/client/index.js",
             "require": "./dist/trpc/client/index.js",

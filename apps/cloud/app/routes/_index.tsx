@@ -76,6 +76,15 @@ export default function Index() {
                             <Link to='/songs'>Sing</Link>
                         </Button>
                     </li>
+                    <li className='w-full'>
+                        <Button
+                            asChild
+                            variant='ghost'
+                            loading={navigation.state === 'loading'}
+                        >
+                            <Link to='/signout'>Logout</Link>
+                        </Button>
+                    </li>
                 </ul>
             </nav>
         </div>

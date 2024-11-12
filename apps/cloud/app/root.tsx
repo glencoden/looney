@@ -1,3 +1,4 @@
+import type { LinksFunction, MetaFunction } from '@remix-run/node'
 import {
     Links,
     Meta,
@@ -6,16 +7,15 @@ import {
     ScrollRestoration,
     useNavigate,
 } from '@remix-run/react'
-import type { LinksFunction, MetaFunction } from '@remix-run/node'
 
-import './tailwind.css'
-import '@repo/ui/styles.css'
 import { TRPCQueryClientProvider } from '@repo/api/provider'
 import { FONT_SANS_URL } from '@repo/ui/constants'
+import '@repo/ui/styles.css'
+import { useEffectEvent } from '@repo/utils/hooks'
 import { ReactNode, useEffect } from 'react'
-import { useEffectEvent } from '~/hooks/useEffectEvent'
-import { supabase } from '~/lib/supabase.client'
 import { SYLLABLE_CHAR } from '~/CONSTANTS'
+import { supabase } from '~/lib/supabase.client'
+import './tailwind.css'
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -35,25 +35,6 @@ export const links: LinksFunction = () => [
 ]
 
 export function Layout({ children }: { children: ReactNode }) {
-    useEffect(() => {
-        // @ts-expect-error Hyphenator is not typed
-        Hyphenator.config({
-            hyphenchar: SYLLABLE_CHAR,
-            minwordlength: 0,
-            enablecache: false,
-        })
-
-        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-            e.returnValue = false
-        }
-
-        window.addEventListener('beforeunload', handleBeforeUnload)
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload)
-        }
-    }, [])
-
     return (
         <html lang='en'>
             <head>
@@ -100,7 +81,7 @@ export const meta: MetaFunction = () => {
 export default function App() {
     const navigate = useNavigate()
 
-    const redirectToSignin = useEffectEvent(async () => {
+    const handleLifecycle = useEffectEvent(async () => {
         const { data } = await supabase.auth.getSession()
 
         if (
@@ -109,12 +90,30 @@ export default function App() {
             new Date(data.session.expires_at * 1000) < new Date()
         ) {
             navigate('/signin')
+            return
+        }
+
+        // @ts-expect-error Hyphenator is not typed
+        Hyphenator.config({
+            hyphenchar: SYLLABLE_CHAR,
+            minwordlength: 0,
+            enablecache: false,
+        })
+
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            e.returnValue = false
+        }
+
+        window.addEventListener('beforeunload', handleBeforeUnload)
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload)
         }
     })
 
     useEffect(() => {
-        void redirectToSignin()
-    }, [redirectToSignin])
+        void handleLifecycle()
+    }, [handleLifecycle])
 
     return (
         <TRPCQueryClientProvider supabaseClient={supabase}>

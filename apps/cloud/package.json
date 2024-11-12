@@ -17,6 +17,7 @@
         "@repo/api": "workspace:*",
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
+        "@repo/utils": "workspace:*",
         "@supabase/supabase-js": "catalog:",
         "compression": "catalog:",
         "cross-env": "catalog:",

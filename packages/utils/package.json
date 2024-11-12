@@ -1,0 +1,31 @@
+{
+    "name": "@repo/utils",
+    "version": "1.0.0",
+    "type": "module",
+    "exports": {
+        "./hooks": {
+            "import": "./dist/hooks/index.js",
+            "require": "./dist/hooks/index.js",
+            "types": "./dist/hooks/index.d.ts"
+        }
+    },
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "lint": "eslint . --max-warnings 0",
+        "db:generate": "pnpm build && drizzle-kit generate",
+        "db:migrate": "dotenv -e ../../.env -- tsx ./scripts/migrate-database.ts",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "peerDependencies": {
+        "react": "catalog:"
+    },
+    "devDependencies": {
+        "@repo/eslint-config": "workspace:*",
+        "@repo/typescript-config": "workspace:*",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "eslint": "catalog:",
+        "typescript": "catalog:"
+    }
+}

@@ -1,11 +1,14 @@
-import type { Config } from 'tailwindcss'
 import baseConfig from '@repo/tailwind-config/base'
+import type { Config } from 'tailwindcss'
 
 export default {
     content: ['./src/**/*.tsx'],
     presets: [baseConfig],
     theme: {
         extend: {
+            dropShadow: {
+                DEFAULT: '4px 4px 0 #000',
+            },
             keyframes: {
                 spinner: {
                     '0%': {

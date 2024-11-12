@@ -23,6 +23,7 @@
         "cross-env": "catalog:",
         "express": "catalog:",
         "isbot": "catalog:",
+        "lucide-react": "^0.456.0",
         "morgan": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",

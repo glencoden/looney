@@ -386,8 +386,6 @@ export default function Index() {
             ? 0
             : (position.current / position.totalSyllables) * 100
 
-    console.log('transformY', transformY)
-
     return (
         <div className='relativeflex h-screen cursor-none flex-col items-center justify-center'>
             <img

@@ -9,7 +9,7 @@ import {
 } from '@remix-run/react'
 
 import { TRPCQueryClientProvider } from '@repo/api/provider'
-import { FONT_SANS_URL } from '@repo/ui/constants'
+import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
 import { useEffectEvent } from '@repo/utils/hooks'
 import { ReactNode, useEffect } from 'react'
@@ -27,6 +27,10 @@ export const links: LinksFunction = () => [
     {
         rel: 'stylesheet',
         href: FONT_SANS_URL,
+    },
+    {
+        rel: 'stylesheet',
+        href: FONT_SERIF_URL,
     },
     { rel: 'modulepreload', href: '/vendor/hyphenator.js' },
     { rel: 'modulepreload', href: '/vendor/hyphenator-patterns/de.js' },
@@ -62,7 +66,7 @@ export function Layout({ children }: { children: ReactNode }) {
                     src='/vendor/hyphenator-patterns/en-us.js'
                 ></script>
             </head>
-            <body>
+            <body className='bg-blue-800'>
                 {children}
                 <ScrollRestoration />
                 <Scripts />

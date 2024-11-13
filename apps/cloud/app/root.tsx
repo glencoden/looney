@@ -14,6 +14,7 @@ import '@repo/ui/styles.css'
 import { useEffectEvent } from '@repo/utils/hooks'
 import { ReactNode, useEffect } from 'react'
 import { SYLLABLE_CHAR } from '~/CONSTANTS'
+import { handleBeforeUnload } from '~/helpers/handle-before-unload'
 import { supabase } from '~/lib/supabase.client'
 import './tailwind.css'
 
@@ -66,7 +67,7 @@ export function Layout({ children }: { children: ReactNode }) {
                     src='/vendor/hyphenator-patterns/en-us.js'
                 ></script>
             </head>
-            <body className='bg-blue-800'>
+            <body className='bg-blue-800 text-white'>
                 {children}
                 <ScrollRestoration />
                 <Scripts />
@@ -103,10 +104,6 @@ export default function App() {
             minwordlength: 0,
             enablecache: false,
         })
-
-        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-            e.returnValue = false
-        }
 
         window.addEventListener('beforeunload', handleBeforeUnload)
 

@@ -30,5 +30,4 @@ export default {
             },
         },
     },
-    plugins: [require('@tailwindcss/forms')],
 } satisfies Omit<Config, 'content'>

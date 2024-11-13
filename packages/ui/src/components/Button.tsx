@@ -9,22 +9,22 @@ export const buttonVariants = cva(
     {
         variants: {
             variant: {
-                default:
-                    'bg-blue-800 text-blue-300 active:bg-blue-700 hover:bg-blue-700 transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
+                primary:
+                    'bg-blue-800 text-blue-300 active:bg-blue-700 hover:text-white hover:animate-flicker-primary transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
                 secondary:
-                    'bg-pink-600 text-pink-950 active:bg-pink-500 hover:bg-pink-500 transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
-                light: 'bg-yellow-400 text-white active:bg-yellow-300 hover:bg-yellow-300 transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
+                    'bg-pink-600 text-pink-950 active:bg-pink-500 hover:text-white hover:animate-flicker-secondary transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
+                light: 'bg-yellow-400 text-white active:bg-yellow-300 hover:animate-flicker-light transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
                 ghost: '',
             },
             size: {
-                default: 'h-11 w-full max-w-96',
+                primary: 'h-11 w-full max-w-96',
                 sm: 'h-10 min-w-28 px-8',
                 icon: 'h-6 w-6',
             },
         },
         defaultVariants: {
-            variant: 'default',
-            size: 'default',
+            variant: 'primary',
+            size: 'primary',
         },
     },
 )

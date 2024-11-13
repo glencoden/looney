@@ -7,7 +7,8 @@ import {
 import { Form, Link, useLoaderData, useNavigation } from '@remix-run/react'
 import { SongSchema } from '@repo/db'
 import { getSong, updateSong } from '@repo/db/queries'
-import Button from '@repo/ui/Button'
+import BoxFullHeight from '@repo/ui/components/BoxFullHeight'
+import Button from '@repo/ui/components/Button'
 import { cn } from '@repo/ui/helpers'
 import { useState } from 'react'
 import { z } from 'zod'
@@ -65,70 +66,74 @@ export default function SongEdit() {
         lyricsElement.value = Hyphenator.hyphenate(consolidated, language)
     }
 
+    // 'flex h-[cacl(100dvh)] flex-grow flex-col space-y-4 border-2 border-amber-100',
+
     return (
-        <div
-            className={cn('flex h-[80vh] flex-grow flex-col space-y-4', {
-                'animate-pulse': isLoading,
-            })}
-        >
-            <h2>Edit Song</h2>
+        <BoxFullHeight>
+            <div
+                className={cn('flex flex-col gap-4', {
+                    'animate-pulse': isLoading,
+                })}
+            >
+                <h2>Edit Song</h2>
 
-            <Form method='post' className='flex flex-grow flex-col gap-4'>
-                <input
-                    aria-label='Artist name'
-                    defaultValue={song.artist}
-                    name='artist'
-                    placeholder='Artist'
-                    type='text'
-                    disabled={isLoading}
-                />
+                <Form method='post' className='flex flex-grow flex-col gap-4'>
+                    <input
+                        aria-label='Artist name'
+                        defaultValue={song.artist}
+                        name='artist'
+                        placeholder='Artist'
+                        type='text'
+                        disabled={isLoading}
+                    />
 
-                <input
-                    aria-label='Song title'
-                    defaultValue={song.title}
-                    name='title'
-                    placeholder='Title'
-                    type='text'
-                    disabled={isLoading}
-                />
+                    <input
+                        aria-label='Song title'
+                        defaultValue={song.title}
+                        name='title'
+                        placeholder='Title'
+                        type='text'
+                        disabled={isLoading}
+                    />
 
-                <Button type='button' onClick={findSyllables}>
-                    Find syllables
-                </Button>
+                    <Button type='button' onClick={findSyllables}>
+                        Find syllables
+                    </Button>
 
-                <select
-                    value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
-                >
-                    <option value='en-us'>English</option>
-                    <option value='en-gb'>English (UK)</option>
-                    <option value='de'>German</option>
-                </select>
+                    <select
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value)}
+                    >
+                        <option value='en-us'>English</option>
+                        <option value='en-gb'>English (UK)</option>
+                        <option value='de'>German</option>
+                    </select>
 
-                <textarea
-                    id='lyrics'
-                    className='min-h-[60dvh] flex-grow'
-                    defaultValue={song.lyrics}
-                    aria-label='Lyrics'
-                    name='lyrics'
-                    placeholder='Lyrics'
-                    disabled={isLoading}
-                />
+                    <textarea
+                        id='lyrics'
+                        className='min-h-[50vh] flex-grow'
+                        defaultValue={song.lyrics}
+                        aria-label='Lyrics'
+                        name='lyrics'
+                        placeholder='Lyrics'
+                        disabled={isLoading}
+                    />
 
-                {isLoading ? (
-                    <div className='flex gap-3'>
-                        <Button type='button'>Save</Button>
-                        <Button type='button'>Cancel</Button>
-                    </div>
-                ) : (
-                    <div className='flex gap-3'>
-                        <Button type='submit'>Save</Button>
-                        <Button asChild type='button'>
-                            <Link to={`/songs/${song.id}`}>Cancel</Link>
-                        </Button>
-                    </div>
-                )}
-            </Form>
-        </div>
+                    {isLoading ? (
+                        <div className='flex gap-3'>
+                            <Button type='button'>Save</Button>
+                            <Button type='button'>Cancel</Button>
+                        </div>
+                    ) : (
+                        <div className='flex gap-3'>
+                            <Button type='submit'>Save</Button>
+                            <Button asChild type='button'>
+                                <Link to={`/songs/${song.id}`}>Cancel</Link>
+                            </Button>
+                        </div>
+                    )}
+                </Form>
+            </div>
+        </BoxFullHeight>
     )
 }

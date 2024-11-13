@@ -7,6 +7,11 @@
             "import": "./dist/hooks/index.js",
             "require": "./dist/hooks/index.js",
             "types": "./dist/hooks/index.d.ts"
+        },
+        "./text": {
+            "import": "./dist/text/index.js",
+            "require": "./dist/text/index.js",
+            "types": "./dist/text/index.d.ts"
         }
     },
     "scripts": {

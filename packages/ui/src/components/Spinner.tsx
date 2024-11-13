@@ -1,8 +1,14 @@
 import { cn } from '../helpers'
 
-export default function Spinner({ light }: Readonly<{ light?: boolean }>) {
+export default function Spinner({
+    className,
+    light,
+}: Readonly<{
+    className?: string
+    light?: boolean
+}>) {
     return (
-        <span>
+        <span className={cn(className)}>
             <span
                 className={cn(
                     'animate-spinner1 absolute h-[6px] w-[2px] origin-top -translate-y-[3.5px] translate-x-[3.5px] -rotate-[135deg] transform rounded-[2px] bg-slate-800',

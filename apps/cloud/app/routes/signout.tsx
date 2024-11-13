@@ -1,5 +1,9 @@
-import { useNavigate } from '@remix-run/react'
-import Button from '@repo/ui/Button'
+import { Link, useNavigate } from '@remix-run/react'
+import BoxContent from '@repo/ui/components/BoxContent'
+import BoxMain from '@repo/ui/components/BoxMain'
+import Button from '@repo/ui/components/Button'
+import H1 from '@repo/ui/typography/H1'
+import { handleBeforeUnload } from '~/helpers/handle-before-unload'
 import { supabase } from '~/lib/supabase.client'
 
 export default function Signout() {
@@ -7,18 +11,33 @@ export default function Signout() {
 
     const logout = async () => {
         await supabase.auth.signOut()
+        window.removeEventListener('beforeunload', handleBeforeUnload)
         navigate('/signin')
     }
 
     return (
-        <div className='flex min-h-dvh flex-col items-center justify-center'>
-            <Button
-                onClick={() => {
-                    void logout()
-                }}
-            >
-                logout
-            </Button>
-        </div>
+        <BoxMain className='flex flex-col items-center'>
+            <header className='w-full'>
+                <H1 secondary className='mt-20'>
+                    Looney Cloud
+                </H1>
+            </header>
+
+            <BoxContent>
+                <nav className='space-y-6'>
+                    <Button
+                        onClick={() => {
+                            void logout()
+                        }}
+                    >
+                        Logout
+                    </Button>
+
+                    <Button asChild variant='secondary'>
+                        <Link to='/'>Back</Link>
+                    </Button>
+                </nav>
+            </BoxContent>
+        </BoxMain>
     )
 }

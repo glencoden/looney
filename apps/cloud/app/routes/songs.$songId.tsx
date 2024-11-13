@@ -1,7 +1,7 @@
 import { json, LoaderFunctionArgs } from '@remix-run/node'
 import { Form, Link, useLoaderData, useNavigation } from '@remix-run/react'
 import { getSong } from '@repo/db/queries'
-import Button from '@repo/ui/Button'
+import Button from '@repo/ui/components/Button'
 import { cn } from '@repo/ui/helpers'
 import { z } from 'zod'
 
@@ -24,7 +24,7 @@ export default function Song() {
 
     return (
         <div
-            className={cn('space-y-4', {
+            className={cn('flex-grow space-y-4', {
                 'animate-pulse': isLoading,
             })}
         >

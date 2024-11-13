@@ -6,90 +6,12 @@ settings:
 
 catalogs:
   default:
-    '@remix-run/dev':
-      specifier: ^2.12.1
-      version: 2.12.1
-    '@remix-run/express':
-      specifier: ^2.12.1
-      version: 2.12.1
-    '@remix-run/node':
-      specifier: ^2.12.1
-      version: 2.12.1
-    '@remix-run/react':
-      specifier: ^2.12.1
-      version: 2.12.1
-    '@supabase/supabase-js':
-      specifier: ^2.45.4
-      version: 2.45.4
-    '@types/compression':
-      specifier: ^1.7.5
-      version: 1.7.5
-    '@types/express':
-      specifier: ^4.17.21
-      version: 4.17.21
-    '@types/morgan':
-      specifier: ^1.9.9
-      version: 1.9.9
     '@types/node':
       specifier: ^20.14.9
       version: 20.14.9
-    '@types/react':
-      specifier: ^18.3.7
-      version: 18.3.9
-    '@types/react-dom':
-      specifier: ^18.3.0
-      version: 18.3.0
-    autoprefixer:
-      specifier: ^10.4.19
-      version: 10.4.20
-    compression:
-      specifier: ^1.7.4
-      version: 1.7.4
-    cross-env:
-      specifier: ^7.0.3
-      version: 7.0.3
-    dotenv:
-      specifier: ^16.4.5
-      version: 16.4.5
-    dotenv-cli:
-      specifier: ^7.4.2
-      version: 7.4.2
-    eslint:
-      specifier: ^8
-      version: 8.57.0
-    express:
-      specifier: ^4.19.2
-      version: 4.19.2
-    isbot:
-      specifier: ^4.1.0
-      version: 4.4.0
-    morgan:
-      specifier: ^1.10.0
-      version: 1.10.0
-    postcss:
-      specifier: ^8.4.38
-      version: 8.4.47
-    react:
-      specifier: ^18.3.1
-      version: 18.3.1
-    react-dom:
-      specifier: ^18.3.1
-      version: 18.3.1
     tailwindcss:
       specifier: ^3.4.4
       version: 3.4.13
-    typescript:
-      specifier: ^5.1.6
-      version: 5.6.2
-    vite:
-      specifier: ^5.1.0
-      version: 5.4.8
-    vite-tsconfig-paths:
-      specifier: ^4.2.1
-      version: 4.3.2
-    zod:
-      specifier: ^3.23.8
-      version: 3.23.8
 
 importers:
 
@@ -669,9 +591,6 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
-      '@tailwindcss/forms':
-        specifier: ^0.5.9
-        version: 0.5.9(tailwindcss@3.4.13)
       '@types/node':
         specifier: 'catalog:'
         version: 20.14.9
@@ -1913,11 +1832,6 @@ packages:
 
   '@supabase/supabase-js@2.45.4':
     resolution: {integrity: sha512-E5p8/zOLaQ3a462MZnmnz03CrduA5ySH9hZyL03Y+QZLIOO4/Gs8Rdy4ZCKDHsN7x0xdanVEWWFN3pJFQr9/hg==}
-
-  '@tailwindcss/forms@0.5.9':
-    resolution: {integrity: sha512-tM4XVr2+UVTxXJzey9Twx48c1gcxFStqn1pQz0tRsX8o3DvxhN5oY5pvyAbUx7VTaZxpej4Zzvc6h+1RJBzpIg==}
-    peerDependencies:
-      tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1 || >= 4.0.0-alpha.20'
 
   '@tanstack/query-core@5.56.2':
     resolution: {integrity: sha512-gor0RI3/R5rVV3gXfddh1MM+hgl0Z4G7tj6Xxpq6p2I03NGPaJ8dITY9Gz05zYYb/EJq9vPas/T4wn9EaDPd4Q==}
@@ -3888,10 +3802,6 @@ packages:
   mimic-fn@2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
     engines: {node: '>=6'}
-
-  mini-svg-data-uri@1.4.4:
-    resolution: {integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==}
-    hasBin: true
 
   minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
@@ -6205,11 +6115,6 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-
-  '@tailwindcss/forms@0.5.9(tailwindcss@3.4.13)':
-    dependencies:
-      mini-svg-data-uri: 1.4.4
-      tailwindcss: 3.4.13
 
   '@tanstack/query-core@5.56.2': {}
 
@@ -8651,8 +8556,6 @@ snapshots:
   mime@1.6.0: {}
 
   mimic-fn@2.1.0: {}
-
-  mini-svg-data-uri@1.4.4: {}
 
   minimatch@3.1.2:
     dependencies:

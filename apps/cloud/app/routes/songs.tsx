@@ -112,7 +112,7 @@ export default function Songs() {
                 'animate-pulse': isLoading && !isSearching,
             })}
         >
-            <section className='max-w-96'>
+            <section className='max-w-96 flex-grow'>
                 <Button
                     asChild
                     className='float-start'
@@ -216,7 +216,7 @@ export default function Songs() {
                                 to={`/songs/${id}`}
                                 className={({ isActive, isPending }) =>
                                     cn({
-                                        'font-bold': isActive,
+                                        underline: isActive,
                                         'text-gray-500': isPending,
                                     })
                                 }

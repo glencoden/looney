@@ -33,7 +33,10 @@ export default function Index() {
                             <Button
                                 variant='secondary'
                                 asChild
-                                loading={navigation.state === 'loading'}
+                                loading={
+                                    navigation.state === 'loading' &&
+                                    navigation.location.pathname === '/songs'
+                                }
                             >
                                 <Link to='/songs'>Songs</Link>
                             </Button>
@@ -42,7 +45,10 @@ export default function Index() {
                             <Button
                                 variant='secondary'
                                 asChild
-                                loading={navigation.state === 'loading'}
+                                loading={
+                                    navigation.state === 'loading' &&
+                                    navigation.location.pathname === '/setlists'
+                                }
                             >
                                 <Link to='/'>Setlists</Link>
                             </Button>
@@ -51,7 +57,10 @@ export default function Index() {
                             <Button
                                 variant='secondary'
                                 asChild
-                                loading={navigation.state === 'loading'}
+                                loading={
+                                    navigation.state === 'loading' &&
+                                    navigation.location.pathname === '/insights'
+                                }
                             >
                                 <Link to='/'>Insights</Link>
                             </Button>
@@ -60,11 +69,7 @@ export default function Index() {
                         <hr className='w-full border-2 border-transparent' />
 
                         <li className='w-full'>
-                            <Button
-                                variant='light'
-                                asChild
-                                loading={navigation.state === 'loading'}
-                            >
+                            <Button variant='light' asChild>
                                 <Link to='/'>
                                     Tool{' '}
                                     <ExternalLink className='ml-2 h-5 w-5' />
@@ -72,11 +77,7 @@ export default function Index() {
                             </Button>
                         </li>
                         <li className='w-full'>
-                            <Button
-                                variant='light'
-                                asChild
-                                loading={navigation.state === 'loading'}
-                            >
+                            <Button variant='light' asChild>
                                 <Link to='/'>
                                     Sing{' '}
                                     <ExternalLink className='ml-2 h-5 w-5' />
@@ -89,7 +90,10 @@ export default function Index() {
                         <li className='w-full'>
                             <Button
                                 asChild
-                                loading={navigation.state === 'loading'}
+                                loading={
+                                    navigation.state === 'loading' &&
+                                    navigation.location.pathname === '/session'
+                                }
                             >
                                 <Link to='/'>Session</Link>
                             </Button>

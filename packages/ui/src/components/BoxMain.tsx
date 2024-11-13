@@ -9,7 +9,12 @@ export default function BoxMain({
     className?: string
 }) {
     return (
-        <main className={cn('px-main py-main container min-h-dvh', className)}>
+        <main
+            className={cn(
+                'px-main py-main container min-h-dvh overflow-hidden',
+                className,
+            )}
+        >
             {children}
         </main>
     )

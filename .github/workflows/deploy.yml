@@ -13,7 +13,7 @@ jobs:
           echo -e "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-      - name: pull wolke repository and run docker
+      - name: pull repository and run docker
         run: |
           ssh root@${{ secrets.SERVER_ADDRESS }} <<"ENDSSH"
           mkdir -p /root/apps/cloud

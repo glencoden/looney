@@ -1,4 +1,4 @@
 .turbo
 dist
 migrations
-docker-compose.yml
+*.yml

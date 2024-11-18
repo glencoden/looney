@@ -3,6 +3,7 @@ dist
 build
 node_modules
 .idea
+.vscode
 .env
 .DS_Store
 npm-debug.log*

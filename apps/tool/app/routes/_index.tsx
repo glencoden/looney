@@ -387,7 +387,7 @@ export default function Index() {
             : (position.current / position.totalSyllables) * 100
 
     return (
-        <div className='relativeflex h-screen cursor-none flex-col items-center justify-center'>
+        <div className='relative flex h-screen cursor-none flex-col items-center justify-center'>
             <img
                 src='/logo-white.png'
                 alt='Logo'

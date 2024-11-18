@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: copy ssh key
+        run: |
+          mkdir -p ~/.ssh
+          echo -e "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+      - name: pull wolke repository and run docker
+        run: |
+          ssh root@${{ secrets.SERVER_ADDRESS }} <<"ENDSSH"
+          mkdir -p /root/apps/cloud
+          cd /root/apps/cloud
+          git pull || git clone -b main --single-branch git@github.com:glencoden/looney.git ./
+          echo "${{ secrets.ENV }}" > .env
+          docker compose down --rmi local
+          docker compose up -d --build
+          docker system prune -f
+          ENDSSH

@@ -1,3 +1,4 @@
+import { toNonBreaking } from '@repo/utils/text'
 import { Line } from '~/classes/Line'
 
 export class Text {
@@ -6,8 +7,8 @@ export class Text {
     private _lines: Line[] = []
 
     constructor(artist: string, title: string, lines: Line[]) {
-        this._artist = artist
-        this._title = title
+        this._artist = toNonBreaking(artist)
+        this._title = toNonBreaking(title)
         this._lines = lines
     }
 

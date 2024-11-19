@@ -2,57 +2,70 @@ services:
   api-server:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: looney-api-server
+      dockerfile: apps/api-server/Dockerfile
     image: looney-api-server:latest
     ports:
       - "5555:5555"
     environment:
-      NODE_ENV: production
-      DATABASE_URL: postgresql://postgres:postgres@host.docker.internal:54322/postgres
+      DATABASE_URL: ${DOCKER_DATABASE_URL}
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
   cloud:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: looney-cloud
+      dockerfile: apps/cloud/Dockerfile
+      args:
+        VITE_SUPABASE_URL: ${SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
     image: looney-cloud:latest
     ports:
       - "3000:3000"
     environment:
-      NODE_ENV: production
+      DATABASE_URL: ${DOCKER_DATABASE_URL}
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   sing:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: looney-sing
+      dockerfile: apps/sing/Dockerfile
     image: looney-sing:latest
     ports:
       - "3001:3001"
     environment:
-      NODE_ENV: production
+      DATABASE_URL: ${DOCKER_DATABASE_URL}
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   tool:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: looney-tool
+      dockerfile: apps/tool/Dockerfile
     image: looney-tool:latest
     ports:
       - "3002:3002"
     environment:
-      NODE_ENV: production
+      DATABASE_URL: ${DOCKER_DATABASE_URL}
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   website:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: looney-website
+      dockerfile: apps/website/Dockerfile
     image: looney-website:latest
     ports:
       - "3003:3003"
     environment:
-      NODE_ENV: production
+      DATABASE_URL: ${DOCKER_DATABASE_URL}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

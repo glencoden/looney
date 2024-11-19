@@ -17,8 +17,9 @@ jobs:
         run: |
           ssh root@${{ secrets.SERVER_ADDRESS }} <<"ENDSSH"
           mkdir -p /root/apps/cloud
+          ssh-keyscan -t ed25519 github.com >> /root/.ssh/known_hosts
           cd /root/apps/cloud
-          git pull || git clone -b main --single-branch git@github.com:glencoden/looney.git ./
+          git pull || git clone -b main --single-branch git@github.com:glencoden/looney.git .
           echo "${{ secrets.ENV }}" > .env
           docker compose down --rmi local
           docker compose up -d --build

@@ -21,7 +21,7 @@ jobs:
           cd /root/apps/cloud
           git pull || git clone -b main --single-branch git@github.com:glencoden/looney.git .
           echo "${{ secrets.ENV }}" > .env
-          docker compose down --rmi local
+          docker compose down
           docker compose up -d --build
           docker system prune -f
           ENDSSH

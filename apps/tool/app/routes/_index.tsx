@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { Text } from '~/classes/Text'
 import JoinedLine from '~/components/JoinedLine'
 import { parseLyrics } from '~/helpers/parse-lyrics'
+import logoWhite from '~/images/logo-white.png'
 import type { Index } from '~/types/Index'
 import type { Position } from '~/types/Position'
 
@@ -389,7 +390,7 @@ export default function Index() {
     return (
         <div className='relative flex h-screen cursor-none flex-col items-center justify-center'>
             <img
-                src='/logo-white.png'
+                src={logoWhite}
                 alt='Logo'
                 className='absolute right-12 top-12 w-40'
             />

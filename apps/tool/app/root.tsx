@@ -65,7 +65,7 @@ export const meta: MetaFunction = () => {
 
 export default function App() {
     return (
-        <TRPCQueryClientProvider>
+        <TRPCQueryClientProvider baseUrl={import.meta.env.VITE_API_URL}>
             <Outlet />
         </TRPCQueryClientProvider>
     )

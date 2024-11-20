@@ -117,7 +117,10 @@ export default function App() {
     }, [handleLifecycle])
 
     return (
-        <TRPCQueryClientProvider supabaseClient={supabase}>
+        <TRPCQueryClientProvider
+            baseUrl={import.meta.env.VITE_API_URL}
+            supabaseClient={supabase}
+        >
             <Outlet />
         </TRPCQueryClientProvider>
     )

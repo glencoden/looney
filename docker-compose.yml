@@ -107,6 +107,7 @@ services:
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - certs:/etc/nginx/certs:ro
+      - ./nginx-proxy/templates:/etc/nginx/templates:ro
 
   gen:
     image: jwilder/docker-gen:0.9.1

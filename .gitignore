@@ -9,4 +9,5 @@ node_modules
 .DS_Store
 npm-debug.log*
 
+supabase
 calendar-credentials.json

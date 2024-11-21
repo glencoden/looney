@@ -107,7 +107,6 @@ services:
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - certs:/etc/nginx/certs:ro
-      - ./nginx-proxy/templates:/etc/nginx/templates:ro
 
   gen:
     image: jwilder/docker-gen:0.9.1
@@ -124,7 +123,7 @@ services:
     command: -notify-sighup nginx-proxy -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
 
   acme:
-    image: nginxproxy/acme-companion
+    image: nginxproxy/acme-companion:2.3
     container_name: nginx-proxy-acme
     depends_on:
       - nginx

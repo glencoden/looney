@@ -8,9 +8,7 @@ export default function Signin() {
     return (
         <BoxMain className='flex flex-col items-center'>
             <header className='w-full'>
-                <H1 secondary className='mt-20'>
-                    Looney Cloud
-                </H1>
+                <H1 className='mt-20'>Looney Cloud</H1>
             </header>
 
             <BoxContent>
@@ -19,6 +17,10 @@ export default function Signin() {
                         onClick={() => {
                             void supabase.auth.signInWithOAuth({
                                 provider: 'google',
+                                options: {
+                                    redirectTo: import.meta.env
+                                        .VITE_SUPABASE_REDIRECT_URL,
+                                },
                             })
                         }}
                     >

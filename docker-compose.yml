@@ -31,6 +31,7 @@ services:
         VITE_API_URL: ${API_URL}
         VITE_SUPABASE_URL: ${SUPABASE_URL}
         VITE_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+        VITE_SUPABASE_REDIRECT_URL: ${DOCKER_VITE_SUPABASE_REDIRECT_URL}
     image: looney-cloud:latest
     ports:
       - "3000:3000"

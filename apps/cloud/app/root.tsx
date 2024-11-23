@@ -7,12 +7,11 @@ import {
     ScrollRestoration,
     useNavigate,
 } from '@remix-run/react'
-
 import { TRPCQueryClientProvider } from '@repo/api/provider'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
 import { useEffectEvent } from '@repo/utils/hooks'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { SYLLABLE_CHAR } from '~/CONSTANTS'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
 import { supabase } from '~/lib/supabase.client'
@@ -84,9 +83,13 @@ export const meta: MetaFunction = () => {
 }
 
 export default function App() {
+    const [authChecked, setAuthChecked] = useState(false)
+
     const navigate = useNavigate()
 
     const handleLifecycle = useEffectEvent(async () => {
+        setAuthChecked(true)
+
         const { data } = await supabase.auth.getSession()
 
         if (
@@ -115,6 +118,10 @@ export default function App() {
     useEffect(() => {
         void handleLifecycle()
     }, [handleLifecycle])
+
+    if (!authChecked) {
+        return null
+    }
 
     return (
         <TRPCQueryClientProvider

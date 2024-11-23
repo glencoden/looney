@@ -18,14 +18,13 @@ export default function Signout() {
     return (
         <BoxMain className='flex flex-col items-center'>
             <header className='w-full'>
-                <H1 secondary className='mt-20'>
-                    Looney Cloud
-                </H1>
+                <H1 className='mt-20'>Looney Cloud</H1>
             </header>
 
             <BoxContent>
                 <nav className='space-y-6'>
                     <Button
+                        variant='secondary'
                         onClick={() => {
                             void logout()
                         }}
@@ -33,7 +32,7 @@ export default function Signout() {
                         Logout
                     </Button>
 
-                    <Button asChild variant='secondary'>
+                    <Button asChild>
                         <Link to='/'>Back</Link>
                     </Button>
                 </nav>

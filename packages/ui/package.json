@@ -9,6 +9,7 @@
         "./components/BoxMain": "./src/components/BoxMain.tsx",
         "./components/BoxContent": "./src/components/BoxContent.tsx",
         "./components/BoxFullHeight": "./src/components/BoxFullHeight.tsx",
+        "./components/BoxHorizontalPagination": "./src/components/BoxHorizontalPagination.tsx",
         "./components/Button": "./src/components/Button.tsx",
         "./components/Spinner": "./src/components/Spinner.tsx",
         "./components/Input": "./src/components/Input.tsx",

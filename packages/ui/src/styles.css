@@ -18,4 +18,16 @@
             height: calc(100dvh - theme('spacing.32'));
         }
     }
+
+    .double-width {
+        width: calc(200vw - theme('spacing.12'));
+
+        @screen md {
+            width: calc(200vw - theme('spacing.16'));
+        }
+
+        @screen lg {
+            width: calc(200vw - theme('spacing.32'));
+        }
+    }
 }

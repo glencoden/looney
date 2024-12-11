@@ -13,6 +13,7 @@
         "./components/Button": "./src/components/Button.tsx",
         "./components/Spinner": "./src/components/Spinner.tsx",
         "./components/Input": "./src/components/Input.tsx",
+        "./components/SongLip": "./src/components/SongLip.tsx",
         "./typography/H1": "./src/typography/H1.tsx",
         "./typography/H2": "./src/typography/H2.tsx",
         "./typography/H3": "./src/typography/H3.tsx",
@@ -29,9 +30,9 @@
     },
     "dependencies": {
         "@radix-ui/react-slot": "^1.1.0",
-        "@repo/eslint-config": "workspace:*",
-        "@repo/tailwind-config": "workspace:*",
-        "@repo/typescript-config": "workspace:*",
+        "@repo/config-eslint": "workspace:*",
+        "@repo/config-tailwind": "workspace:*",
+        "@repo/config-typescript": "workspace:*",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "tailwind-merge": "^2.5.2"

@@ -47,8 +47,8 @@
         "zod": "catalog:"
     },
     "devDependencies": {
-        "@repo/eslint-config": "workspace:*",
-        "@repo/typescript-config": "workspace:*",
+        "@repo/config-eslint": "workspace:*",
+        "@repo/config-typescript": "workspace:*",
         "@supabase/supabase-js": "catalog:",
         "@types/express": "catalog:",
         "@types/node-telegram-bot-api": "^0.64.7",

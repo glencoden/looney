@@ -27,9 +27,9 @@
     },
     "devDependencies": {
         "@remix-run/dev": "catalog:",
-        "@repo/eslint-config": "workspace:*",
-        "@repo/tailwind-config": "workspace:*",
-        "@repo/typescript-config": "workspace:*",
+        "@repo/config-eslint": "workspace:*",
+        "@repo/config-tailwind": "workspace:*",
+        "@repo/config-typescript": "workspace:*",
         "@types/compression": "catalog:",
         "@types/express": "catalog:",
         "@types/morgan": "catalog:",

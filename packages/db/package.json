@@ -29,8 +29,8 @@
         "zod": "catalog:"
     },
     "devDependencies": {
-        "@repo/eslint-config": "workspace:*",
-        "@repo/typescript-config": "workspace:*",
+        "@repo/config-eslint": "workspace:*",
+        "@repo/config-typescript": "workspace:*",
         "@types/node": "catalog:",
         "dotenv": "catalog:",
         "dotenv-cli": "catalog:",

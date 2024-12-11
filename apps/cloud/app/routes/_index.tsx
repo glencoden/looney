@@ -95,7 +95,7 @@ export default function Index() {
                                     navigation.location.pathname === '/session'
                                 }
                             >
-                                <Link to='/'>Session</Link>
+                                <Link to='/session'>Session</Link>
                             </Button>
                         </li>
                     </ul>

@@ -1,4 +1,4 @@
-import baseConfig from '@repo/tailwind-config/base'
+import baseConfig from '@repo/config-tailwind/base'
 import type { Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
 

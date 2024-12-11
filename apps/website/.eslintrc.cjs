@@ -1,4 +1,4 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-    extends: ['@repo/eslint-config/remix.js'],
+    extends: ['@repo/config-eslint/remix.js'],
 }

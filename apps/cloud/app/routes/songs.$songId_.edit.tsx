@@ -9,6 +9,7 @@ import { SongSchema } from '@repo/db'
 import { getSong, updateSong } from '@repo/db/queries'
 import BoxFullHeight from '@repo/ui/components/BoxFullHeight'
 import Button from '@repo/ui/components/Button'
+import Input from '@repo/ui/components/Input'
 import { cn } from '@repo/ui/helpers'
 import { useState } from 'react'
 import { z } from 'zod'
@@ -66,8 +67,6 @@ export default function SongEdit() {
         lyricsElement.value = Hyphenator.hyphenate(consolidated, language)
     }
 
-    // 'flex h-[cacl(100dvh)] flex-grow flex-col space-y-4 border-2 border-amber-100',
-
     return (
         <BoxFullHeight>
             <div
@@ -78,7 +77,7 @@ export default function SongEdit() {
                 <h2>Edit Song</h2>
 
                 <Form method='post' className='flex flex-grow flex-col gap-4'>
-                    <input
+                    <Input
                         aria-label='Artist name'
                         defaultValue={song.artist}
                         name='artist'

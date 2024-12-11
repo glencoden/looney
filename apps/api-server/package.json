@@ -17,8 +17,8 @@
         "express": "catalog:"
     },
     "devDependencies": {
-        "@repo/eslint-config": "workspace:*",
-        "@repo/typescript-config": "workspace:*",
+        "@repo/config-eslint": "workspace:*",
+        "@repo/config-typescript": "workspace:*",
         "@types/cookie-parser": "^1.4.7",
         "@types/cors": "^2.8.17",
         "@types/express": "catalog:",

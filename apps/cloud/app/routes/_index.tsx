@@ -71,7 +71,7 @@ export default function Index() {
                         <li className='w-full'>
                             <Button variant='light' asChild>
                                 <Link to='/'>
-                                    Tool{' '}
+                                    Content{' '}
                                     <ExternalLink className='ml-2 h-5 w-5' />
                                 </Link>
                             </Button>
@@ -79,9 +79,14 @@ export default function Index() {
                         <li className='w-full'>
                             <Button variant='light' asChild>
                                 <Link to='/'>
-                                    Sing{' '}
+                                    Tool{' '}
                                     <ExternalLink className='ml-2 h-5 w-5' />
                                 </Link>
+                            </Button>
+                        </li>
+                        <li className='w-full'>
+                            <Button variant='light' asChild>
+                                <Link to='/'>Sing</Link>
                             </Button>
                         </li>
 

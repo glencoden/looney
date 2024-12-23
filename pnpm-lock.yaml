@@ -155,6 +155,9 @@ importers:
 
     apps/cloud:
         dependencies:
+            '@react-spring/web':
+                specifier: ^9.7.5
+                version: 9.7.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
             '@remix-run/express':
                 specifier: 'catalog:'
                 version: 2.12.1(express@4.19.2)(typescript@5.6.2)
@@ -685,15 +688,6 @@ importers:
             '@radix-ui/react-slot':
                 specifier: ^1.1.0
                 version: 1.1.0(@types/react@18.3.12)(react@18.3.1)
-            '@repo/config-eslint':
-                specifier: workspace:*
-                version: link:../config-eslint
-            '@repo/config-tailwind':
-                specifier: workspace:*
-                version: link:../config-tailwind
-            '@repo/config-typescript':
-                specifier: workspace:*
-                version: link:../config-typescript
             class-variance-authority:
                 specifier: ^0.7.0
                 version: 0.7.0
@@ -707,6 +701,15 @@ importers:
                 specifier: ^2.5.2
                 version: 2.5.2
         devDependencies:
+            '@repo/config-eslint':
+                specifier: workspace:*
+                version: link:../config-eslint
+            '@repo/config-tailwind':
+                specifier: workspace:*
+                version: link:../config-tailwind
+            '@repo/config-typescript':
+                specifier: workspace:*
+                version: link:../config-typescript
             '@types/react':
                 specifier: 'catalog:'
                 version: 18.3.12
@@ -2260,6 +2263,51 @@ packages:
         peerDependenciesMeta:
             '@types/react':
                 optional: true
+
+    '@react-spring/animated@9.7.5':
+        resolution:
+            {
+                integrity: sha512-Tqrwz7pIlsSDITzxoLS3n/v/YCUHQdOIKtOJf4yL6kYVSDTSmVK1LI1Q3M/uu2Sx4X3pIWF3xLUhlsA6SPNTNg==,
+            }
+        peerDependencies:
+            react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+    '@react-spring/core@9.7.5':
+        resolution:
+            {
+                integrity: sha512-rmEqcxRcu7dWh7MnCcMXLvrf6/SDlSokLaLTxiPlAYi11nN3B5oiCUAblO72o+9z/87j2uzxa2Inm8UbLjXA+w==,
+            }
+        peerDependencies:
+            react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+    '@react-spring/rafz@9.7.5':
+        resolution:
+            {
+                integrity: sha512-5ZenDQMC48wjUzPAm1EtwQ5Ot3bLIAwwqP2w2owG5KoNdNHpEJV263nGhCeKKmuA3vG2zLLOdu3or6kuDjA6Aw==,
+            }
+
+    '@react-spring/shared@9.7.5':
+        resolution:
+            {
+                integrity: sha512-wdtoJrhUeeyD/PP/zo+np2s1Z820Ohr/BbuVYv+3dVLW7WctoiN7std8rISoYoHpUXtbkpesSKuPIw/6U1w1Pw==,
+            }
+        peerDependencies:
+            react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+    '@react-spring/types@9.7.5':
+        resolution:
+            {
+                integrity: sha512-HVj7LrZ4ReHWBimBvu2SKND3cDVUPWKLqRTmWe/fNY6o1owGOX0cAHbdPDTMelgBlVbrTKrre6lFkhqGZErK/g==,
+            }
+
+    '@react-spring/web@9.7.5':
+        resolution:
+            {
+                integrity: sha512-lmvqGwpe+CSttsWNZVr+Dg62adtKhauGwLyGE/RRyZ8AAMLgb9x3NDMA5RMElXo+IMyTkPp7nxTB8ZQlmhb6JQ==,
+            }
+        peerDependencies:
+            react: ^16.8.0 || ^17.0.0 || ^18.0.0
+            react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
 
     '@remix-run/dev@2.12.1':
         resolution:
@@ -9023,6 +9071,38 @@ snapshots:
             react: 18.3.1
         optionalDependencies:
             '@types/react': 18.3.12
+
+    '@react-spring/animated@9.7.5(react@18.3.1)':
+        dependencies:
+            '@react-spring/shared': 9.7.5(react@18.3.1)
+            '@react-spring/types': 9.7.5
+            react: 18.3.1
+
+    '@react-spring/core@9.7.5(react@18.3.1)':
+        dependencies:
+            '@react-spring/animated': 9.7.5(react@18.3.1)
+            '@react-spring/shared': 9.7.5(react@18.3.1)
+            '@react-spring/types': 9.7.5
+            react: 18.3.1
+
+    '@react-spring/rafz@9.7.5': {}
+
+    '@react-spring/shared@9.7.5(react@18.3.1)':
+        dependencies:
+            '@react-spring/rafz': 9.7.5
+            '@react-spring/types': 9.7.5
+            react: 18.3.1
+
+    '@react-spring/types@9.7.5': {}
+
+    '@react-spring/web@9.7.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+        dependencies:
+            '@react-spring/animated': 9.7.5(react@18.3.1)
+            '@react-spring/core': 9.7.5(react@18.3.1)
+            '@react-spring/shared': 9.7.5(react@18.3.1)
+            '@react-spring/types': 9.7.5
+            react: 18.3.1
+            react-dom: 18.3.1(react@18.3.1)
 
     '@remix-run/dev@2.12.1(@remix-run/react@2.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@types/node@22.7.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4))':
         dependencies:

@@ -30,14 +30,14 @@
     },
     "dependencies": {
         "@radix-ui/react-slot": "^1.1.0",
-        "@repo/config-eslint": "workspace:*",
-        "@repo/config-tailwind": "workspace:*",
-        "@repo/config-typescript": "workspace:*",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "tailwind-merge": "^2.5.2"
     },
     "devDependencies": {
+        "@repo/config-eslint": "workspace:*",
+        "@repo/config-tailwind": "workspace:*",
+        "@repo/config-typescript": "workspace:*",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
         "autoprefixer": "catalog:",

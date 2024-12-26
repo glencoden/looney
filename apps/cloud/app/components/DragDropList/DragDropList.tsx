@@ -1,9 +1,8 @@
-import { animated, useSprings } from '@react-spring/web'
+import { animated, SpringValue } from '@react-spring/web'
 import SongLip from '@repo/ui/components/SongLip'
 import { cn } from '@repo/ui/helpers'
-import { useDrag } from '@use-gesture/react'
-import { useMemo, useState } from 'react'
-import { createSpringsCallback } from '~/components/DragDropList/helpers/create-springs-callback'
+import { ReactDOMAttributes } from '@use-gesture/react/dist/declarations/src/types'
+import { forwardRef } from 'react'
 
 type Lip = {
     id: string
@@ -14,63 +13,34 @@ type Lip = {
     sortNumber: number
 }
 
-export default function DragDropList({
-    lips,
-    listStatus,
-    preventScroll,
-}: {
-    lips: Lip[]
-    listStatus: Lip['status']
-    preventScroll?: boolean
-}) {
-    const filtered = useMemo(() => {
-        return lips.filter((lip) => lip.status === listStatus)
-    }, [lips])
-
-    const [isDragging, setIsDragging] = useState(false)
-
-    const [springs, api] = useSprings(filtered.length, createSpringsCallback())
-
-    const bind = useDrag(({ args: [itemId], active, movement: [mx, my] }) => {
-        // const horizontalThreshold = 100
-
-        const activeIndex = filtered.findIndex((item) => item.id === itemId)
-
-        const fullLipHeight = 108
-
-        let indexShift = 0
-
-        if (Math.abs(my) > fullLipHeight / 2) {
-            const numRowsShift = Math.floor(
-                (Math.abs(my) - fullLipHeight / 2) / fullLipHeight,
-            )
-            indexShift = Math.sign(my) * (1 + numRowsShift)
-        }
-
-        const targetIndex = activeIndex + indexShift
-
-        api.start(
-            createSpringsCallback(active, activeIndex, targetIndex, mx, my),
-        )
-
-        setIsDragging(active)
-
-        if (!active) {
-            // Update server state
-        }
-    })
-
+const DragDropList = forwardRef<
+    HTMLDivElement,
+    {
+        items: Lip[]
+        springs: {
+            zIndex: SpringValue<number>
+            shadow: SpringValue<number>
+            x: SpringValue<number>
+            y: SpringValue<number>
+            scale: SpringValue<number>
+        }[]
+        bind: (...args: any[]) => ReactDOMAttributes
+        fixTop: number | null
+    }
+>(({ items, springs, bind, fixTop }, ref) => {
     return (
         <div
+            ref={ref}
             className={cn(
-                'px-main relative flex w-full flex-grow flex-col items-center gap-3 overflow-y-scroll pb-24',
+                'px-main relative flex w-full flex-grow flex-col items-center gap-3 pb-24',
                 {
-                    'overflow-y-hidden': isDragging || preventScroll,
+                    'overflow-y-scroll': fixTop === null,
                 },
             )}
+            style={fixTop ? { transform: `translateY(-${fixTop}px)` } : {}}
         >
             {springs.map(({ zIndex, shadow, x, y, scale }, index) => {
-                const item = filtered[index]
+                const item = items[index]
 
                 if (!item) {
                     throw new Error('Expect item to be defined')
@@ -104,4 +74,6 @@ export default function DragDropList({
             })}
         </div>
     )
-}
+})
+
+export default DragDropList

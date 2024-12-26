@@ -2,13 +2,13 @@ import { config } from '@react-spring/web'
 
 export const createSpringsCallback = (
     active = false,
-    activeIndex = 0,
-    targetIndex = 0,
+    dragItemIndex = -1,
+    targetIndex = -1,
     mx = 0,
     my = 0,
 ) => {
     return (index: number) => {
-        if (active && index === activeIndex) {
+        if (active && index === dragItemIndex) {
             return {
                 x: mx,
                 y: my,
@@ -23,14 +23,22 @@ export const createSpringsCallback = (
 
         let shift = 0
 
+        // No dragItemIndex but a targetIndex means the drag item is from a sibling drag-drop list
+        // A dragItemIndex but no targetIndex means the drag item from the current list has been moved above a sibling list
         if (active) {
-            if (index > activeIndex) {
-                if (targetIndex >= index) {
-                    shift--
+            if (dragItemIndex === -1 && targetIndex !== -1) {
+                if (index >= targetIndex) {
+                    shift++
                 }
             } else {
-                if (targetIndex <= index) {
-                    shift++
+                if (index > dragItemIndex) {
+                    if (targetIndex >= index || targetIndex === -1) {
+                        shift--
+                    }
+                } else {
+                    if (targetIndex <= index && targetIndex !== -1) {
+                        shift++
+                    }
                 }
             }
         }

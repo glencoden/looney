@@ -1,15 +1,15 @@
-import { animated, SpringValue } from '@react-spring/web'
-import SongLip from '@repo/ui/components/SongLip'
+import { SpringValue } from '@react-spring/web'
 import { cn } from '@repo/ui/helpers'
 import { ReactDOMAttributes } from '@use-gesture/react/dist/declarations/src/types'
 import { forwardRef } from 'react'
+import DragDropListItem from '~/components/DragDropListItem'
 
 type Lip = {
     id: string
     songTitle: string
     artistName: string
     singerName: string
-    status: 'pending' | 'staged' | 'live' | 'done' | 'deleted'
+    status: 'idle' | 'selected' | 'staged' | 'live' | 'done' | 'deleted'
     sortNumber: number
 }
 
@@ -39,7 +39,7 @@ const DragDropList = forwardRef<
             )}
             style={fixTop ? { transform: `translateY(-${fixTop}px)` } : {}}
         >
-            {springs.map(({ zIndex, shadow, x, y, scale }, index) => {
+            {springs.map((spring, index) => {
                 const item = items[index]
 
                 if (!item) {
@@ -47,28 +47,11 @@ const DragDropList = forwardRef<
                 }
 
                 return (
-                    <animated.div
+                    <DragDropListItem
                         key={item.id}
-                        className='relative w-full max-w-96'
-                        style={{
-                            zIndex,
-                            boxShadow: shadow.to(
-                                (s) =>
-                                    `rgba(0, 0, 0, 0.15) 0px ${s}px ${2 * s}px 0px`,
-                            ),
-                            x,
-                            y,
-                            scale,
-                        }}
-                        children={
-                            <>
-                                <SongLip key={item.id} lip={item} />
-                                <div
-                                    {...bind(item.id)}
-                                    className='absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 touch-none select-none'
-                                />
-                            </>
-                        }
+                        item={item}
+                        spring={spring}
+                        bind={bind}
                     />
                 )
             })}

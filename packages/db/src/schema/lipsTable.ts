@@ -20,10 +20,10 @@ export const lipsTable = pgTable('lip', {
     guestId: varchar('guest_id', { length: 255 }).notNull(),
     singerName: varchar('singer_name', { length: 255 }).notNull(),
     status: text('status', {
-        enum: ['pending', 'staged', 'live', 'done', 'deleted'],
+        enum: ['idle', 'selected', 'staged', 'live', 'done', 'deleted'],
     })
         .notNull()
-        .default('pending'),
+        .default('idle'),
     sortNumber: integer('sort_number'),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),

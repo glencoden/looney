@@ -1,6 +1,6 @@
 import { config } from '@react-spring/web'
 
-export const createSpringsCallback = (
+export const createSpringEffect = (
     active = false,
     dragItemIndex = -1,
     targetIndex = -1,

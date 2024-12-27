@@ -5,7 +5,7 @@ type Lip = {
     songTitle: string
     artistName: string
     singerName: string
-    status: 'pending' | 'staged' | 'live' | 'done' | 'deleted'
+    status: 'idle' | 'selected' | 'staged' | 'live' | 'done' | 'deleted'
     sortNumber: number
 }
 

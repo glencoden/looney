@@ -1,17 +1,18 @@
-import { useSprings } from '@react-spring/web'
+import { useSpring, useSprings } from '@react-spring/web'
 import BoxMain from '@repo/ui/components/BoxMain'
 import { cn } from '@repo/ui/helpers'
 import { useDrag } from '@use-gesture/react'
 import { useMemo, useRef, useState } from 'react'
-import DragDropList from '~/components/DragDropList/DragDropList'
-import { createSpringsCallback } from '~/helpers/create-springs-callback'
+import DragDropList from '~/components/DragDropList'
+import DragDropListItem from '~/components/DragDropListItem'
+import { createSpringEffect } from '~/helpers/create-spring-effect'
 
 type Lip = {
     id: string
     songTitle: string
     artistName: string
     singerName: string
-    status: 'pending' | 'staged' | 'live' | 'done' | 'deleted'
+    status: 'idle' | 'selected' | 'staged' | 'live' | 'done' | 'deleted'
     sortNumber: number
 }
 
@@ -21,7 +22,7 @@ const lips: Lip[] = [
         songTitle: 'Hit me baby one more time',
         artistName: 'Britney Spears',
         singerName: 'Josi Schmidt',
-        status: 'pending',
+        status: 'staged',
         sortNumber: 1,
     },
     {
@@ -29,7 +30,7 @@ const lips: Lip[] = [
         songTitle: 'Summer of 69',
         artistName: 'Bryan Adams',
         singerName: 'Bernard Hufstein',
-        status: 'pending',
+        status: 'idle',
         sortNumber: 2,
     },
     {
@@ -37,7 +38,7 @@ const lips: Lip[] = [
         songTitle: 'I want to break free',
         artistName: 'Queen',
         singerName: 'Lisa Müller',
-        status: 'pending',
+        status: 'idle',
         sortNumber: 3,
     },
     {
@@ -45,7 +46,7 @@ const lips: Lip[] = [
         songTitle: 'Shake it off',
         artistName: 'Taylor Swift',
         singerName: 'Josi Schmidt',
-        status: 'staged',
+        status: 'selected',
         sortNumber: 4,
     },
     {
@@ -53,7 +54,7 @@ const lips: Lip[] = [
         songTitle: 'Blinding Lights',
         artistName: 'The Weeknd',
         singerName: 'Rebecca Erler',
-        status: 'staged',
+        status: 'selected',
         sortNumber: 5,
     },
     {
@@ -61,7 +62,7 @@ const lips: Lip[] = [
         songTitle: 'Hit me baby one more time',
         artistName: 'Britney Spears',
         singerName: 'Josi Schmidt',
-        status: 'pending',
+        status: 'idle',
         sortNumber: 6,
     },
     {
@@ -69,7 +70,7 @@ const lips: Lip[] = [
         songTitle: 'Summer of 69',
         artistName: 'Bryan Adams',
         singerName: 'Bernard Hufstein',
-        status: 'pending',
+        status: 'idle',
         sortNumber: 7,
     },
     {
@@ -77,7 +78,7 @@ const lips: Lip[] = [
         songTitle: 'I want to break free',
         artistName: 'Queen',
         singerName: 'Lisa Müller',
-        status: 'staged',
+        status: 'selected',
         sortNumber: 8,
     },
     {
@@ -85,7 +86,7 @@ const lips: Lip[] = [
         songTitle: 'Shake it off',
         artistName: 'Taylor Swift',
         singerName: 'Josi Schmidt',
-        status: 'pending',
+        status: 'idle',
         sortNumber: 9,
     },
     {
@@ -93,7 +94,7 @@ const lips: Lip[] = [
         songTitle: 'Blinding Lights',
         artistName: 'The Weeknd',
         singerName: 'Rebecca Erler',
-        status: 'pending',
+        status: 'idle',
         sortNumber: 10,
     },
     {
@@ -101,7 +102,7 @@ const lips: Lip[] = [
         songTitle: 'Shake it off',
         artistName: 'Taylor Swift',
         singerName: 'Josi Schmidt',
-        status: 'pending',
+        status: 'idle',
         sortNumber: 11,
     },
     {
@@ -109,7 +110,7 @@ const lips: Lip[] = [
         songTitle: 'Blinding Lights',
         artistName: 'The Weeknd',
         singerName: 'Rebecca Erler',
-        status: 'pending',
+        status: 'idle',
         sortNumber: 12,
     },
     {
@@ -117,7 +118,7 @@ const lips: Lip[] = [
         songTitle: 'Shake it off',
         artistName: 'Taylor Swift',
         singerName: 'Josi Schmidt',
-        status: 'pending',
+        status: 'idle',
         sortNumber: 13,
     },
     {
@@ -125,109 +126,139 @@ const lips: Lip[] = [
         songTitle: 'Blinding Lights',
         artistName: 'The Weeknd',
         singerName: 'Rebecca Erler',
-        status: 'pending',
+        status: 'idle',
         sortNumber: 14,
     },
 ]
 
-const FULL_LIP_HEIGHT = 108
-const PAGE_SWAP_ON_DRAG_THRESHOLD = 100
-const MD_BREAKPOINT = 768
+const FULL_LIP_HEIGHT = 108 // px, lip height 96 + list gap 12
+const FULL_ACTION_LIP_BOX_HEIGHT = 124 // px, lip box height 112 + list gap 12
+const MD_BREAKPOINT = 768 // px, tailwind md breakpoint
+const HORIZONTAL_DRAG_ACTION_THRESHOLD = 96 // px
+
+enum BoxType {
+    LEFT = 'left',
+    RIGHT = 'right',
+    ACTION = 'action',
+}
+
+type PageInView = 'left' | 'right'
 
 export default function Session() {
+    const leftScrollBoxRef = useRef<HTMLDivElement>(null)
+    const rightScrollBoxRef = useRef<HTMLDivElement>(null)
+
+    const [scrollTopLock, setScrollTopLock] = useState<[number, number] | null>(
+        null,
+    )
+
+    const lockScroll = () => {
+        if (
+            leftScrollBoxRef.current === null ||
+            rightScrollBoxRef.current === null
+        ) {
+            throw new Error('Expect box element references to be defined.')
+        }
+
+        if (scrollTopLock === null) {
+            setScrollTopLock([
+                leftScrollBoxRef.current.scrollTop,
+                rightScrollBoxRef.current.scrollTop,
+            ])
+        }
+    }
+
+    const unlockScroll = () => {
+        setScrollTopLock(null)
+    }
+
     /**
      *
-     * Page drag blow md breakpoint
+     * Page drag below md breakpoint
      *
      */
 
-    const [isLeft, setIsLeft] = useState(false)
-
+    const [pageInView, setPageInView] = useState<PageInView>('left')
     const [isPageDragging, setIsPageDragging] = useState(false)
-    const [offsetX, setOffsetX] = useState(0)
+    const [pageOffsetX, setPageOffsetX] = useState(0)
 
     const bindPageDrag = useDrag(({ down, movement: [mx] }) => {
         if (!down) {
-            setDragScrollTop(null)
+            unlockScroll()
             setIsPageDragging(false)
-            setOffsetX(0)
+            setPageOffsetX(0)
 
             if (Math.abs(mx) > window.innerWidth / 4) {
-                setIsLeft((prev) => !prev)
+                setPageInView(Math.sign(mx) === 1 ? 'left' : 'right')
             }
             return
         }
-        if (
-            stagedContainerRef.current === null ||
-            pendingContainerRef.current === null
-        ) {
-            throw new Error(
-                'Expect container element references to be defined.',
-            )
-        }
 
-        if (dragScrollTop === null) {
-            setDragScrollTop([
-                stagedContainerRef.current.scrollTop,
-                pendingContainerRef.current.scrollTop,
-            ])
-        }
+        lockScroll()
         setIsPageDragging(true)
-        setOffsetX(mx)
+        setPageOffsetX(mx)
     })
 
     /**
      *
-     * Drag and drop lists
+     * Drag and drop lists and APIs
      *
      */
 
-    const stagedLips = useMemo(() => {
-        return lips.filter((lip) => lip.status === 'staged')
+    const idleLips = useMemo(() => {
+        return lips.filter((lip) => lip.status === 'idle')
     }, [lips])
 
-    const pendingLips = useMemo(() => {
-        return lips.filter((lip) => lip.status === 'pending')
+    const selectedLips = useMemo(() => {
+        return lips.filter((lip) => lip.status === 'selected')
     }, [lips])
 
-    const stagedContainerRef = useRef<HTMLDivElement>(null)
-    const pendingContainerRef = useRef<HTMLDivElement>(null)
+    const actionLip = useMemo(() => {
+        return lips.find(
+            (lip) => lip.status === 'staged' || lip.status === 'live',
+        )
+    }, [lips])
 
-    const [dragScrollTop, setDragScrollTop] = useState<[number, number] | null>(
-        null,
+    const defaultSpringEffect = createSpringEffect()
+
+    const [idleSprings, idleAPI] = useSprings(
+        idleLips.length,
+        defaultSpringEffect,
     )
 
-    const [stagedSprings, stagedAPI] = useSprings(
-        stagedLips.length,
-        createSpringsCallback(),
+    const [selectedSprings, selectedAPI] = useSprings(
+        selectedLips.length,
+        defaultSpringEffect,
     )
 
-    const [pendingSprings, pendingAPI] = useSprings(
-        pendingLips.length,
-        createSpringsCallback(),
-    )
+    const [actionSpring, actionAPI] = useSpring(defaultSpringEffect)
+
+    const [isActionTarget, setIsActionTarget] = useState(false)
+
+    /**
+     *
+     * Lip drag and drop
+     *
+     */
 
     const bindLipDrag = useDrag(
-        ({ xy: [vx], movement: [mx, my], down, args: [itemId] }) => {
+        ({ xy: [vx, vy], movement: [mx, my], down, args: [itemId] }) => {
+            lockScroll()
+
             if (
-                stagedContainerRef.current === null ||
-                pendingContainerRef.current === null
+                leftScrollBoxRef.current === null ||
+                rightScrollBoxRef.current === null ||
+                leftScrollBoxRef.current.offsetWidth !==
+                    rightScrollBoxRef.current.offsetWidth ||
+                leftScrollBoxRef.current.offsetTop !==
+                    rightScrollBoxRef.current.offsetTop
             ) {
                 throw new Error(
-                    'Expect container element references to be defined.',
+                    'Expect drag drop list box references to be defined, have the same width and the same top offset.',
                 )
             }
 
-            if (down && dragScrollTop === null) {
-                setDragScrollTop([
-                    stagedContainerRef.current.scrollTop,
-                    pendingContainerRef.current.scrollTop,
-                ])
-            }
-
-            /**
-             * Drag item context
-             */
+            const dragBoxWidth = leftScrollBoxRef.current.offsetWidth
 
             const dragItem = lips.find((lip) => lip.id === itemId)
 
@@ -235,65 +266,152 @@ export default function Session() {
                 throw new Error('Expect dragItem to be defined.')
             }
 
-            const isPendingList = dragItem.status === 'pending'
+            /**
+             * Delete and finish flags
+             */
 
-            const dragItemList = isPendingList ? pendingLips : stagedLips
+            let finishOnDrop = false
+            let deleteOnDrop = false
 
-            const dragItemIndex = dragItemList.findIndex(
-                (item) => item.id === itemId,
-            )
-
-            const dragItemContainer = isPendingList
-                ? pendingContainerRef.current
-                : stagedContainerRef.current
+            if (
+                vx < window.innerWidth / 2 - HORIZONTAL_DRAG_ACTION_THRESHOLD &&
+                dragItem.status === 'live'
+            ) {
+                finishOnDrop = true
+            }
+            if (
+                vx > window.innerWidth / 2 + HORIZONTAL_DRAG_ACTION_THRESHOLD &&
+                dragItem.status === 'idle'
+            ) {
+                deleteOnDrop = true
+            }
 
             /**
              * Page swap on mobile
              */
 
             if (window.innerWidth < MD_BREAKPOINT) {
-                if (vx < window.innerWidth / 2 - PAGE_SWAP_ON_DRAG_THRESHOLD) {
-                    setIsLeft(true)
+                if (
+                    vx <
+                        window.innerWidth / 2 -
+                            HORIZONTAL_DRAG_ACTION_THRESHOLD &&
+                    pageInView === 'right'
+                ) {
+                    setPageInView('left')
                 }
-                if (vx > window.innerWidth / 2 + PAGE_SWAP_ON_DRAG_THRESHOLD) {
-                    setIsLeft(false)
+                if (
+                    vx >
+                        window.innerWidth / 2 +
+                            HORIZONTAL_DRAG_ACTION_THRESHOLD &&
+                    pageInView === 'left'
+                ) {
+                    setPageInView('right')
                 }
-                if (isLeft && isPendingList) {
+                if (pageInView === 'left' && dragItem.status === 'idle') {
                     mx -= window.innerWidth
                 }
-                if (!isLeft && !isPendingList) {
+                if (pageInView === 'right' && dragItem.status !== 'idle') {
                     mx += window.innerWidth
                 }
             }
 
             /**
-             * Movement context
+             * Find drag and target box
              */
 
-            const isOutOfContainer =
-                Math.abs(mx) > dragItemContainer.offsetWidth / 2
+            let dragBox: BoxType | undefined
+            let targetBox: BoxType | undefined
 
-            const movedInSiblingDirection =
-                (!isPendingList && Math.sign(mx) === 1) ||
-                (isPendingList && Math.sign(mx) === -1)
+            switch (dragItem.status) {
+                case 'idle': {
+                    dragBox = BoxType.RIGHT
 
-            const isOverSiblingContainer =
-                isOutOfContainer && movedInSiblingDirection
+                    if (mx > (-1 * dragBoxWidth) / 2) {
+                        targetBox = BoxType.RIGHT
+                    } else {
+                        if (vy > leftScrollBoxRef.current.offsetTop) {
+                            targetBox = BoxType.LEFT
+                        } else {
+                            targetBox = BoxType.ACTION
+                        }
+                    }
+                    break
+                }
+                case 'selected': {
+                    dragBox = BoxType.LEFT
 
-            /**
-             * Target list index calculation
-             */
+                    if (mx > dragBoxWidth / 2) {
+                        targetBox = BoxType.RIGHT
+                    } else {
+                        if (vy > leftScrollBoxRef.current.offsetTop) {
+                            targetBox = BoxType.LEFT
+                        } else {
+                            targetBox = BoxType.ACTION
+                        }
+                    }
+                    break
+                }
+                case 'staged':
+                case 'live': {
+                    dragBox = BoxType.ACTION
 
-            let indexShift = 0
-            let scrollDiff = 0
-
-            if (isOverSiblingContainer && dragScrollTop !== null) {
-                scrollDiff = isPendingList
-                    ? dragScrollTop[0] - dragScrollTop[1]
-                    : dragScrollTop[1] - dragScrollTop[0]
+                    if (vy < leftScrollBoxRef.current.offsetTop) {
+                        targetBox = BoxType.ACTION
+                    } else {
+                        if (mx > dragBoxWidth / 2) {
+                            targetBox = BoxType.RIGHT
+                        } else {
+                            targetBox = BoxType.LEFT
+                        }
+                    }
+                    break
+                }
+                default:
+                    throw new Error('Unexpected drag item status.')
             }
 
-            const offsetY = my + scrollDiff
+            /**
+             * Target list index calculation (action target is no list and needs no index)
+             */
+
+            let dragIndex = 0
+
+            switch (dragBox) {
+                case BoxType.LEFT:
+                    dragIndex = selectedLips.findIndex(
+                        (lip) => lip.id === dragItem.id,
+                    )
+                    break
+                case BoxType.RIGHT:
+                    dragIndex = idleLips.findIndex(
+                        (lip) => lip.id === dragItem.id,
+                    )
+                    break
+            }
+
+            let indexShift = 0 // index
+            let offsetTopDiff = 0 // px
+
+            if (scrollTopLock !== null) {
+                if (dragBox === BoxType.LEFT && targetBox === BoxType.RIGHT) {
+                    offsetTopDiff = scrollTopLock[1] - scrollTopLock[0]
+                }
+                if (dragBox === BoxType.RIGHT && targetBox === BoxType.LEFT) {
+                    offsetTopDiff = scrollTopLock[0] - scrollTopLock[1]
+                }
+                if (dragBox === BoxType.ACTION) {
+                    if (targetBox === BoxType.LEFT) {
+                        offsetTopDiff =
+                            scrollTopLock[0] - FULL_ACTION_LIP_BOX_HEIGHT
+                    }
+                    if (targetBox === BoxType.RIGHT) {
+                        offsetTopDiff =
+                            scrollTopLock[1] - FULL_ACTION_LIP_BOX_HEIGHT
+                    }
+                }
+            }
+
+            const offsetY = my + offsetTopDiff
 
             const numRowsShift = Math.floor(
                 (Math.abs(offsetY) - FULL_LIP_HEIGHT / 2) / FULL_LIP_HEIGHT,
@@ -301,57 +419,119 @@ export default function Session() {
 
             indexShift = Math.sign(offsetY) * (1 + numRowsShift)
 
-            let maxTargetIndex =
-                (isPendingList && !isOverSiblingContainer) ||
-                (!isPendingList && isOverSiblingContainer)
-                    ? pendingLips.length
-                    : stagedLips.length
+            let maxTargetIndex = 0
 
-            if (!isOverSiblingContainer) {
+            switch (targetBox) {
+                case BoxType.LEFT:
+                    maxTargetIndex = selectedLips.length
+                    break
+                case BoxType.RIGHT:
+                    maxTargetIndex = idleLips.length
+                    break
+            }
+
+            if (dragBox === targetBox) {
                 maxTargetIndex--
             }
 
             const targetIndex = Math.min(
                 maxTargetIndex,
-                Math.max(0, dragItemIndex + indexShift),
+                Math.max(0, dragIndex + indexShift),
             )
 
             /**
              * Spring API calls
              */
 
-            const api = isPendingList ? pendingAPI : stagedAPI
-            const siblingAPI = isPendingList ? stagedAPI : pendingAPI
+            setIsActionTarget(targetBox === BoxType.ACTION)
 
-            if (isOutOfContainer) {
-                api.start(
-                    createSpringsCallback(down, dragItemIndex, -1, mx, my),
-                )
-            } else {
-                api.start(
-                    createSpringsCallback(
-                        down,
-                        dragItemIndex,
-                        targetIndex,
-                        mx,
-                        my,
-                    ),
-                )
-            }
+            const sameTargetDragSpringEffect = createSpringEffect(
+                down,
+                dragIndex,
+                targetIndex,
+                mx,
+                my,
+            )
 
-            if (isOverSiblingContainer) {
-                siblingAPI.start(createSpringsCallback(down, -1, targetIndex))
-            } else {
-                siblingAPI.start(createSpringsCallback())
+            const siblingTargetDragSpringEffect = createSpringEffect(
+                down,
+                dragIndex,
+                -1,
+                mx,
+                my,
+            )
+
+            const targetSpringEffect = createSpringEffect(down, -1, targetIndex)
+
+            switch (dragBox) {
+                case BoxType.LEFT: {
+                    switch (targetBox) {
+                        case BoxType.LEFT:
+                            selectedAPI.start(sameTargetDragSpringEffect)
+                            idleAPI.start(defaultSpringEffect)
+                            actionAPI.start(defaultSpringEffect)
+                            break
+                        case BoxType.RIGHT:
+                            selectedAPI.start(siblingTargetDragSpringEffect)
+                            idleAPI.start(targetSpringEffect)
+                            break
+                        case BoxType.ACTION:
+                            selectedAPI.start(siblingTargetDragSpringEffect)
+                            idleAPI.start(defaultSpringEffect)
+                            break
+                    }
+                    break
+                }
+                case BoxType.RIGHT: {
+                    switch (targetBox) {
+                        case BoxType.LEFT:
+                            idleAPI.start(siblingTargetDragSpringEffect)
+                            selectedAPI.start(targetSpringEffect)
+                            break
+                        case BoxType.RIGHT:
+                            idleAPI.start(sameTargetDragSpringEffect)
+                            selectedAPI.start(defaultSpringEffect)
+                            break
+                        case BoxType.ACTION:
+                            idleAPI.start(siblingTargetDragSpringEffect)
+                            selectedAPI.start(defaultSpringEffect)
+                            break
+                    }
+                    break
+                }
+                case BoxType.ACTION: {
+                    actionAPI.start(createSpringEffect(down, 0, 0, mx, my))
+
+                    switch (targetBox) {
+                        case BoxType.LEFT:
+                            selectedAPI.start(targetSpringEffect)
+                            idleAPI.start(defaultSpringEffect)
+                            break
+                        case BoxType.RIGHT:
+                            selectedAPI.start(defaultSpringEffect)
+                            idleAPI.start(targetSpringEffect)
+                            break
+                        case BoxType.ACTION:
+                            selectedAPI.start(defaultSpringEffect)
+                            idleAPI.start(defaultSpringEffect)
+                            break
+                    }
+                    break
+                }
             }
 
             if (!down) {
-                console.log('itemId', itemId)
-                console.log('isOverSiblingContainer', isOverSiblingContainer)
-                console.log('dragItemIndex', dragItemIndex)
-                console.log('targetIndex', targetIndex)
+                console.log('ITEM ID', itemId)
 
-                setDragScrollTop(null)
+                console.log('FINISH', finishOnDrop)
+                console.log('DELETE', deleteOnDrop)
+
+                console.log('DRAG BOX', dragBox)
+                console.log('TARGET BOX', targetBox)
+                console.log('DRAG INDEX', dragIndex)
+                console.log('TARGET INDEX', targetIndex)
+
+                unlockScroll()
             }
         },
     )
@@ -362,13 +542,14 @@ export default function Session() {
                 className={cn('absolute inset-0', {
                     'transition-transform duration-300': !isPageDragging,
                 })}
-                style={{ transform: `translateX(${offsetX}px)` }}
+                style={{ transform: `translateX(${pageOffsetX}px)` }}
             >
                 <div
                     className={cn(
                         'grid grid-cols-2 transition-transform duration-300 max-md:absolute max-md:left-0 max-md:top-0 max-md:w-[200vw]',
                         {
-                            'max-md:-translate-x-[100vw]': !isLeft,
+                            'max-md:-translate-x-[100vw]':
+                                pageInView === 'right',
                         },
                     )}
                 >
@@ -380,15 +561,31 @@ export default function Session() {
                             },
                         )}
                     >
-                        <div className='px-main border-white-500 min-h-12 w-full max-w-96 border-2'>
-                            Start field
+                        <div className='px-main border-white-500 h-[112px] w-full shrink-0 border-2'>
+                            <div
+                                className={cn(
+                                    'm-auto flex h-full w-full max-w-96 items-center justify-center border border-lime-400',
+                                    {
+                                        'border-4': isActionTarget,
+                                    },
+                                )}
+                            >
+                                {actionLip && (
+                                    <DragDropListItem
+                                        item={actionLip}
+                                        spring={actionSpring}
+                                        bind={bindLipDrag}
+                                    />
+                                )}
+                            </div>
                         </div>
+
                         <DragDropList
-                            ref={stagedContainerRef}
-                            items={stagedLips}
-                            springs={stagedSprings}
+                            ref={leftScrollBoxRef}
+                            items={selectedLips}
+                            springs={selectedSprings}
                             bind={bindLipDrag}
-                            fixTop={dragScrollTop && dragScrollTop[0]}
+                            fixTop={scrollTopLock && scrollTopLock[0]}
                         />
                     </section>
 
@@ -400,21 +597,24 @@ export default function Session() {
                             },
                         )}
                     >
-                        <div className='px-main border-white-500 min-h-12 w-full max-w-96 border-2'>
-                            Search field
+                        <div className='px-main border-white-500 h-[112px] w-full shrink-0 border-2'>
+                            <div className='m-auto flex h-full w-full max-w-96 items-center justify-center border-2 border-lime-400'>
+                                Search field
+                            </div>
                         </div>
+
                         <DragDropList
-                            ref={pendingContainerRef}
-                            items={pendingLips}
-                            springs={pendingSprings}
+                            ref={rightScrollBoxRef}
+                            items={idleLips}
+                            springs={idleSprings}
                             bind={bindLipDrag}
-                            fixTop={dragScrollTop && dragScrollTop[1]}
+                            fixTop={scrollTopLock && scrollTopLock[1]}
                         />
                     </section>
 
                     <div
                         {...bindPageDrag()}
-                        className='absolute bottom-0 left-1/2 h-32 w-80 -translate-x-1/2 touch-none select-none rounded-lg bg-white/10 md:hidden'
+                        className='absolute bottom-0 left-1/2 h-32 w-[calc(100vw-96px)] -translate-x-1/2 touch-none select-none md:hidden'
                     />
                 </div>
             </div>

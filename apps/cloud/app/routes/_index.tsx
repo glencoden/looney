@@ -1,5 +1,5 @@
 import { Link, useNavigation } from '@remix-run/react'
-import BoxContent from '@repo/ui/components/BoxContent'
+import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import H1 from '@repo/ui/typography/H1'
@@ -26,7 +26,7 @@ export default function Index() {
                 <H1 className='mt-20'>Looney Cloud</H1>
             </header>
 
-            <BoxContent>
+            <BoxContentSlot>
                 <nav>
                     <ul className='flex w-full max-w-96 flex-grow flex-col items-center justify-center gap-4'>
                         <li className='w-full'>
@@ -105,7 +105,7 @@ export default function Index() {
                         </li>
                     </ul>
                 </nav>
-            </BoxContent>
+            </BoxContentSlot>
         </BoxMain>
     )
 }

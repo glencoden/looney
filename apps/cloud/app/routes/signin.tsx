@@ -1,4 +1,4 @@
-import BoxContent from '@repo/ui/components/BoxContent'
+import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import H1 from '@repo/ui/typography/H1'
@@ -11,7 +11,7 @@ export default function Signin() {
                 <H1 className='mt-20'>Looney Cloud</H1>
             </header>
 
-            <BoxContent>
+            <BoxContentSlot>
                 <nav>
                     <Button
                         onClick={() => {
@@ -27,7 +27,7 @@ export default function Signin() {
                         Login
                     </Button>
                 </nav>
-            </BoxContent>
+            </BoxContentSlot>
         </BoxMain>
     )
 }

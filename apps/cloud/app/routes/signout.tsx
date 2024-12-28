@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@remix-run/react'
-import BoxContent from '@repo/ui/components/BoxContent'
+import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import H1 from '@repo/ui/typography/H1'
@@ -21,7 +21,7 @@ export default function Signout() {
                 <H1 className='mt-20'>Looney Cloud</H1>
             </header>
 
-            <BoxContent>
+            <BoxContentSlot>
                 <nav className='space-y-6'>
                     <Button
                         variant='secondary'
@@ -36,7 +36,7 @@ export default function Signout() {
                         <Link to='/'>Back</Link>
                     </Button>
                 </nav>
-            </BoxContent>
+            </BoxContentSlot>
         </BoxMain>
     )
 }

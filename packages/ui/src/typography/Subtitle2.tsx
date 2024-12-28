@@ -1,22 +1,21 @@
-import { Slot } from '@radix-ui/react-slot'
 import type { ReactNode } from 'react'
 import { cn } from '../helpers'
 
-export default function BoxContent({
+export default function Subtitle2({
     children,
     className,
-}: {
+}: Readonly<{
     children: ReactNode
     className?: string
-}) {
+}>) {
     return (
-        <Slot
+        <p
             className={cn(
-                'flex w-full flex-grow flex-col items-center justify-center',
+                'text-base font-medium uppercase leading-normal text-blue-300',
                 className,
             )}
         >
             {children}
-        </Slot>
+        </p>
     )
 }

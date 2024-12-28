@@ -30,4 +30,8 @@
             width: calc(200vw - theme('spacing.32'));
         }
     }
+
+    .field-content {
+        field-sizing: content;
+    }
 }

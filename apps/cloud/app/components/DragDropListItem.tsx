@@ -12,11 +12,11 @@ type Lip = {
 }
 
 export default function DragDropListItem({
-    item,
+    lip,
     spring: { zIndex, shadow, x, y, scale },
     bind,
 }: {
-    item: Lip
+    lip: Lip
     spring: {
         zIndex: SpringValue<number>
         shadow: SpringValue<number>
@@ -40,9 +40,9 @@ export default function DragDropListItem({
             }}
             children={
                 <>
-                    <SongLip lip={item} />
+                    <SongLip lip={lip} />
                     <div
-                        {...bind(item.id)}
+                        {...bind(lip.id)}
                         className='absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 touch-none select-none'
                     />
                 </>

@@ -16,7 +16,7 @@ type Lip = {
 const DragDropList = forwardRef<
     HTMLDivElement,
     {
-        items: Lip[]
+        lips: Lip[]
         springs: {
             zIndex: SpringValue<number>
             shadow: SpringValue<number>
@@ -27,7 +27,7 @@ const DragDropList = forwardRef<
         bind: (...args: any[]) => ReactDOMAttributes
         fixTop: number | null
     }
->(({ items, springs, bind, fixTop }, ref) => {
+>(({ lips, springs, bind, fixTop }, ref) => {
     return (
         <div
             ref={ref}
@@ -40,16 +40,16 @@ const DragDropList = forwardRef<
             style={fixTop ? { transform: `translateY(-${fixTop}px)` } : {}}
         >
             {springs.map((spring, index) => {
-                const item = items[index]
+                const lip = lips[index]
 
-                if (!item) {
-                    throw new Error('Expect item to be defined')
+                if (!lip) {
+                    throw new Error('Expect lip to be defined')
                 }
 
                 return (
                     <DragDropListItem
-                        key={item.id}
-                        item={item}
+                        key={lip.id}
+                        lip={lip}
                         spring={spring}
                         bind={bind}
                     />

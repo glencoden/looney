@@ -5,22 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1725346605101,
-      "tag": "0000_bored_ted_forrester",
+      "when": 1735388517030,
+      "tag": "0000_daily_charles_xavier",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1728123282850,
-      "tag": "0001_sparkling_legion",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1728136334079,
-      "tag": "0002_nifty_iron_fist",
+      "when": 1735388547826,
+      "tag": "0001_yellow_mercury",
       "breakpoints": true
     }
   ]

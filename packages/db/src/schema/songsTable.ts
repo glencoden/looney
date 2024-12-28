@@ -12,6 +12,7 @@ export const songsTable = pgTable('song', {
     artist: varchar('artist', { length: 255 }).notNull(),
     title: varchar('title', { length: 255 }).notNull(),
     lyrics: text('lyrics').notNull(),
+    genre: text('genre'),
     isFavorite: boolean('is_favorite').notNull().default(false),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),

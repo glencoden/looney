@@ -3,6 +3,7 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { strict as assert } from 'node:assert'
 import postgres from 'postgres'
 import { z } from 'zod'
+import { guestsTable as guestsSchema } from './schema/guestsTable.js'
 import { lipsTable as lipsSchema } from './schema/lipsTable.js'
 import { sessionsTable as sessionsSchema } from './schema/sessionsTable.js'
 import { setlistsTable as setlistsSchema } from './schema/setlistsTable.js'
@@ -17,6 +18,7 @@ export const setlistsTable = setlistsSchema
 export const songsTable = songsSchema
 export const setlistsToSongsTable = setlistsToSongsSchema
 export const sessionsTable = sessionsSchema
+export const guestsTable = guestsSchema
 export const lipsTable = lipsSchema
 
 /**
@@ -42,6 +44,7 @@ const schema = {
     songsSchema,
     setlistsToSongsSchema,
     sessionsSchema,
+    guestsSchema,
     lipsSchema,
 }
 

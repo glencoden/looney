@@ -2,7 +2,7 @@ import { Slot } from '@radix-ui/react-slot'
 import type { ReactNode } from 'react'
 import { cn } from '../helpers'
 
-export default function BoxFullHeight({
+export default function BoxContentSlot({
     children,
     className,
 }: {
@@ -10,7 +10,12 @@ export default function BoxFullHeight({
     className?: string
 }) {
     return (
-        <Slot className={cn('full-height flex-grow', className)}>
+        <Slot
+            className={cn(
+                'flex w-full flex-grow flex-col items-center justify-center',
+                className,
+            )}
+        >
             {children}
         </Slot>
     )

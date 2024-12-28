@@ -242,7 +242,7 @@ export default function Session() {
      */
 
     const bindLipDrag = useDrag(
-        ({ xy: [vx, vy], movement: [mx, my], down, args: [itemId] }) => {
+        ({ xy: [vx, vy], movement: [mx, my], down, args: [lipId] }) => {
             lockScroll()
 
             if (
@@ -260,7 +260,7 @@ export default function Session() {
 
             const dragBoxWidth = leftScrollBoxRef.current.offsetWidth
 
-            const dragItem = lips.find((lip) => lip.id === itemId)
+            const dragItem = lips.find((lip) => lip.id === lipId)
 
             if (!dragItem) {
                 throw new Error('Expect dragItem to be defined.')
@@ -521,7 +521,7 @@ export default function Session() {
             }
 
             if (!down) {
-                console.log('ITEM ID', itemId)
+                console.log('LIP ID', lipId)
 
                 console.log('FINISH', finishOnDrop)
                 console.log('DELETE', deleteOnDrop)
@@ -572,7 +572,7 @@ export default function Session() {
                             >
                                 {actionLip && (
                                     <DragDropListItem
-                                        item={actionLip}
+                                        lip={actionLip}
                                         spring={actionSpring}
                                         bind={bindLipDrag}
                                     />
@@ -582,7 +582,7 @@ export default function Session() {
 
                         <DragDropList
                             ref={leftScrollBoxRef}
-                            items={selectedLips}
+                            lips={selectedLips}
                             springs={selectedSprings}
                             bind={bindLipDrag}
                             fixTop={scrollTopLock && scrollTopLock[0]}
@@ -605,7 +605,7 @@ export default function Session() {
 
                         <DragDropList
                             ref={rightScrollBoxRef}
-                            items={idleLips}
+                            lips={idleLips}
                             springs={idleSprings}
                             bind={bindLipDrag}
                             fixTop={scrollTopLock && scrollTopLock[1]}

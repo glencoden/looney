@@ -1,9 +1,89 @@
 {
-  "id": "9cda632b-2606-4d5b-8651-e1ad0aa76434",
-  "prevId": "8f978cea-8bfc-4e0d-a5c9-58a74d7a3514",
+  "id": "19fbf7a8-b98d-4463-abcd-0b34977d326a",
+  "prevId": "6af1056a-ba5e-47bf-a12f-5c80635a371c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.genre": {
+      "name": "genre",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.guest": {
+      "name": "guest",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "session_id": {
+          "name": "session_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "feedback": {
+          "name": "feedback",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tip": {
+          "name": "tip",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "guest_session_id_session_id_fk": {
+          "name": "guest_session_id_session_id_fk",
+          "tableFrom": "guest",
+          "tableTo": "session",
+          "columnsFrom": [
+            "session_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.lip": {
       "name": "lip",
       "schema": "",
@@ -29,7 +109,7 @@
         },
         "guest_id": {
           "name": "guest_id",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -44,7 +124,7 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'pending'"
+          "default": "'idle'"
         },
         "sort_number": {
           "name": "sort_number",
@@ -94,6 +174,19 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "lip_guest_id_guest_id_fk": {
+          "name": "lip_guest_id_guest_id_fk",
+          "tableFrom": "lip",
+          "tableTo": "guest",
+          "columnsFrom": [
+            "guest_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -116,26 +209,41 @@
           "primaryKey": false,
           "notNull": true
         },
-        "event_place": {
-          "name": "event_place",
-          "type": "varchar(255)",
+        "setlist_id": {
+          "name": "setlist_id",
+          "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "event_date": {
-          "name": "event_date",
+        "is_demo": {
+          "name": "is_demo",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "is_locked": {
+          "name": "is_locked",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "has_tip_collection": {
+          "name": "has_tip_collection",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "starts_at": {
+          "name": "starts_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
-        "calendar_event_id": {
-          "name": "calendar_event_id",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "starts_at": {
-          "name": "starts_at",
+        "ends_at": {
+          "name": "ends_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -190,6 +298,63 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.setlist_to_song": {
+      "name": "setlist_to_song",
+      "schema": "",
+      "columns": {
+        "setlist_id": {
+          "name": "setlist_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "song_id": {
+          "name": "song_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "setlist_to_song_setlist_id_setlist_id_fk": {
+          "name": "setlist_to_song_setlist_id_setlist_id_fk",
+          "tableFrom": "setlist_to_song",
+          "tableTo": "setlist",
+          "columnsFrom": [
+            "setlist_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "setlist_to_song_song_id_song_id_fk": {
+          "name": "setlist_to_song_song_id_song_id_fk",
+          "tableFrom": "setlist_to_song",
+          "tableTo": "song",
+          "columnsFrom": [
+            "song_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "setlist_to_song_setlist_id_song_id_pk": {
+          "name": "setlist_to_song_setlist_id_song_id_pk",
+          "columns": [
+            "setlist_id",
+            "song_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
     "public.song": {
       "name": "song",
       "schema": "",
@@ -201,9 +366,9 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "setlist_id": {
-          "name": "setlist_id",
-          "type": "uuid",
+        "artist": {
+          "name": "artist",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -218,6 +383,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "genre": {
+          "name": "genre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "is_favorite": {
           "name": "is_favorite",
@@ -242,13 +413,48 @@
         }
       },
       "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.song_to_genre": {
+      "name": "song_to_genre",
+      "schema": "",
+      "columns": {
+        "song_id": {
+          "name": "song_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "genre_id": {
+          "name": "genre_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
       "foreignKeys": {
-        "song_setlist_id_setlist_id_fk": {
-          "name": "song_setlist_id_setlist_id_fk",
-          "tableFrom": "song",
-          "tableTo": "setlist",
+        "song_to_genre_song_id_song_id_fk": {
+          "name": "song_to_genre_song_id_song_id_fk",
+          "tableFrom": "song_to_genre",
+          "tableTo": "song",
           "columnsFrom": [
-            "setlist_id"
+            "song_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "song_to_genre_genre_id_genre_id_fk": {
+          "name": "song_to_genre_genre_id_genre_id_fk",
+          "tableFrom": "song_to_genre",
+          "tableTo": "genre",
+          "columnsFrom": [
+            "genre_id"
           ],
           "columnsTo": [
             "id"
@@ -257,7 +463,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "song_to_genre_song_id_genre_id_pk": {
+          "name": "song_to_genre_song_id_genre_id_pk",
+          "columns": [
+            "song_id",
+            "genre_id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     }
   },

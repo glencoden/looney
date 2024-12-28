@@ -25,15 +25,24 @@ export const lipsTable = lipsSchema
  * Zod schema
  */
 
+export const SetlistSchema = createSelectSchema(setlistsTable)
+export const SetlistInsertSchema = createInsertSchema(setlistsTable)
 export const SongSchema = createSelectSchema(songsTable)
 export const SongInsertSchema = createInsertSchema(songsTable)
+export const SetlistToSongSchema = createSelectSchema(setlistsToSongsTable)
+export const SetlistToSongInsertSchema =
+    createInsertSchema(setlistsToSongsTable)
 
 /**
  * Types
  */
 
+export type Setlist = z.infer<typeof SetlistSchema>
+export type SetlistInsert = z.infer<typeof SetlistInsertSchema>
 export type Song = z.infer<typeof SongSchema>
 export type SongInsert = z.infer<typeof SongInsertSchema>
+export type SetlistToSong = z.infer<typeof SetlistToSongSchema>
+export type SetlistToSongInsert = z.infer<typeof SetlistToSongInsertSchema>
 
 /**
  * Database client

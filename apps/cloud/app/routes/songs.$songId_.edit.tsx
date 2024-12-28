@@ -128,7 +128,6 @@ export default function SongEdit() {
                             </Button>
 
                             <Select
-                                className='h-11 max-w-96 flex-grow border-4 border-black'
                                 value={language}
                                 onChange={(e) => setLanguage(e.target.value)}
                             >

@@ -30,6 +30,9 @@ catalogs:
         '@types/morgan':
             specifier: ^1.9.9
             version: 1.9.9
+        '@types/node':
+            specifier: ^20.14.9
+            version: 20.14.9
         '@types/react':
             specifier: ^18.3.7
             version: 18.3.12
@@ -45,6 +48,12 @@ catalogs:
         cross-env:
             specifier: ^7.0.3
             version: 7.0.3
+        dotenv:
+            specifier: ^16.4.5
+            version: 16.4.5
+        dotenv-cli:
+            specifier: ^7.4.2
+            version: 7.4.2
         eslint:
             specifier: ^8
             version: 8.57.0
@@ -182,6 +191,9 @@ importers:
             cross-env:
                 specifier: 'catalog:'
                 version: 7.0.3
+            date-fns:
+                specifier: ^4.1.0
+                version: 4.1.0
             express:
                 specifier: 'catalog:'
                 version: 4.19.2
@@ -3756,6 +3768,12 @@ packages:
                 integrity: sha512-t/Ygsytq+R995EJ5PZlD4Cu56sWa8InXySaViRzw9apusqsOO2bQP+SbYzAhR0pFKoB+43lYy8rWban9JSuXnA==,
             }
         engines: { node: '>= 0.4' }
+
+    date-fns@4.1.0:
+        resolution:
+            {
+                integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==,
+            }
 
     debug@2.6.9:
         resolution:
@@ -10090,6 +10108,8 @@ snapshots:
             call-bind: 1.0.7
             es-errors: 1.3.0
             is-data-view: 1.0.1
+
+    date-fns@4.1.0: {}
 
     debug@2.6.9:
         dependencies:

@@ -23,6 +23,7 @@
         "@use-gesture/react": "^10.3.1",
         "compression": "catalog:",
         "cross-env": "catalog:",
+        "date-fns": "^4.1.0",
         "express": "catalog:",
         "isbot": "catalog:",
         "lucide-react": "^0.456.0",

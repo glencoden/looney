@@ -15,9 +15,9 @@ import { SYLLABLE_CHAR } from '~/CONSTANTS'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData()
-    const songInsert = SongInsertSchema.parse(Object.fromEntries(formData))
+    const formValues = Object.fromEntries(formData)
 
-    const id = await createSong(songInsert)
+    const id = await createSong(SongInsertSchema.parse(formValues))
 
     if (id === null) {
         throw new Response('Failed to create song', { status: 500 })
@@ -100,7 +100,6 @@ export default function SongsCreate() {
                             </Button>
 
                             <Select
-                                className='h-11 max-w-96 flex-grow border-4 border-black'
                                 value={language}
                                 onChange={(e) => setLanguage(e.target.value)}
                             >

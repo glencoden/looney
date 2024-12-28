@@ -50,7 +50,7 @@ export default function Index() {
                                     navigation.location.pathname === '/setlists'
                                 }
                             >
-                                <Link to='/'>Setlists</Link>
+                                <Link to='/setlists'>Setlists</Link>
                             </Button>
                         </li>
                         <li className='w-full'>

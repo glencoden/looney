@@ -7,7 +7,6 @@ import {
     useFetcher,
     useLoaderData,
     useLocation,
-    useNavigate,
     useNavigation,
     useSubmit,
 } from '@remix-run/react'
@@ -60,7 +59,6 @@ export default function Songs() {
     const navigation = useNavigation()
     const fetcher = useFetcher()
 
-    const navigate = useNavigate()
     const submit = useSubmit()
 
     const isLoading =
@@ -74,7 +72,7 @@ export default function Songs() {
     useEffect(() => {
         const searchField = document.getElementById('song-search')
         if (searchField instanceof HTMLInputElement) {
-            searchField.value = q || ''
+            searchField.value = q ?? ''
         }
     }, [q])
 
@@ -87,7 +85,7 @@ export default function Songs() {
             })}
         >
             <BoxHorizontalPagination isLeft={location.pathname === '/songs'}>
-                <section className='max-w-96 flex-grow'>
+                <section className='max-w-96 flex-grow max-lg:w-full'>
                     <Button
                         asChild
                         className='float-start'
@@ -111,14 +109,6 @@ export default function Songs() {
                         onChange={(event) => {
                             if (searchTimeoutIdRef.current) {
                                 clearTimeout(searchTimeoutIdRef.current)
-                            }
-                            const isEmptySearch =
-                                event.currentTarget.q.value === ''
-
-                            if (isEmptySearch) {
-                                event.currentTarget.q.blur()
-                                navigate('/songs')
-                                return
                             }
 
                             const isFirstSearch = q === null
@@ -218,7 +208,7 @@ export default function Songs() {
                                                 isActive,
                                                 isPending,
                                             }) =>
-                                                cn({
+                                                cn('hover:underline', {
                                                     underline: isActive,
                                                     'text-gray-500': isPending,
                                                 })

@@ -1,17 +1,15 @@
 import { ActionFunctionArgs, redirect } from '@remix-run/node'
 import { Form, Link, useNavigation } from '@remix-run/react'
+import { api } from '@repo/api/client'
 import { SongInsertSchema } from '@repo/db'
 import { createSong } from '@repo/db/queries'
 import BoxFullHeightSlot from '@repo/ui/components/BoxFullHeightSlot'
 import Button from '@repo/ui/components/Button'
 import Input from '@repo/ui/components/Input'
-import Select from '@repo/ui/components/Select'
 import { Textarea } from '@repo/ui/components/Textarea'
 import { cn } from '@repo/ui/helpers'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
-import { useState } from 'react'
-import { SYLLABLE_CHAR } from '~/CONSTANTS'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData()
@@ -28,23 +26,24 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function SongsCreate() {
     const navigation = useNavigation()
-    const isLoading = navigation.state !== 'idle'
 
-    const [language, setLanguage] = useState('en-us')
+    const { mutateAsync: findSyllables, isPending: isFindSyllablesPending } =
+        api.openai.findSyllables.useMutation()
 
-    const findSyllables = () => {
+    const handleFindSyllablesButtonClick = async () => {
         const lyricsElement = document.getElementById('lyrics')
 
         if (!lyricsElement || !(lyricsElement instanceof HTMLTextAreaElement)) {
-            return
+            throw new Error('Expect textarea with id "lyrics" to be present.')
         }
 
         const lyrics = lyricsElement.value
-        const consolidated = lyrics.replace(new RegExp(SYLLABLE_CHAR, 'g'), '')
+        const response = await findSyllables(lyrics)
 
-        // @ts-expect-error Hyphenator is not typed
-        lyricsElement.value = Hyphenator.hyphenate(consolidated, language)
+        lyricsElement.value = response
     }
+
+    const isLoading = navigation.state !== 'idle' || isFindSyllablesPending
 
     return (
         <BoxFullHeightSlot>
@@ -94,20 +93,15 @@ export default function SongsCreate() {
                     <section>
                         <Subtitle2>Lyrics</Subtitle2>
 
-                        <div className='mt-2 flex flex-wrap gap-3'>
-                            <Button type='button' onClick={findSyllables}>
-                                Find syllables
-                            </Button>
-
-                            <Select
-                                value={language}
-                                onChange={(e) => setLanguage(e.target.value)}
-                            >
-                                <option value='en-us'>English</option>
-                                <option value='en-gb'>English (UK)</option>
-                                <option value='de'>German</option>
-                            </Select>
-                        </div>
+                        <Button
+                            className='mt-2'
+                            type='button'
+                            onClick={handleFindSyllablesButtonClick}
+                            disabled={isLoading && !isFindSyllablesPending}
+                            loading={isFindSyllablesPending}
+                        >
+                            Find syllables
+                        </Button>
 
                         <Textarea
                             id='lyrics'

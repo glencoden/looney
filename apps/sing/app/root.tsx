@@ -68,7 +68,7 @@ export default function App() {
     return (
         <TRPCQueryClientProvider baseUrl={import.meta.env.VITE_API_URL}>
             <BoxMain className='flex items-center justify-center p-0'>
-                <div className='h-dvh w-full overflow-y-auto px-6 py-12 sm:h-[932px] sm:max-w-md sm:rounded-[32px] sm:border-4 sm:border-black'>
+                <div className='mobile-sim-height relative w-full overflow-hidden sm:max-w-md sm:rounded-[32px] sm:border-4 sm:border-black'>
                     <Outlet />
                 </div>
             </BoxMain>

@@ -6,7 +6,7 @@ export const sessionsTable = pgTable('session', {
     setlistId: uuid('setlist_id').notNull(),
     isDemo: boolean('is_demo').default(false),
     isLocked: boolean('is_locked').default(false),
-    hasTipCollection: boolean('has_tip_collection').default(false),
+    hideTipCollection: boolean('hide_tip_collection').default(false),
     startsAt: timestamp('starts_at'),
     endsAt: timestamp('ends_at'),
     createdAt: timestamp('created_at').defaultNow(),

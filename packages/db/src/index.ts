@@ -17,6 +17,7 @@ import { songsTable as songsSchema } from './schema/songsTable.js'
 export const setlistsTable = setlistsSchema
 export const songsTable = songsSchema
 export const setlistsToSongsTable = setlistsToSongsSchema
+
 export const sessionsTable = sessionsSchema
 export const guestsTable = guestsSchema
 export const lipsTable = lipsSchema
@@ -33,6 +34,13 @@ export const SetlistToSongSchema = createSelectSchema(setlistsToSongsTable)
 export const SetlistToSongInsertSchema =
     createInsertSchema(setlistsToSongsTable)
 
+export const SessionSchema = createSelectSchema(sessionsTable)
+export const SessionInsertSchema = createInsertSchema(sessionsTable)
+export const GuestSchema = createSelectSchema(guestsTable)
+export const GuestInsertSchema = createInsertSchema(guestsTable)
+export const LipSchema = createSelectSchema(lipsTable)
+export const LipInsertSchema = createInsertSchema(lipsTable)
+
 /**
  * Types
  */
@@ -43,6 +51,13 @@ export type Song = z.infer<typeof SongSchema>
 export type SongInsert = z.infer<typeof SongInsertSchema>
 export type SetlistToSong = z.infer<typeof SetlistToSongSchema>
 export type SetlistToSongInsert = z.infer<typeof SetlistToSongInsertSchema>
+
+export type Session = z.infer<typeof SessionSchema>
+export type SessionInsert = z.infer<typeof SessionInsertSchema>
+export type Guest = z.infer<typeof GuestSchema>
+export type GuestInsert = z.infer<typeof GuestInsertSchema>
+export type Lip = z.infer<typeof LipSchema>
+export type LipInsert = z.infer<typeof LipInsertSchema>
 
 /**
  * Database client

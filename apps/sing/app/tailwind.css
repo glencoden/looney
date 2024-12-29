@@ -2,11 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-    @apply bg-white dark:bg-gray-950;
-
-    @media (prefers-color-scheme: dark) {
-        color-scheme: dark;
+@layer components {
+    .mobile-sim-height {
+        @apply h-dvh sm:h-[932px];
     }
 }

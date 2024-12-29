@@ -17,6 +17,7 @@ import {
 } from '@repo/db/queries'
 import Button from '@repo/ui/components/Button'
 import Input from '@repo/ui/components/Input'
+import SearchHighlight from '@repo/ui/components/SearchHighlight'
 import Spinner from '@repo/ui/components/Spinner'
 import { cn } from '@repo/ui/helpers'
 import Body1 from '@repo/ui/typography/Body1'
@@ -24,10 +25,9 @@ import Body2 from '@repo/ui/typography/Body2'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { toNonBreaking } from '@repo/utils/text'
-import { ArrowLeft, AudioLines, Circle } from 'lucide-react'
+import { AudioLines, Circle } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { z } from 'zod'
-import SearchHighlight from '~/components/SearchHighlight'
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const setlistId = z.string().parse(params.setlistId)
@@ -102,28 +102,22 @@ export default function SetlistEdit() {
                 'animate-pulse': isLoading,
             })}
         >
-            <Button
-                asChild
-                className='float-start lg:hidden'
-                variant='ghost'
-                size='icon'
-                disabled={isLoading}
-            >
-                <Link to='/setlists'>
-                    <ArrowLeft className='h-6 w-6 text-white' />
-                </Link>
-            </Button>
-
             <Subtitle2 className='float-end flex items-center gap-1'>
                 {selectedSongs.length}
                 <AudioLines className='h-4 w-4' />
             </Subtitle2>
 
-            <H3 className='min-h-9 px-10'>{toNonBreaking(setlist.title)}</H3>
+            <H3 className='min-h-9 px-10'>
+                Edit&nbsp;{toNonBreaking(setlist.title)}
+            </H3>
 
-            <section className='mt-8 space-y-3'>
+            <section className='mt-8 flex gap-3'>
+                <Button asChild disabled={isLoading}>
+                    <Link to={`/setlists/${setlist.id}`}>Done</Link>
+                </Button>
+
                 <Form
-                    className='relative'
+                    className='relative w-full flex-grow'
                     method='get'
                     onChange={(event) => {
                         if (searchTimeoutIdRef.current) {
@@ -152,10 +146,6 @@ export default function SetlistEdit() {
                         <Spinner className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' />
                     )}
                 </Form>
-
-                <Button asChild disabled={isLoading}>
-                    <Link to={`/setlists/${setlist.id}`}>Done</Link>
-                </Button>
             </section>
 
             <ul className='mt-8 space-y-2'>

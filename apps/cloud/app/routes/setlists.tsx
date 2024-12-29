@@ -14,7 +14,7 @@ import { cn } from '@repo/ui/helpers'
 import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
 import H2 from '@repo/ui/typography/H2'
-import { formatDistanceToNow } from 'date-fns'
+import { format } from 'date-fns'
 import { ArrowLeft } from 'lucide-react'
 
 export const loader = async () => {
@@ -55,18 +55,21 @@ export default function Setlists() {
                                 <NavLink
                                     to={`/setlists/${id}`}
                                     className={({ isActive }) =>
-                                        cn('flex justify-between', {
-                                            underline: isActive,
-                                        })
+                                        cn(
+                                            'flex justify-between hover:underline',
+                                            {
+                                                underline: isActive,
+                                            },
+                                        )
                                     }
                                 >
-                                    <Body2 className='hover:underline'>
-                                        {title}
-                                    </Body2>
+                                    <Body2>{title}</Body2>
                                     {updatedAt && (
                                         <Body1>
-                                            {formatDistanceToNow(
+                                            &nbsp;
+                                            {format(
                                                 new Date(updatedAt),
+                                                'MMM d, yyyy',
                                             )}
                                         </Body1>
                                     )}

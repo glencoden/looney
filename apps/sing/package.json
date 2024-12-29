@@ -15,14 +15,18 @@
         "@remix-run/node": "catalog:",
         "@remix-run/react": "catalog:",
         "@repo/api": "workspace:*",
+        "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
+        "@repo/utils": "workspace:*",
         "compression": "catalog:",
         "cross-env": "catalog:",
         "express": "catalog:",
         "isbot": "catalog:",
+        "lucide-react": "^0.456.0",
         "morgan": "catalog:",
         "react": "catalog:",
-        "react-dom": "catalog:"
+        "react-dom": "catalog:",
+        "zod": "^3.24.1"
     },
     "devDependencies": {
         "@remix-run/dev": "catalog:",

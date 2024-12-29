@@ -16,6 +16,7 @@ import BoxHorizontalPagination from '@repo/ui/components/BoxHorizontalPagination
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import Input from '@repo/ui/components/Input'
+import SearchHighlight from '@repo/ui/components/SearchHighlight'
 import Spinner from '@repo/ui/components/Spinner'
 import { cn } from '@repo/ui/helpers'
 import Body1 from '@repo/ui/typography/Body1'
@@ -25,7 +26,6 @@ import H4 from '@repo/ui/typography/H4'
 import { toNonBreaking } from '@repo/utils/text'
 import { ArrowLeft, Star } from 'lucide-react'
 import { useEffect, useRef } from 'react'
-import SearchHighlight from '~/components/SearchHighlight'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     const url = new URL(request.url)

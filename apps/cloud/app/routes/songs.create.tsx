@@ -10,6 +10,7 @@ import { Textarea } from '@repo/ui/components/Textarea'
 import { cn } from '@repo/ui/helpers'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
+import { ArrowLeft } from 'lucide-react'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData()
@@ -48,13 +49,25 @@ export default function SongsCreate() {
     return (
         <BoxFullHeightSlot>
             <div
-                className={cn('flex flex-col gap-4', {
+                className={cn('flex-grow', {
                     'animate-pulse': isLoading,
                 })}
             >
+                <Button
+                    asChild
+                    className='float-start lg:hidden'
+                    variant='ghost'
+                    size='icon'
+                    disabled={isLoading}
+                >
+                    <Link to='/songs'>
+                        <ArrowLeft className='h-6 w-6 text-white' />
+                    </Link>
+                </Button>
+
                 <H3 className='h-9'>New Song</H3>
 
-                <Form method='post' className='mt-4 flex flex-col gap-3'>
+                <Form method='post' className='mt-7 flex flex-col gap-3'>
                     <section>
                         <Subtitle2>Artist</Subtitle2>
                         <Input
@@ -115,21 +128,9 @@ export default function SongsCreate() {
 
                     <hr className='w-full border-2 border-transparent' />
 
-                    {isLoading ? (
-                        <div className='flex gap-3'>
-                            <Button type='button'>Create</Button>
-                            <Button type='button' variant='secondary'>
-                                Cancel
-                            </Button>
-                        </div>
-                    ) : (
-                        <div className='flex gap-3'>
-                            <Button type='submit'>Create</Button>
-                            <Button asChild type='button' variant='secondary'>
-                                <Link to='/songs'>Cancel</Link>
-                            </Button>
-                        </div>
-                    )}
+                    <Button type={isLoading ? 'button' : 'submit'}>
+                        Create
+                    </Button>
                 </Form>
             </div>
         </BoxFullHeightSlot>

@@ -28,7 +28,7 @@ export default function Song() {
 
     return (
         <div
-            className={cn('flex-grow', {
+            className={cn('flex-grow max-lg:w-full', {
                 'animate-pulse': isLoading,
             })}
         >

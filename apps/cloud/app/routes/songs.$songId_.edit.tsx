@@ -79,7 +79,23 @@ export default function SongEdit() {
             >
                 <H3 className='h-9'>Edit Song</H3>
 
-                <Form method='post' className='mt-4 flex flex-col gap-3'>
+                {isLoading ? (
+                    <div className='mt-5 flex gap-3'>
+                        <Button type='button'>Save</Button>
+                        <Button type='button' variant='secondary'>
+                            Cancel
+                        </Button>
+                    </div>
+                ) : (
+                    <div className='mt-5 flex gap-3'>
+                        <Button type='submit'>Save</Button>
+                        <Button asChild type='button' variant='secondary'>
+                            <Link to={`/songs/${song.id}`}>Cancel</Link>
+                        </Button>
+                    </div>
+                )}
+
+                <Form method='post' className='flex flex-col gap-3'>
                     <section>
                         <Subtitle2>Artist</Subtitle2>
                         <Input
@@ -141,24 +157,6 @@ export default function SongEdit() {
                             disabled={isLoading}
                         />
                     </section>
-
-                    <hr className='w-full border-2 border-transparent' />
-
-                    {isLoading ? (
-                        <div className='flex gap-3'>
-                            <Button type='button'>Save</Button>
-                            <Button type='button' variant='secondary'>
-                                Cancel
-                            </Button>
-                        </div>
-                    ) : (
-                        <div className='flex gap-3'>
-                            <Button type='submit'>Save</Button>
-                            <Button asChild type='button' variant='secondary'>
-                                <Link to={`/songs/${song.id}`}>Cancel</Link>
-                            </Button>
-                        </div>
-                    )}
                 </Form>
             </div>
         </BoxFullHeightSlot>

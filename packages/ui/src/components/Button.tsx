@@ -10,10 +10,10 @@ export const buttonVariants = cva(
         variants: {
             variant: {
                 primary:
-                    'bg-blue-800 text-blue-300 active:bg-blue-700 hover:text-white hover:animate-flicker-primary transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
+                    'bg-blue-800 text-blue-300 active:bg-blue-700 hover:text-white lg:hover:animate-flicker-primary transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
                 secondary:
-                    'bg-pink-600 text-pink-950 active:bg-pink-500 hover:text-white hover:animate-flicker-secondary transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
-                light: 'bg-yellow-400 text-white active:bg-yellow-300 hover:animate-flicker-light transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
+                    'bg-pink-600 text-pink-950 active:bg-pink-500 hover:text-white lg:hover:animate-flicker-secondary transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
+                light: 'bg-yellow-400 text-white active:bg-yellow-300 lg:hover:animate-flicker-light transition-colors transition-opacity duration-75 border-black drop-shadow border-4',
                 ghost: '',
             },
             size: {

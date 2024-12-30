@@ -9,7 +9,7 @@ export default function SearchHighlight({
         return <>{text}</>
     }
 
-    const regex = new RegExp(searchString, 'gi')
+    const regex = new RegExp(searchString.replace(/ /g, '\\s'), 'gi')
 
     const highlights = text.match(regex) || []
     const parts = text.split(regex)

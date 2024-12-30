@@ -12,7 +12,6 @@ import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
 import { useEffectEvent } from '@repo/utils/hooks'
 import { ReactNode, useEffect, useState } from 'react'
-import { SYLLABLE_CHAR } from '~/CONSTANTS'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
 import { supabase } from '~/lib/supabase.client'
 import './tailwind.css'
@@ -32,10 +31,6 @@ export const links: LinksFunction = () => [
         rel: 'stylesheet',
         href: FONT_SERIF_URL,
     },
-    { rel: 'modulepreload', href: '/vendor/hyphenator.js' },
-    { rel: 'modulepreload', href: '/vendor/hyphenator-patterns/de.js' },
-    { rel: 'modulepreload', href: '/vendor/hyphenator-patterns/en-gb.js' },
-    { rel: 'modulepreload', href: '/vendor/hyphenator-patterns/en-us.js' },
 ]
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -49,22 +44,6 @@ export function Layout({ children }: { children: ReactNode }) {
                 />
                 <Meta />
                 <Links />
-                <script
-                    type='text/javascript'
-                    src='/vendor/hyphenator.js'
-                ></script>
-                <script
-                    type='text/javascript'
-                    src='/vendor/hyphenator-patterns/de.js'
-                ></script>
-                <script
-                    type='text/javascript'
-                    src='/vendor/hyphenator-patterns/en-gb.js'
-                ></script>
-                <script
-                    type='text/javascript'
-                    src='/vendor/hyphenator-patterns/en-us.js'
-                ></script>
             </head>
             <body className='bg-blue-800 text-white'>
                 {children}
@@ -88,8 +67,6 @@ export default function App() {
     const navigate = useNavigate()
 
     const handleLifecycle = useEffectEvent(async () => {
-        setAuthChecked(true)
-
         const { data } = await supabase.auth.getSession()
 
         if (
@@ -101,12 +78,7 @@ export default function App() {
             return
         }
 
-        // @ts-expect-error Hyphenator is not typed
-        Hyphenator.config({
-            hyphenchar: SYLLABLE_CHAR,
-            minwordlength: 0,
-            enablecache: false,
-        })
+        setAuthChecked(true)
 
         window.addEventListener('beforeunload', handleBeforeUnload)
 

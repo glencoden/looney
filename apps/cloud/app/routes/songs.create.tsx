@@ -109,6 +109,7 @@ export default function SongsCreate() {
                         <Button
                             className='mt-2'
                             type='button'
+                            size='sm'
                             onClick={handleFindSyllablesButtonClick}
                             disabled={isLoading && !isFindSyllablesPending}
                             loading={isFindSyllablesPending}

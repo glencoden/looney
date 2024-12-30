@@ -1,8 +1,3 @@
-CREATE TABLE IF NOT EXISTS "genre" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"name" varchar(255) NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "guest" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"session_id" uuid,
@@ -29,9 +24,10 @@ CREATE TABLE IF NOT EXISTS "session" (
 	"setlist_id" uuid NOT NULL,
 	"is_demo" boolean DEFAULT false,
 	"is_locked" boolean DEFAULT false,
-	"has_tip_collection" boolean DEFAULT false,
-	"starts_at" timestamp,
-	"ends_at" timestamp,
+	"hide_favorites" boolean DEFAULT false,
+	"hide_tip_collection" boolean DEFAULT false,
+	"starts_at" timestamp NOT NULL,
+	"ends_at" timestamp NOT NULL,
 	"created_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
@@ -53,15 +49,10 @@ CREATE TABLE IF NOT EXISTS "song" (
 	"artist" varchar(255) NOT NULL,
 	"title" varchar(255) NOT NULL,
 	"lyrics" text NOT NULL,
+	"genre" text,
 	"is_favorite" boolean DEFAULT false NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "song_to_genre" (
-	"song_id" uuid NOT NULL,
-	"genre_id" uuid NOT NULL,
-	CONSTRAINT "song_to_genre_song_id_genre_id_pk" PRIMARY KEY("song_id","genre_id")
 );
 --> statement-breakpoint
 DO $$ BEGIN
@@ -96,18 +87,6 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "setlist_to_song" ADD CONSTRAINT "setlist_to_song_song_id_song_id_fk" FOREIGN KEY ("song_id") REFERENCES "public"."song"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "song_to_genre" ADD CONSTRAINT "song_to_genre_song_id_song_id_fk" FOREIGN KEY ("song_id") REFERENCES "public"."song"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "song_to_genre" ADD CONSTRAINT "song_to_genre_genre_id_genre_id_fk" FOREIGN KEY ("genre_id") REFERENCES "public"."genre"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

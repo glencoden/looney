@@ -32,9 +32,9 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     //
     // We are in demo mode!
     //
-    // 1. As soon as there is an upcoming or ongoing non-demo session > show "scan the QR code to join <session title>"
-    // 2. Load all songs and go to business with local state
-    // 3. If there is an active demo session, hook up the server state
+    // 1. Load all songs and go to business with local state
+    // 2. If there is an active demo session, create a fake guest id hook up to server state
+    // 3. As soon as there is an upcoming or ongoing non-demo session > show "scan the QR code to join <session title>"
 
     if (!guestId) {
         const songs = await getSongs()

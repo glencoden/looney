@@ -1,32 +1,9 @@
 {
-  "id": "6af1056a-ba5e-47bf-a12f-5c80635a371c",
+  "id": "265ae149-6203-4586-b374-d4b711eba636",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.genre": {
-      "name": "genre",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
     "public.guest": {
       "name": "guest",
       "schema": "",
@@ -229,8 +206,15 @@
           "notNull": false,
           "default": false
         },
-        "has_tip_collection": {
-          "name": "has_tip_collection",
+        "hide_favorites": {
+          "name": "hide_favorites",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "hide_tip_collection": {
+          "name": "hide_tip_collection",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
@@ -240,13 +224,13 @@
           "name": "starts_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "ends_at": {
           "name": "ends_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -384,6 +368,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "genre": {
+          "name": "genre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "is_favorite": {
           "name": "is_favorite",
           "type": "boolean",
@@ -409,63 +399,6 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.song_to_genre": {
-      "name": "song_to_genre",
-      "schema": "",
-      "columns": {
-        "song_id": {
-          "name": "song_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "genre_id": {
-          "name": "genre_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "song_to_genre_song_id_song_id_fk": {
-          "name": "song_to_genre_song_id_song_id_fk",
-          "tableFrom": "song_to_genre",
-          "tableTo": "song",
-          "columnsFrom": [
-            "song_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "song_to_genre_genre_id_genre_id_fk": {
-          "name": "song_to_genre_genre_id_genre_id_fk",
-          "tableFrom": "song_to_genre",
-          "tableTo": "genre",
-          "columnsFrom": [
-            "genre_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "song_to_genre_song_id_genre_id_pk": {
-          "name": "song_to_genre_song_id_genre_id_pk",
-          "columns": [
-            "song_id",
-            "genre_id"
-          ]
-        }
-      },
       "uniqueConstraints": {}
     }
   },

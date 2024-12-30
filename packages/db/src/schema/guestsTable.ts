@@ -6,7 +6,7 @@ export const guestsTable = pgTable('guest', {
     sessionId: uuid('session_id').references(() => sessionsTable.id, {
         onDelete: 'cascade',
     }),
-    feedback: text('feedback').notNull(),
+    feedback: text('feedback'),
     tip: integer('tip').default(0),
     createdAt: timestamp('created_at').defaultNow(),
 })

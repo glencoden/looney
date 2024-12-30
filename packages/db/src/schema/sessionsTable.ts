@@ -6,8 +6,9 @@ export const sessionsTable = pgTable('session', {
     setlistId: uuid('setlist_id').notNull(),
     isDemo: boolean('is_demo').default(false),
     isLocked: boolean('is_locked').default(false),
+    hideFavorites: boolean('hide_favorites').default(false),
     hideTipCollection: boolean('hide_tip_collection').default(false),
-    startsAt: timestamp('starts_at'),
-    endsAt: timestamp('ends_at'),
+    startsAt: timestamp('starts_at').notNull(),
+    endsAt: timestamp('ends_at').notNull(),
     createdAt: timestamp('created_at').defaultNow(),
 })

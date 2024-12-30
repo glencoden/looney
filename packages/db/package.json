@@ -18,7 +18,7 @@
         "build": "tsc",
         "dev": "tsc --watch",
         "lint": "eslint . --max-warnings 0",
-        "db:generate": "pnpm build && drizzle-kit generate",
+        "db:generate": "rm -rf dist && pnpm build && drizzle-kit generate",
         "db:migrate": "dotenv -e ../../.env -- tsx ./scripts/migrate-database.ts",
         "test": "echo \"Error: no test specified\" && exit 1"
     },

@@ -8,8 +8,6 @@ import {
     ScrollRestoration,
 } from '@remix-run/react'
 
-import { TRPCQueryClientProvider } from '@repo/api/provider'
-import BoxMain from '@repo/ui/components/BoxMain'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
 import { ReactNode } from 'react'
@@ -73,23 +71,14 @@ export function Layout({ children }: { children: ReactNode }) {
 
 export const meta: MetaFunction = () => {
     return [
-        { title: 'Sing with the Looneytunez' },
+        { title: 'Songs - Looneytunez' },
         {
             name: 'description',
-            content:
-                'Browse and select songs to get called on stage and sing with the Looneytunez band.',
+            content: 'Looneytunez Karaoke song lists.',
         },
     ]
 }
 
 export default function App() {
-    return (
-        <TRPCQueryClientProvider baseUrl={import.meta.env.VITE_API_URL}>
-            <BoxMain className='flex items-center justify-center p-0'>
-                <div className='mobile-sim-height relative w-full overflow-hidden sm:max-w-md sm:rounded-[32px] sm:border-4 sm:border-black'>
-                    <Outlet />
-                </div>
-            </BoxMain>
-        </TRPCQueryClientProvider>
-    )
+    return <Outlet />
 }

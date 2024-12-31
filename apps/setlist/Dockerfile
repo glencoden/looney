@@ -12,7 +12,7 @@ WORKDIR /app
 RUN pnpm add -g turbo
 
 COPY . .
-RUN turbo prune website --docker
+RUN turbo prune setlist --docker
 
 FROM base AS installer
 WORKDIR /app
@@ -23,7 +23,7 @@ RUN pnpm install
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
-RUN pnpm turbo build --filter=website...
+RUN pnpm turbo build --filter=setlist...
 
 FROM base AS runner
 WORKDIR /app
@@ -35,7 +35,7 @@ USER expressjs
 
 COPY --from=installer /app .
 
-WORKDIR /app/apps/website
+WORKDIR /app/apps/setlist
 
 EXPOSE 3003
 

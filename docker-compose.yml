@@ -6,7 +6,7 @@ volumes:
   acme:
 
 services:
-  api-server:
+  looney-api-server:
     build:
       context: .
       dockerfile: apps/api-server/Dockerfile
@@ -26,7 +26,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  cloud:
+  looney-cloud:
     build:
       context: .
       dockerfile: apps/cloud/Dockerfile
@@ -47,7 +47,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  sing:
+  looney-sing:
     build:
       context: .
       dockerfile: apps/sing/Dockerfile
@@ -65,7 +65,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  tool:
+  looney-tool:
     build:
       context: .
       dockerfile: apps/tool/Dockerfile
@@ -83,23 +83,23 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  website:
+  looney-setlist:
     build:
       context: .
-      dockerfile: apps/website/Dockerfile
+      dockerfile: apps/setlist/Dockerfile
       args:
         VITE_API_URL: ${API_URL}
-    image: looney-website:latest
+    image: looney-setlist:latest
     ports:
       - "3003:3003"
     environment:
       DATABASE_URL: ${DOCKER_DATABASE_URL}
-      VIRTUAL_HOST: ${HOST_WEBSITE}
-      LETSENCRYPT_HOST: ${HOST_WEBSITE}
+      VIRTUAL_HOST: ${HOST_SETLIST}
+      LETSENCRYPT_HOST: ${HOST_SETLIST}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  nginx:
+  looney-nginx:
     image: nginx:1.21.4-alpine
     container_name: nginx-proxy
     restart: always
@@ -112,11 +112,11 @@ services:
       - html:/usr/share/nginx/html
       - certs:/etc/nginx/certs:ro
 
-  gen:
+  looney-gen:
     image: jwilder/docker-gen:0.9.1
     container_name: nginx-proxy-gen
     depends_on:
-      - nginx
+      - looney-nginx
     volumes:
       - conf:/etc/nginx/conf.d
       - vhost:/etc/nginx/vhost.d
@@ -126,12 +126,12 @@ services:
       - ./nginx-proxy/templates:/etc/docker-gen/templates:ro
     command: -notify-sighup nginx-proxy -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
 
-  acme:
+  looney-acme:
     image: nginxproxy/acme-companion:2.3
     container_name: nginx-proxy-acme
     depends_on:
-      - nginx
-      - gen
+      - looney-nginx
+      - looney-gen
     volumes:
       - conf:/etc/nginx/conf.d
       - vhost:/etc/nginx/vhost.d

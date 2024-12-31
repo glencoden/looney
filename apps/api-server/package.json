@@ -12,17 +12,21 @@
     },
     "dependencies": {
         "@repo/api": "workspace:*",
+        "body-parser": "^1.20.3",
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
-        "express": "catalog:"
+        "express": "catalog:",
+        "node-telegram-bot-api": "^0.66.0"
     },
     "devDependencies": {
         "@repo/config-eslint": "workspace:*",
         "@repo/config-typescript": "workspace:*",
+        "@types/body-parser": "^1.19.5",
         "@types/cookie-parser": "^1.4.7",
         "@types/cors": "^2.8.17",
         "@types/express": "catalog:",
         "@types/node": "catalog:",
+        "@types/node-telegram-bot-api": "^0.64.7",
         "eslint": "catalog:",
         "tsx": "^4.19.1",
         "typescript": "catalog:"

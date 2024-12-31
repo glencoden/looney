@@ -1,11 +1,13 @@
 import { API_PORT } from '@repo/api'
 import { trpcExpressAdapter } from '@repo/api/adapter'
 import assert from 'assert'
+import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express from 'express'
+import { contactFormRouter } from './router/contactForm.js'
 
-assert(process.env.API_CORS_ORIGIN, 'API_CORS_ORIGIN is not set')
+assert(process.env.API_CORS_ORIGIN, 'Expect API_CORS_ORIGIN to be set.')
 
 const app = express()
 
@@ -17,7 +19,9 @@ app.use(
 )
 
 app.use(cookieParser())
+app.use(bodyParser.json({ limit: '1mb' }))
 
+app.use('/contact', contactFormRouter)
 app.use('/trpc', trpcExpressAdapter)
 
 app.get('/', (_req, res) => {

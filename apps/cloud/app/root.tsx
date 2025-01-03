@@ -8,11 +8,16 @@ import {
     useNavigate,
 } from '@remix-run/react'
 import { TRPCQueryClientProvider } from '@repo/api/provider'
+import BoxMain from '@repo/ui/components/BoxMain'
+import Spinner from '@repo/ui/components/Spinner'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
+import H1 from '@repo/ui/typography/H1'
 import { useEffectEvent } from '@repo/utils/hooks'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect } from 'react'
+import { getPermission } from '~/helpers/get-permission'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
+import { useSession } from '~/hooks/useSession'
 import { supabase } from '~/lib/supabase.client'
 import './tailwind.css'
 
@@ -64,7 +69,12 @@ export function Layout({ children }: { children: ReactNode }) {
                 <Links />
             </head>
             <body className='bg-blue-800 text-white'>
-                {children}
+                <TRPCQueryClientProvider
+                    baseUrl={import.meta.env.VITE_API_URL}
+                    supabaseClient={supabase}
+                >
+                    {children}
+                </TRPCQueryClientProvider>
                 <ScrollRestoration />
                 <Scripts />
             </body>
@@ -80,24 +90,9 @@ export const meta: MetaFunction = () => {
 }
 
 export default function App() {
-    const [authChecked, setAuthChecked] = useState(false)
-
     const navigate = useNavigate()
 
     const handleLifecycle = useEffectEvent(async () => {
-        const { data } = await supabase.auth.getSession()
-
-        if (
-            data.session === null ||
-            data.session.expires_at === undefined ||
-            new Date(data.session.expires_at * 1000) < new Date()
-        ) {
-            navigate('/signin')
-            return
-        }
-
-        setAuthChecked(true)
-
         window.addEventListener('beforeunload', handleBeforeUnload)
 
         return () => {
@@ -109,16 +104,33 @@ export default function App() {
         void handleLifecycle()
     }, [handleLifecycle])
 
-    if (!authChecked) {
+    const { data: session, isLoading: isSessionLoading } = useSession()
+
+    if (isSessionLoading) {
+        return (
+            <BoxMain className='flex items-center justify-center'>
+                <Spinner light />
+            </BoxMain>
+        )
+    }
+
+    if (
+        session?.expires_at &&
+        new Date(session.expires_at * 1000) < new Date()
+    ) {
+        navigate('/signin')
         return null
     }
 
-    return (
-        <TRPCQueryClientProvider
-            baseUrl={import.meta.env.VITE_API_URL}
-            supabaseClient={supabase}
-        >
-            <Outlet />
-        </TRPCQueryClientProvider>
-    )
+    const permission = getPermission(session?.user.email)
+
+    if (permission === 'none') {
+        return (
+            <BoxMain className='flex items-center justify-center'>
+                <H1>Unauthorized</H1>
+            </BoxMain>
+        )
+    }
+
+    return <Outlet />
 }

@@ -4,9 +4,15 @@ import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import H1 from '@repo/ui/typography/H1'
 import { ExternalLink, LogOut } from 'lucide-react'
+import { getPermission } from '~/helpers/get-permission'
+import { useSession } from '~/hooks/useSession'
 
 export default function Index() {
     const navigation = useNavigation()
+
+    const { data: session } = useSession()
+
+    const permission = getPermission(session?.user.email)
 
     return (
         <BoxMain className='flex flex-col items-center'>
@@ -29,30 +35,38 @@ export default function Index() {
             <BoxContentSlot>
                 <nav>
                     <ul className='flex w-full max-w-96 flex-grow flex-col items-center justify-center gap-4'>
-                        <li className='w-full'>
-                            <Button
-                                variant='secondary'
-                                asChild
-                                loading={
-                                    navigation.state === 'loading' &&
-                                    navigation.location.pathname === '/songs'
-                                }
-                            >
-                                <Link to='/songs'>Songs</Link>
-                            </Button>
-                        </li>
-                        <li className='w-full'>
-                            <Button
-                                variant='secondary'
-                                asChild
-                                loading={
-                                    navigation.state === 'loading' &&
-                                    navigation.location.pathname === '/setlists'
-                                }
-                            >
-                                <Link to='/setlists'>Setlists</Link>
-                            </Button>
-                        </li>
+                        {permission === 'admin' && (
+                            <li className='w-full'>
+                                <Button
+                                    variant='secondary'
+                                    asChild
+                                    loading={
+                                        navigation.state === 'loading' &&
+                                        navigation.location.pathname ===
+                                            '/songs'
+                                    }
+                                >
+                                    <Link to='/songs'>Songs</Link>
+                                </Button>
+                            </li>
+                        )}
+
+                        {permission === 'admin' && (
+                            <li className='w-full'>
+                                <Button
+                                    variant='secondary'
+                                    asChild
+                                    loading={
+                                        navigation.state === 'loading' &&
+                                        navigation.location.pathname ===
+                                            '/setlists'
+                                    }
+                                >
+                                    <Link to='/setlists'>Setlists</Link>
+                                </Button>
+                            </li>
+                        )}
+
                         <li className='w-full'>
                             <Button
                                 variant='secondary'

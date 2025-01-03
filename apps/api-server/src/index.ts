@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express from 'express'
 import { contactFormRouter } from './router/contactForm.js'
+import { googleCalendarRouter } from './router/googleCalendar.js'
 
 assert(process.env.API_CORS_ORIGIN, 'Expect API_CORS_ORIGIN to be set.')
 
@@ -21,6 +22,7 @@ app.use(
 app.use(cookieParser())
 app.use(bodyParser.json({ limit: '1mb' }))
 
+app.use('/calendar', googleCalendarRouter)
 app.use('/contact', contactFormRouter)
 app.use('/trpc', trpcExpressAdapter)
 

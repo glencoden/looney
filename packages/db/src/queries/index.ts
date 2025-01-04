@@ -12,3 +12,5 @@ export { deleteSetlist } from './deleteSetlist.js'
 export { getSetlist } from './getSetlist.js'
 export { getSetlists } from './getSetlists.js'
 export { removeSongFromSetlist } from './removeSongFromSetlist.js'
+
+export { getPermission } from './getPermission.js'

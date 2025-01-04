@@ -15,8 +15,8 @@ import '@repo/ui/styles.css'
 import H1 from '@repo/ui/typography/H1'
 import { useEffectEvent } from '@repo/utils/hooks'
 import { ReactNode, useEffect } from 'react'
-import { getPermission } from '~/helpers/get-permission'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
+import { hasAccess } from '~/helpers/has-access'
 import { useSession } from '~/hooks/useSession'
 import { supabase } from '~/lib/supabase.client'
 import './tailwind.css'
@@ -104,7 +104,7 @@ export default function App() {
         void handleLifecycle()
     }, [handleLifecycle])
 
-    const { data: session, isLoading: isSessionLoading } = useSession()
+    const { session, isSessionLoading } = useSession()
 
     if (isSessionLoading) {
         return (
@@ -122,9 +122,7 @@ export default function App() {
         return null
     }
 
-    const permission = getPermission(session?.user.email)
-
-    if (permission === 'none') {
+    if (!hasAccess(session?.user.accessRole)) {
         return (
             <BoxMain className='flex items-center justify-center'>
                 <H1>Unauthorized</H1>

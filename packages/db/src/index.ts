@@ -5,11 +5,11 @@ import postgres from 'postgres'
 import { z } from 'zod'
 import { guestsTable as guestsSchema } from './schema/guestsTable.js'
 import { lipsTable as lipsSchema } from './schema/lipsTable.js'
+import { permissionsTable as permissionsSchema } from './schema/permissionsTable.js'
 import { sessionsTable as sessionsSchema } from './schema/sessionsTable.js'
 import { setlistsTable as setlistsSchema } from './schema/setlistsTable.js'
 import { setlistsToSongsTable as setlistsToSongsSchema } from './schema/setlistsToSongsTable.js'
 import { songsTable as songsSchema } from './schema/songsTable.js'
-
 /**
  * Table schema
  */
@@ -21,6 +21,8 @@ export const setlistsToSongsTable = setlistsToSongsSchema
 export const sessionsTable = sessionsSchema
 export const guestsTable = guestsSchema
 export const lipsTable = lipsSchema
+
+export const permissionsTable = permissionsSchema
 
 /**
  * Zod schema
@@ -41,6 +43,9 @@ export const GuestInsertSchema = createInsertSchema(guestsTable)
 export const LipSchema = createSelectSchema(lipsTable)
 export const LipInsertSchema = createInsertSchema(lipsTable)
 
+export const PermissionSchema = createSelectSchema(permissionsTable)
+export const PermissionInsertSchema = createInsertSchema(permissionsTable)
+
 /**
  * Types
  */
@@ -58,6 +63,9 @@ export type Guest = z.infer<typeof GuestSchema>
 export type GuestInsert = z.infer<typeof GuestInsertSchema>
 export type Lip = z.infer<typeof LipSchema>
 export type LipInsert = z.infer<typeof LipInsertSchema>
+
+export type Permission = z.infer<typeof PermissionSchema>
+export type PermissionInsert = z.infer<typeof PermissionInsertSchema>
 
 /**
  * Database client

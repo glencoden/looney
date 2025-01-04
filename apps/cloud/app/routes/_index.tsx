@@ -2,17 +2,17 @@ import { Link, useNavigation } from '@remix-run/react'
 import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
-import H1 from '@repo/ui/typography/H1'
 import { ExternalLink, LogOut } from 'lucide-react'
-import { getPermission } from '~/helpers/get-permission'
+import { hasAccess } from '~/helpers/has-access'
 import { useSession } from '~/hooks/useSession'
+import logoWhite from '~/images/logo-white.png'
 
 export default function Index() {
     const navigation = useNavigation()
 
-    const { data: session } = useSession()
+    const { session } = useSession()
 
-    const permission = getPermission(session?.user.email)
+    const accessRole = session?.user.accessRole
 
     return (
         <BoxMain className='flex flex-col items-center'>
@@ -29,13 +29,13 @@ export default function Index() {
                     </Link>
                 </Button>
 
-                <H1 className='mt-20'>Looney Cloud</H1>
+                <img src={logoWhite} alt='Logo' className='w-40' />
             </header>
 
             <BoxContentSlot>
                 <nav>
                     <ul className='flex w-full max-w-96 flex-grow flex-col items-center justify-center gap-4'>
-                        {permission === 'admin' && (
+                        {hasAccess(accessRole, 'host') && (
                             <li className='w-full'>
                                 <Button
                                     variant='secondary'
@@ -50,8 +50,7 @@ export default function Index() {
                                 </Button>
                             </li>
                         )}
-
-                        {permission === 'admin' && (
+                        {hasAccess(accessRole, 'host') && (
                             <li className='w-full'>
                                 <Button
                                     variant='secondary'
@@ -82,14 +81,16 @@ export default function Index() {
 
                         <hr className='w-full border-2 border-transparent' />
 
-                        <li className='w-full'>
-                            <Button variant='light' asChild>
-                                <Link to='/'>
-                                    Content{' '}
-                                    <ExternalLink className='ml-2 h-5 w-5' />
-                                </Link>
-                            </Button>
-                        </li>
+                        {hasAccess(accessRole, 'host') && (
+                            <li className='w-full'>
+                                <Button variant='light' asChild>
+                                    <Link to='/'>
+                                        Content{' '}
+                                        <ExternalLink className='ml-2 h-5 w-5' />
+                                    </Link>
+                                </Button>
+                            </li>
+                        )}
                         <li className='w-full'>
                             <Button variant='light' asChild>
                                 <Link to='/'>

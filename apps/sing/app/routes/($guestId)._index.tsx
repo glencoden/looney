@@ -12,6 +12,7 @@ import H4 from '@repo/ui/typography/H4'
 import { toNonBreaking } from '@repo/utils/text'
 import { Star } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useIntl } from 'react-intl'
 import { Drawer } from 'vaul'
 
 type NavigationPage = 'songs' | 'feedback' | 'tip'
@@ -28,13 +29,7 @@ type LoaderResponse = {
 export const loader = async ({ params }: LoaderFunctionArgs) => {
     const guestId = params.guestId
 
-    // If guestId is undefined:
-    //
-    // We are in demo mode!
-    //
-    // 1. Load all songs and go to business with local state
-    // 2. If there is an active demo session, create a fake guest id hook up to server state
-    // 3. As soon as there is an upcoming or ongoing non-demo session > show "scan the QR code to join <session title>"
+    // If guestId is undefined, create demo guest and let FE handle redirect
 
     if (!guestId) {
         const songs = await getSongs()
@@ -59,10 +54,21 @@ export default function Index() {
     console.log('session', session)
     console.log('songs', songs)
 
+    // We are in demo mode!
+    //
+    // 1. Redirect to /guestId
+    // 2. Create fake session and disable lips server state
+    // 3. If there is an active demo session, business as usual between demo guest and demo session
+    // 4. As soon as there is an upcoming or ongoing non-demo session > show "scan the QR code to join <session title>"
+
+    // We are live!
+    //
     // 1. There is no session in the record yet > show "session coming soon"
     // 2. The session in the record is in the future > show "session start in <time>"
     // 3. The session is ongoing or in the past AND there is no other upcoming or ongoing session > load session and songs for its setlist
     // 4. The session is in the past and there is an upcoming or ongoing non-demo session > show "scan the QR code to join <session title>"
+
+    const intl = useIntl()
 
     /**
      *
@@ -139,7 +145,10 @@ export default function Index() {
                     aria-label='Song search input'
                     defaultValue={q || ''}
                     name='q'
-                    placeholder='Search'
+                    placeholder={intl.formatMessage({
+                        id: 'search.placeholder',
+                        defaultMessage: 'Search',
+                    })}
                     type='search'
                     onChange={(event) => {
                         setQ(event.target.value)
@@ -224,7 +233,10 @@ export default function Index() {
                                     className='px-1'
                                     onClick={createHandleNavButtonClick('tip')}
                                 >
-                                    Tip the band
+                                    {intl.formatMessage({
+                                        id: 'nav.button.tip',
+                                        defaultMessage: 'Tip the band',
+                                    })}
                                 </Button>
                             )}
                         </nav>

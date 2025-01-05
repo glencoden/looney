@@ -14,3 +14,7 @@ export { getSetlists } from './getSetlists.js'
 export { removeSongFromSetlist } from './removeSongFromSetlist.js'
 
 export { getPermission } from './getPermission.js'
+
+export { createGuest } from './createGuest.js'
+export { getGuest } from './getGuest.js'
+export { updateGuest } from './updateGuest.js'

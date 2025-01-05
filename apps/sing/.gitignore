@@ -3,3 +3,5 @@ node_modules
 /.cache
 # /build # ignored on workspace level so that pnpm deploy will copy the build folder
 .env
+
+app/translations/extracted-messages

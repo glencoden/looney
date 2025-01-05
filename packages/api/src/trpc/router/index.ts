@@ -1,6 +1,7 @@
 import type { inferReactQueryProcedureOptions } from '@trpc/react-query'
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 import { createTRPCRouter } from '../index.js'
+import { guestRouter } from './guest/guestRouter.js'
 import { openaiRouter } from './openai/openaiRouter.js'
 import { permissionRouter } from './permission/permissionRouter.js'
 import { setlistRouter } from './setlist/setlistRouter.js'
@@ -16,4 +17,5 @@ export const trpcRouter = createTRPCRouter({
     song: songRouter,
     permission: permissionRouter,
     openai: openaiRouter,
+    guest: guestRouter,
 })

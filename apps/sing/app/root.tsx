@@ -1,4 +1,8 @@
-import type { LinksFunction } from '@remix-run/node'
+import {
+    json,
+    type LinksFunction,
+    type LoaderFunctionArgs,
+} from '@remix-run/node'
 import {
     Links,
     Meta,
@@ -6,13 +10,15 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
+    useLoaderData,
 } from '@remix-run/react'
-
 import { TRPCQueryClientProvider } from '@repo/api/provider'
 import BoxMain from '@repo/ui/components/BoxMain'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
+import parser from 'accept-language-parser'
 import { ReactNode } from 'react'
+import { IntlProvider } from 'react-intl'
 import './tailwind.css'
 
 export const links: LinksFunction = () => [
@@ -82,14 +88,48 @@ export const meta: MetaFunction = () => {
     ]
 }
 
+const getTranslations = async (locale: string) => {
+    switch (locale) {
+        case 'en': {
+            const translations = await import(
+                '~/translations/compiled-messages/en.json'
+            )
+            return translations.default
+        }
+        case 'de': {
+            const translations = await import(
+                '~/translations/compiled-messages/de.json'
+            )
+            return translations.default
+        }
+        default:
+            throw new Error('Unsupported locale')
+    }
+}
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+    const acceptLang = request.headers.get('accept-language')
+    const languages = parser.parse(acceptLang ?? undefined)
+    const parsed = languages[0]?.code ?? 'unknown'
+    const locale = ['en', 'de'].includes(parsed) ? parsed : 'en'
+
+    const translations = await getTranslations(locale)
+
+    return json({ locale, translations })
+}
+
 export default function App() {
+    const { locale, translations } = useLoaderData<typeof loader>()
+
     return (
         <TRPCQueryClientProvider baseUrl={import.meta.env.VITE_API_URL}>
-            <BoxMain className='flex items-center justify-center p-0'>
-                <div className='mobile-sim-height relative w-full overflow-hidden sm:max-w-md sm:rounded-[32px] sm:border-4 sm:border-black'>
-                    <Outlet />
-                </div>
-            </BoxMain>
+            <IntlProvider locale={locale} messages={translations}>
+                <BoxMain className='flex items-center justify-center p-0'>
+                    <div className='mobile-sim-height relative w-full overflow-hidden sm:max-w-md sm:rounded-[32px] sm:border-4 sm:border-black'>
+                        <Outlet />
+                    </div>
+                </BoxMain>
+            </IntlProvider>
         </TRPCQueryClientProvider>
     )
 }

@@ -8,7 +8,9 @@
         "dev": "node ./server.js",
         "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
         "start": "cross-env NODE_ENV=production node ./server.js",
-        "typecheck": "tsc"
+        "typecheck": "tsc",
+        "i18n:extract": "formatjs extract 'app/**/*.ts*' --ignore='**/*.d.ts' --out-file app/translations/extracted-messages/en.json && node scripts/extract-translations.js && prettier --write app/translations/extracted-messages",
+        "i18n:compile": "formatjs compile-folder app/translations/extracted-messages app/translations/compiled-messages"
     },
     "dependencies": {
         "@remix-run/express": "catalog:",
@@ -18,6 +20,7 @@
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
         "@repo/utils": "workspace:*",
+        "accept-language-parser": "^1.5.0",
         "compression": "catalog:",
         "cross-env": "catalog:",
         "express": "catalog:",
@@ -26,14 +29,17 @@
         "morgan": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
+        "react-intl": "^7.1.0",
         "vaul": "^1.1.2",
         "zod": "^3.24.1"
     },
     "devDependencies": {
+        "@formatjs/cli": "^6.3.15",
         "@remix-run/dev": "catalog:",
         "@repo/config-eslint": "workspace:*",
         "@repo/config-tailwind": "workspace:*",
         "@repo/config-typescript": "workspace:*",
+        "@types/accept-language-parser": "^1.5.6",
         "@types/compression": "catalog:",
         "@types/express": "catalog:",
         "@types/morgan": "catalog:",

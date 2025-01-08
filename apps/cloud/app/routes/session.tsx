@@ -135,6 +135,8 @@ const FULL_LIP_HEIGHT = 108 // px, lip height 96 + list gap 12
 const FULL_ACTION_LIP_BOX_HEIGHT = 124 // px, lip box height 112 + list gap 12
 const MD_BREAKPOINT = 768 // px, tailwind md breakpoint
 const HORIZONTAL_DRAG_ACTION_THRESHOLD = 96 // px
+const DRAG_DROP_LIST_HEADER_HEIGHT_MOBILE = 144 // px
+const DRAG_DROP_LIST_HEADER_HEIGHT_DESKTOP = 160 // px
 
 enum BoxType {
     LEFT = 'left',
@@ -290,7 +292,9 @@ export default function Session() {
              * Page swap on mobile
              */
 
-            if (window.innerWidth < MD_BREAKPOINT) {
+            const isMobile = window.innerWidth < MD_BREAKPOINT
+
+            if (isMobile) {
                 if (
                     vx <
                         window.innerWidth / 2 -
@@ -319,6 +323,12 @@ export default function Session() {
              * Find drag and target box
              */
 
+            const offsetTop =
+                leftScrollBoxRef.current.offsetTop +
+                (isMobile
+                    ? DRAG_DROP_LIST_HEADER_HEIGHT_MOBILE
+                    : DRAG_DROP_LIST_HEADER_HEIGHT_DESKTOP)
+
             let dragBox: BoxType | undefined
             let targetBox: BoxType | undefined
 
@@ -329,7 +339,7 @@ export default function Session() {
                     if (mx > (-1 * dragBoxWidth) / 2) {
                         targetBox = BoxType.RIGHT
                     } else {
-                        if (vy > leftScrollBoxRef.current.offsetTop) {
+                        if (vy > offsetTop) {
                             targetBox = BoxType.LEFT
                         } else {
                             targetBox = BoxType.ACTION
@@ -343,7 +353,7 @@ export default function Session() {
                     if (mx > dragBoxWidth / 2) {
                         targetBox = BoxType.RIGHT
                     } else {
-                        if (vy > leftScrollBoxRef.current.offsetTop) {
+                        if (vy > offsetTop) {
                             targetBox = BoxType.LEFT
                         } else {
                             targetBox = BoxType.ACTION
@@ -355,7 +365,7 @@ export default function Session() {
                 case 'live': {
                     dragBox = BoxType.ACTION
 
-                    if (vy < leftScrollBoxRef.current.offsetTop) {
+                    if (vy < offsetTop) {
                         targetBox = BoxType.ACTION
                     } else {
                         if (mx > dragBoxWidth / 2) {
@@ -531,13 +541,14 @@ export default function Session() {
                 console.log('DRAG INDEX', dragIndex)
                 console.log('TARGET INDEX', targetIndex)
 
+                setIsActionTarget(false)
                 unlockScroll()
             }
         },
     )
 
     return (
-        <BoxMain className='relative'>
+        <BoxMain className='relative overflow-visible'>
             <div
                 className={cn('absolute inset-0', {
                     'transition-transform duration-300': !isPageDragging,
@@ -555,60 +566,55 @@ export default function Session() {
                 >
                     <section
                         className={cn(
-                            'flex h-dvh flex-col items-center gap-3 pt-12 transition-transform duration-200 max-md:w-[100vw]',
+                            'flex h-dvh flex-col items-center gap-3 transition-transform duration-200 max-md:w-[100vw]',
                             {
                                 'max-md:scale-95': isPageDragging,
                             },
                         )}
                     >
-                        <div className='px-main border-white-500 h-[112px] w-full shrink-0 border-2'>
-                            <div
-                                className={cn(
-                                    'm-auto flex h-full w-full max-w-96 items-center justify-center border border-lime-400',
-                                    {
-                                        'border-4': isActionTarget,
-                                    },
-                                )}
-                            >
-                                {actionLip && (
-                                    <DragDropListItem
-                                        lip={actionLip}
-                                        spring={actionSpring}
-                                        bind={bindLipDrag}
-                                    />
-                                )}
-                            </div>
-                        </div>
-
                         <DragDropList
                             ref={leftScrollBoxRef}
                             lips={selectedLips}
                             springs={selectedSprings}
                             bind={bindLipDrag}
                             fixTop={scrollTopLock && scrollTopLock[0]}
+                            header={
+                                <div
+                                    className={cn(
+                                        'm-auto flex h-full w-full items-center justify-center',
+                                        {
+                                            'border-4 border-white':
+                                                isActionTarget,
+                                        },
+                                    )}
+                                >
+                                    {actionLip && (
+                                        <DragDropListItem
+                                            lip={actionLip}
+                                            spring={actionSpring}
+                                            bind={bindLipDrag}
+                                        />
+                                    )}
+                                </div>
+                            }
                         />
                     </section>
 
                     <section
                         className={cn(
-                            'flex h-dvh flex-col items-center gap-3 pt-12 transition-transform duration-200 max-md:w-[100vw]',
+                            'flex h-dvh flex-col items-center gap-3 transition-transform duration-200 max-md:w-[100vw]',
                             {
                                 'max-md:scale-95': isPageDragging,
                             },
                         )}
                     >
-                        <div className='px-main border-white-500 h-[112px] w-full shrink-0 border-2'>
-                            <div className='m-auto flex h-full w-full max-w-96 items-center justify-center border-2 border-lime-400'>
-                                Search field
-                            </div>
-                        </div>
-
                         <DragDropList
                             ref={rightScrollBoxRef}
                             lips={idleLips}
                             springs={idleSprings}
                             bind={bindLipDrag}
                             fixTop={scrollTopLock && scrollTopLock[1]}
+                            header={<div>Search field</div>}
                         />
                     </section>
 

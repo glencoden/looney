@@ -13,7 +13,7 @@ export const createSpringEffect = (
                 x: mx,
                 y: my,
                 scale: 1.07,
-                zIndex: 1,
+                zIndex: 20,
                 shadow: 15,
                 immediate: (key: string) => key === 'zIndex',
                 config: (key: string) =>

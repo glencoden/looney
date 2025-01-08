@@ -1,7 +1,7 @@
 import { SpringValue } from '@react-spring/web'
 import { cn } from '@repo/ui/helpers'
 import { ReactDOMAttributes } from '@use-gesture/react/dist/declarations/src/types'
-import { forwardRef } from 'react'
+import { forwardRef, ReactNode } from 'react'
 import DragDropListItem from '~/components/DragDropListItem'
 
 type Lip = {
@@ -26,8 +26,9 @@ const DragDropList = forwardRef<
         }[]
         bind: (...args: any[]) => ReactDOMAttributes
         fixTop: number | null
+        header: ReactNode
     }
->(({ lips, springs, bind, fixTop }, ref) => {
+>(({ lips, springs, bind, fixTop, header }, ref) => {
     return (
         <div
             ref={ref}
@@ -39,6 +40,15 @@ const DragDropList = forwardRef<
             )}
             style={fixTop ? { transform: `translateY(-${fixTop}px)` } : {}}
         >
+            <div
+                className='sticky left-0 top-0 z-10 h-36 w-full shrink-0 bg-blue-800 lg:h-40'
+                style={fixTop ? { top: `${fixTop}px` } : {}}
+            >
+                <div className='absolute bottom-0 left-1/2 flex h-28 w-full -translate-x-1/2 items-center justify-center'>
+                    {header}
+                </div>
+            </div>
+
             {springs.map((spring, index) => {
                 const lip = lips[index]
 

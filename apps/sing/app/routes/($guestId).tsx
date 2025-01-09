@@ -1,5 +1,5 @@
 import { json, LoaderFunctionArgs } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { Link, Outlet, useLoaderData } from '@remix-run/react'
 import { Guest, Session } from '@repo/db'
 import { getSongs, getSongsBySetlistId } from '@repo/db/queries'
 import Button from '@repo/ui/components/Button'
@@ -100,8 +100,8 @@ export default function Index() {
      *
      */
 
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-    const [selectedPage, setSelectedPage] = useState<NavigationPage>('songs')
+    const [isDrawerOpen, setIsDrawerOpen] = useState(true)
+    const [selectedPage, setSelectedPage] = useState<NavigationPage>('tip')
 
     const createHandleNavButtonClick = (page: NavigationPage) => {
         return () => {
@@ -228,16 +228,24 @@ export default function Index() {
                                 </Button>
                             )}
                             {pages.includes('tip') && (
-                                <Button
-                                    size='sm'
-                                    className='px-1'
-                                    onClick={createHandleNavButtonClick('tip')}
-                                >
-                                    {intl.formatMessage({
-                                        id: 'nav.button.tip',
-                                        defaultMessage: 'Tip the band',
-                                    })}
+                                <Button asChild size='sm' className='px-1'>
+                                    <Link to='/tip'>
+                                        {intl.formatMessage({
+                                            id: 'nav.button.tip',
+                                            defaultMessage: 'Tip the band',
+                                        })}
+                                    </Link>
                                 </Button>
+                                // <Button
+                                //     size='sm'
+                                //     className='px-1'
+                                //     onClick={createHandleNavButtonClick('tip')}
+                                // >
+                                //     {intl.formatMessage({
+                                //         id: 'nav.button.tip',
+                                //         defaultMessage: 'Tip the band',
+                                //     })}
+                                // </Button>
                             )}
                         </nav>
 
@@ -246,13 +254,12 @@ export default function Index() {
                             onClick={() => setIsDrawerOpen(false)}
                         />
 
-                        <Drawer.Content className='px-main py-main absolute inset-x-0 bottom-20 z-10 mt-24 box-content flex h-auto flex-col items-center gap-8 rounded-t-2xl border-l-4 border-r-4 border-t-4 border-black bg-blue-800 pb-4 shadow-[0_-6px_14px_rgba(0,0,0,0.25)] outline-0'>
-                            <div className='h-80'>
+                        <Drawer.Content className='absolute inset-x-0 bottom-20 z-10 mt-24 box-content flex h-auto flex-col items-center gap-8 rounded-t-2xl border-l-4 border-r-4 border-t-4 border-black bg-blue-800 px-6 py-12 pb-4 shadow-[0_-6px_14px_rgba(0,0,0,0.25)] outline-0'>
+                            <div className='min-h-80 w-full'>
                                 {(() => {
                                     switch (selectedPage) {
                                         case 'songs':
                                             return 'songs'
-                                            break
                                         case 'feedback':
                                             return (
                                                 <Input
@@ -265,10 +272,8 @@ export default function Index() {
                                                     type='text'
                                                 />
                                             )
-                                            break
                                         case 'tip':
-                                            return 'tip'
-                                            break
+                                            return <Outlet />
                                     }
                                 })()}
                             </div>

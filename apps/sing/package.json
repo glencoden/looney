@@ -20,6 +20,7 @@
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
         "@repo/utils": "workspace:*",
+        "@stripe/stripe-js": "^5.5.0",
         "accept-language-parser": "^1.5.0",
         "compression": "catalog:",
         "cross-env": "catalog:",

@@ -2,8 +2,8 @@ import { Link, useNavigate } from '@remix-run/react'
 import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
+import Logo from '~/components/Logo'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
-import logoWhite from '~/images/logo-white.png'
 import { supabase } from '~/lib/supabase.client'
 
 export default function Signout() {
@@ -18,7 +18,7 @@ export default function Signout() {
     return (
         <BoxMain className='flex flex-col items-center'>
             <header className='w-full'>
-                <img src={logoWhite} alt='Logo' className='w-40' />
+                <Logo />
             </header>
 
             <BoxContentSlot>

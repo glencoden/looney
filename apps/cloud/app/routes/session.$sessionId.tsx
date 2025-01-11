@@ -1,148 +1,27 @@
 import { useSpring, useSprings } from '@react-spring/web'
 import { json, LoaderFunctionArgs } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { useLoaderData, useNavigate } from '@remix-run/react'
+import { LipDTO } from '@repo/api'
 import { api } from '@repo/api/client'
+import { Session } from '@repo/db'
 import { getSession } from '@repo/db/queries'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Input from '@repo/ui/components/Input'
-import Spinner from '@repo/ui/components/Spinner'
 import { cn } from '@repo/ui/helpers'
 import { useDrag } from '@use-gesture/react'
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { z } from 'zod'
 import AddDemoLipButton from '~/components/AddDemoLipButton'
 import DragDropList from '~/components/DragDropList'
 import DragDropListItem from '~/components/DragDropListItem'
+import Logo from '~/components/Logo'
 import SessionMenu from '~/components/SessionMenu'
 import { createSpringEffect } from '~/helpers/create-spring-effect'
-
-type Lip = {
-    id: string
-    songTitle: string
-    artistName: string
-    singerName: string
-    status: 'idle' | 'selected' | 'staged' | 'live' | 'done' | 'deleted'
-    sortNumber: number
-}
-
-const lips: Lip[] = [
-    {
-        id: 'dmvdhftysh74hf',
-        songTitle: 'Hit me baby one more time',
-        artistName: 'Britney Spears',
-        singerName: 'Josi Schmidt',
-        status: 'staged',
-        sortNumber: 1,
-    },
-    {
-        id: 'djvhy783hnfh',
-        songTitle: 'Summer of 69',
-        artistName: 'Bryan Adams',
-        singerName: 'Bernard Hufstein',
-        status: 'idle',
-        sortNumber: 2,
-    },
-    {
-        id: 'ehfut8rt83urhfufiu',
-        songTitle: 'I want to break free',
-        artistName: 'Queen',
-        singerName: 'Lisa Müller',
-        status: 'idle',
-        sortNumber: 3,
-    },
-    {
-        id: '92927eyhfhcjhj',
-        songTitle: 'Shake it off',
-        artistName: 'Taylor Swift',
-        singerName: 'Josi Schmidt',
-        status: 'selected',
-        sortNumber: 4,
-    },
-    {
-        id: 'oaxnfhr64u83hj',
-        songTitle: 'Blinding Lights',
-        artistName: 'The Weeknd',
-        singerName: 'Rebecca Erler',
-        status: 'selected',
-        sortNumber: 5,
-    },
-    {
-        id: 'mvdhftyh74hf',
-        songTitle: 'Hit me baby one more time',
-        artistName: 'Britney Spears',
-        singerName: 'Josi Schmidt',
-        status: 'idle',
-        sortNumber: 6,
-    },
-    {
-        id: 'jvhy78hnfh',
-        songTitle: 'Summer of 69',
-        artistName: 'Bryan Adams',
-        singerName: 'Bernard Hufstein',
-        status: 'idle',
-        sortNumber: 7,
-    },
-    {
-        id: 'hfut8rt83rhfufiu',
-        songTitle: 'I want to break free',
-        artistName: 'Queen',
-        singerName: 'Lisa Müller',
-        status: 'selected',
-        sortNumber: 8,
-    },
-    {
-        id: '2927eyfhcjhj',
-        songTitle: 'Shake it off',
-        artistName: 'Taylor Swift',
-        singerName: 'Josi Schmidt',
-        status: 'idle',
-        sortNumber: 9,
-    },
-    {
-        id: 'axnfhr4u83hj',
-        songTitle: 'Blinding Lights',
-        artistName: 'The Weeknd',
-        singerName: 'Rebecca Erler',
-        status: 'idle',
-        sortNumber: 10,
-    },
-    {
-        id: '2927eyfhc234fjhj',
-        songTitle: 'Shake it off',
-        artistName: 'Taylor Swift',
-        singerName: 'Josi Schmidt',
-        status: 'idle',
-        sortNumber: 11,
-    },
-    {
-        id: 'axnfhr23fr4u83hj',
-        songTitle: 'Blinding Lights',
-        artistName: 'The Weeknd',
-        singerName: 'Rebecca Erler',
-        status: 'idle',
-        sortNumber: 12,
-    },
-    {
-        id: '292723feyfhcjhj',
-        songTitle: 'Shake it off',
-        artistName: 'Taylor Swift',
-        singerName: 'Josi Schmidt',
-        status: 'idle',
-        sortNumber: 13,
-    },
-    {
-        id: 'axnfhr23f4u83hj',
-        songTitle: 'Blinding Lights',
-        artistName: 'The Weeknd',
-        singerName: 'Rebecca Erler',
-        status: 'idle',
-        sortNumber: 14,
-    },
-]
 
 const FULL_LIP_HEIGHT = 108 // px, lip height 96 + list gap 12
 const FULL_ACTION_LIP_BOX_HEIGHT = 124 // px, lip box height 112 + list gap 12
 const MD_BREAKPOINT = 768 // px, tailwind md breakpoint
+const MAX_CONTAINER_WIDTH = 1280 // px
 const HORIZONTAL_DRAG_ACTION_THRESHOLD = 96 // px
 const DRAG_DROP_LIST_HEADER_HEIGHT_MOBILE = 144 // px
 const DRAG_DROP_LIST_HEADER_HEIGHT_DESKTOP = 160 // px
@@ -166,7 +45,20 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     return json({ session })
 }
 
+const parseLoaderSession = (
+    session: ReturnType<typeof useLoaderData<typeof loader>>['session'],
+): Session => {
+    return {
+        ...session,
+        startsAt: new Date(session.startsAt),
+        endsAt: new Date(session.endsAt),
+        createdAt: session.createdAt ? new Date(session.createdAt) : null,
+    }
+}
+
 export default function ActiveSession() {
+    const navigate = useNavigate()
+
     /**
      *
      * Sever state
@@ -180,20 +72,19 @@ export default function ActiveSession() {
     useLayoutEffect(() => {
         utils.session.get.setData(
             { id: sessionFromLoader.id },
-            {
-                ...sessionFromLoader,
-                startsAt: new Date(sessionFromLoader.startsAt),
-                endsAt: new Date(sessionFromLoader.endsAt),
-                createdAt: sessionFromLoader.createdAt
-                    ? new Date(sessionFromLoader.createdAt)
-                    : null,
-            },
+            parseLoaderSession(sessionFromLoader),
         )
     }, [utils])
 
-    const { data: session } = api.session.get.useQuery({
+    const { data: sessionFromCache } = api.session.get.useQuery({
         id: sessionFromLoader.id,
     })
+
+    // Fallback to loader session as long as query cache update is pending
+    const session =
+        sessionFromCache === undefined
+            ? parseLoaderSession(sessionFromLoader)
+            : sessionFromCache
 
     if (session === null) {
         throw new Error(
@@ -201,27 +92,47 @@ export default function ActiveSession() {
         )
     }
 
-    console.log('SESSION', session)
+    const { data } = api.lip.getBySessionId.useQuery(
+        { id: session.id },
+        {
+            refetchInterval: 1000 * 60,
+        },
+    )
+
+    const lips = data ?? ([] as LipDTO[])
+
+    const { mutate: moveLip, isPending: isLipUpdatePending } =
+        api.lip.move.useMutation({
+            onSettled: () => {
+                void utils.lip.getBySessionId.invalidate({ id: session.id })
+            },
+        })
 
     /**
      *
-     * Idle lips filter
+     * Check for session expiry
      *
      */
 
-    const [q, setQ] = useState('')
+    useEffect(() => {
+        let timeoutId: ReturnType<typeof setTimeout>
 
-    // const filteredSongs = useMemo(() => {
-    //     if (!songs) {
-    //         return []
-    //     }
-    //     return songs.filter((song) => {
-    //         return (
-    //             song.artist.toLowerCase().includes(q.toLowerCase()) ||
-    //             song.title.toLowerCase().includes(q.toLowerCase())
-    //         )
-    //     })
-    // }, [songs, q])
+        const checkSessionExpired = () => {
+            return setTimeout(() => {
+                if (session.endsAt < new Date()) {
+                    navigate('/', { replace: true })
+                    return
+                }
+                timeoutId = checkSessionExpired()
+            }, 1000 * 10)
+        }
+
+        timeoutId = checkSessionExpired()
+
+        return () => {
+            clearTimeout(timeoutId)
+        }
+    }, [session.endsAt.toISOString()])
 
     /**
      *
@@ -289,9 +200,17 @@ export default function ActiveSession() {
      *
      */
 
+    const [q, setQ] = useState('')
+
     const idleLips = useMemo(() => {
-        return lips.filter((lip) => lip.status === 'idle')
-    }, [lips])
+        return lips.filter(
+            (lip) =>
+                lip.status === 'idle' &&
+                (lip.singerName.toLowerCase().includes(q.toLowerCase()) ||
+                    lip.artist.toLowerCase().includes(q.toLowerCase()) ||
+                    lip.songTitle.toLowerCase().includes(q.toLowerCase())),
+        )
+    }, [lips, q])
 
     const selectedLips = useMemo(() => {
         return lips.filter((lip) => lip.status === 'selected')
@@ -351,26 +270,6 @@ export default function ActiveSession() {
             }
 
             /**
-             * Delete and finish flags
-             */
-
-            let finishOnDrop = false
-            let deleteOnDrop = false
-
-            if (
-                vx < window.innerWidth / 2 - HORIZONTAL_DRAG_ACTION_THRESHOLD &&
-                dragItem.status === 'live'
-            ) {
-                finishOnDrop = true
-            }
-            if (
-                vx > window.innerWidth / 2 + HORIZONTAL_DRAG_ACTION_THRESHOLD &&
-                dragItem.status === 'idle'
-            ) {
-                deleteOnDrop = true
-            }
-
-            /**
              * Page swap on mobile
              */
 
@@ -398,6 +297,27 @@ export default function ActiveSession() {
                 }
                 if (pageInView === 'right' && dragItem.status !== 'idle') {
                     mx += window.innerWidth
+                }
+            }
+
+            /**
+             * Delete flag
+             */
+
+            let deleteOnDrop = false
+
+            if (dragItem.status === 'idle') {
+                if (isMobile) {
+                    deleteOnDrop =
+                        vx >
+                        window.innerWidth / 2 + HORIZONTAL_DRAG_ACTION_THRESHOLD
+                } else {
+                    const vwHalf = window.innerWidth / 2
+                    const leftCenter =
+                        Math.min(vwHalf, MAX_CONTAINER_WIDTH / 2) / 2
+                    deleteOnDrop =
+                        vx >
+                        vwHalf + leftCenter + HORIZONTAL_DRAG_ACTION_THRESHOLD
                 }
             }
 
@@ -615,7 +535,6 @@ export default function ActiveSession() {
             if (!down) {
                 console.log('LIP ID', lipId)
 
-                console.log('FINISH', finishOnDrop)
                 console.log('DELETE', deleteOnDrop)
 
                 console.log('DRAG BOX', dragBox)
@@ -623,19 +542,38 @@ export default function ActiveSession() {
                 console.log('DRAG INDEX', dragIndex)
                 console.log('TARGET INDEX', targetIndex)
 
+                // staged - live toggle on lip
+                // remove looney prefixes from docker compose services
+
+                let status: LipDTO['status'] = 'idle'
+
+                if (deleteOnDrop) {
+                    status = 'deleted' // indicate when hover
+                } else if (targetBox === 'left') {
+                    status = 'selected'
+                } else if (targetBox === 'action') {
+                    status = 'staged' // set live to done
+                }
+
+                // optimistic update
+                void moveLip({
+                    id: lipId,
+                    sessionId: session.id,
+                    status,
+                    sortNumber: targetIndex + 1,
+                })
+
                 setIsActionTarget(false)
                 unlockScroll()
             }
         },
+        {
+            pointer: {
+                capture:
+                    window?.matchMedia?.('(pointer: coarse)').matches ?? false,
+            },
+        },
     )
-
-    if (session === undefined) {
-        return (
-            <BoxMain className='flex items-center justify-center'>
-                <Spinner light />
-            </BoxMain>
-        )
-    }
 
     return (
         <BoxMain className='relative overflow-visible'>
@@ -671,13 +609,21 @@ export default function ActiveSession() {
                             header={
                                 <div
                                     className={cn(
-                                        'm-auto flex h-full w-full items-center justify-center',
+                                        'relative m-auto flex h-full w-full items-center justify-center border-4 border-white/30',
                                         {
-                                            'border-4 border-white':
-                                                isActionTarget,
+                                            'border-white': isActionTarget,
                                         },
                                     )}
                                 >
+                                    <Logo
+                                        className={cn(
+                                            'absolute left-1/2 top-1/2 w-24 -translate-x-1/2 -translate-y-1/2 opacity-30',
+                                            {
+                                                'opacity-100': isActionTarget,
+                                            },
+                                        )}
+                                    />
+
                                     {actionLip && (
                                         <DragDropListItem
                                             lip={actionLip}
@@ -701,6 +647,7 @@ export default function ActiveSession() {
                         <DragDropList
                             ref={rightScrollBoxRef}
                             lips={idleLips}
+                            q={q}
                             springs={idleSprings}
                             bind={bindLipDrag}
                             fixTop={scrollTopLock && scrollTopLock[1]}

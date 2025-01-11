@@ -1,22 +1,16 @@
 import { animated, SpringValue } from '@react-spring/web'
+import { LipDTO } from '@repo/api'
 import SongLip from '@repo/ui/components/SongLip'
 import { ReactDOMAttributes } from '@use-gesture/react/dist/declarations/src/types'
 
-type Lip = {
-    id: string
-    songTitle: string
-    artistName: string
-    singerName: string
-    status: 'idle' | 'selected' | 'staged' | 'live' | 'done' | 'deleted'
-    sortNumber: number
-}
-
 export default function DragDropListItem({
     lip,
+    q,
     spring: { zIndex, shadow, x, y, scale },
     bind,
 }: {
-    lip: Lip
+    lip: LipDTO
+    q?: string
     spring: {
         zIndex: SpringValue<number>
         shadow: SpringValue<number>
@@ -40,10 +34,10 @@ export default function DragDropListItem({
             }}
             children={
                 <>
-                    <SongLip lip={lip} />
+                    <SongLip lip={lip} q={q} />
                     <div
                         {...bind(lip.id)}
-                        className='absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 touch-none select-none'
+                        className='absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none select-none active:cursor-grabbing'
                     />
                 </>
             }

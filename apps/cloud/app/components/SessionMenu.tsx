@@ -70,7 +70,7 @@ export default function SessionMenu({
                     {session.isLocked ? (
                         <Lock className='h-6 w-6 text-white' />
                     ) : (
-                        <LockOpen className='h-6 w-6 text-blue-600' />
+                        <LockOpen className='h-6 w-6 text-white opacity-30' />
                     )}
                 </Button>
 
@@ -86,8 +86,8 @@ export default function SessionMenu({
                     onClick={handleFavoriteButtonClick}
                 >
                     <Star
-                        className={cn('h-6 w-6 text-blue-600', {
-                            'text-white': !session.hideFavorites,
+                        className={cn('h-6 w-6 text-white opacity-30', {
+                            'opacity-100': !session.hideFavorites,
                         })}
                     />
                 </Button>
@@ -104,8 +104,8 @@ export default function SessionMenu({
                     onClick={handleTipCollectionButtonClick}
                 >
                     <CircleDollarSign
-                        className={cn('h-6 w-6 text-blue-600', {
-                            'text-white': !session.hideTipCollection,
+                        className={cn('h-6 w-6 text-white opacity-30', {
+                            'opacity-100': !session.hideTipCollection,
                         })}
                     />
                 </Button>

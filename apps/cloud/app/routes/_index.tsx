@@ -4,9 +4,9 @@ import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import { ExternalLink, LogOut } from 'lucide-react'
+import Logo from '~/components/Logo'
 import { hasAccess } from '~/helpers/has-access'
 import { useUserSession } from '~/hooks/useUserSession'
-import logoWhite from '~/images/logo-white.png'
 
 export default function Index() {
     const navigation = useNavigation()
@@ -31,7 +31,7 @@ export default function Index() {
                     </Link>
                 </Button>
 
-                <img src={logoWhite} alt='Logo' className='w-40' />
+                <Logo />
             </header>
 
             <BoxContentSlot>

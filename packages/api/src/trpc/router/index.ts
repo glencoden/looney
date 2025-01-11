@@ -2,6 +2,7 @@ import type { inferReactQueryProcedureOptions } from '@trpc/react-query'
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 import { createTRPCRouter } from '../index.js'
 import { guestRouter } from './guest/guestRouter.js'
+import { lipRouter } from './lip/lipRouter.js'
 import { openaiRouter } from './openai/openaiRouter.js'
 import { permissionRouter } from './permission/permissionRouter.js'
 import { sessionRouter } from './session/sessionRouter.js'
@@ -22,4 +23,5 @@ export const trpcRouter = createTRPCRouter({
     stripe: stripeRouter,
     guest: guestRouter,
     session: sessionRouter,
+    lip: lipRouter,
 })

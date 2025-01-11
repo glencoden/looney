@@ -1,30 +1,47 @@
-import { and, eq, gt, lt } from 'drizzle-orm'
+import { and, eq, gt } from 'drizzle-orm'
 import { db, SessionInsert, sessionsTable } from '../index.js'
 
 export const createSession = (session: SessionInsert) => {
     return db.transaction(async (tx) => {
-        const currentDate = new Date()
         const activeSessions = await tx
             .select()
             .from(sessionsTable)
             .where(
                 and(
-                    lt(sessionsTable.startsAt, currentDate),
-                    gt(sessionsTable.endsAt, currentDate),
+                    gt(sessionsTable.endsAt, new Date()),
+                    eq(sessionsTable.isDemo, false),
                 ),
             )
 
-        const currentSession = activeSessions[0] ?? null
+        if (activeSessions.length > 1) {
+            throw new Error(
+                'There should only ever by one or less ongoing or upcoming sessions (endsAt in the future).',
+            )
+        }
 
-        if (currentSession) {
-            if (!currentSession.isDemo) {
-                throw new Error(
-                    'A query to create a session while another non-demo session is ongoing should never happen.',
-                )
-            }
+        if (activeSessions.length === 1) {
+            throw new Error(
+                'A query to create a session while another non-demo session is going on or coming up (endsAt in the future) should never happen.',
+            )
+        }
+
+        const demoSessions = await tx
+            .select()
+            .from(sessionsTable)
+            .where(eq(sessionsTable.isDemo, true))
+
+        if (demoSessions.length > 1) {
+            throw new Error(
+                'When on every session creation the most recent demo session is deleted, there should never be more than one demo session.',
+            )
+        }
+
+        const mostRecentDemoSession = demoSessions[0]
+
+        if (mostRecentDemoSession) {
             await tx
                 .delete(sessionsTable)
-                .where(eq(sessionsTable.id, currentSession.id))
+                .where(eq(sessionsTable.id, mostRecentDemoSession.id))
         }
 
         const result = await tx

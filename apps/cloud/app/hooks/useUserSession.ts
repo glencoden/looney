@@ -3,7 +3,7 @@ import { skipToken, useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { supabase } from '~/lib/supabase.client'
 
-export const useSession = () => {
+export const useUserSession = () => {
     const { data: session, isLoading: isSessionLoading } = useQuery({
         queryKey: ['session'],
         queryFn: async () => {
@@ -22,7 +22,7 @@ export const useSession = () => {
         const noSession = session === null
 
         return {
-            session:
+            userSession:
                 notLoaded || noSession
                     ? null
                     : {
@@ -32,7 +32,7 @@ export const useSession = () => {
                               accessRole,
                           },
                       },
-            isSessionLoading: isSessionLoading || isAccessRoleLoading,
+            isUserSessionLoading: isSessionLoading || isAccessRoleLoading,
         }
     }, [session, isSessionLoading, accessRole, isAccessRoleLoading])
 }

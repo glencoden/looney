@@ -41,10 +41,10 @@ const DragDropList = forwardRef<
             style={fixTop ? { transform: `translateY(-${fixTop}px)` } : {}}
         >
             <div
-                className='sticky left-0 top-0 z-10 h-36 w-full shrink-0 bg-blue-800 lg:h-40'
+                className='sticky left-0 top-0 z-10 h-36 w-full shrink-0 bg-blue-800 max-lg:w-[100vw] lg:h-40'
                 style={fixTop ? { top: `${fixTop}px` } : {}}
             >
-                <div className='absolute bottom-0 left-1/2 flex h-28 w-full -translate-x-1/2 items-center justify-center'>
+                <div className='absolute bottom-0 left-1/2 flex h-28 w-full -translate-x-1/2 items-center justify-center px-6'>
                     {header}
                 </div>
             </div>

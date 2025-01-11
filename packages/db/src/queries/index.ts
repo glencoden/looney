@@ -18,3 +18,8 @@ export { getPermission } from './getPermission.js'
 export { createGuest } from './createGuest.js'
 export { getGuest } from './getGuest.js'
 export { updateGuest } from './updateGuest.js'
+
+export { createSession } from './createSession.js'
+export { getCurrentSession } from './getCurrentSession.js'
+export { getSession } from './getSession.js'
+export { updateSession } from './updateSession.js'

@@ -4,6 +4,7 @@ import { createTRPCRouter } from '../index.js'
 import { guestRouter } from './guest/guestRouter.js'
 import { openaiRouter } from './openai/openaiRouter.js'
 import { permissionRouter } from './permission/permissionRouter.js'
+import { sessionRouter } from './session/sessionRouter.js'
 import { setlistRouter } from './setlist/setlistRouter.js'
 import { songRouter } from './song/songRouter.js'
 import { stripeRouter } from './stripe/stripeRouter.js'
@@ -20,4 +21,5 @@ export const trpcRouter = createTRPCRouter({
     openai: openaiRouter,
     stripe: stripeRouter,
     guest: guestRouter,
+    session: sessionRouter,
 })

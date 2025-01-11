@@ -1,6 +1,5 @@
 import { GuestSchema } from '@repo/db'
 import { createGuest, getGuest, updateGuest } from '@repo/db/queries'
-import { TRPCRouterRecord } from '@trpc/server'
 import { publicProcedure } from '../../index.js'
 
 export const guestRouter = {
@@ -23,4 +22,4 @@ export const guestRouter = {
         .mutation(({ input }) => {
             return updateGuest(input)
         }),
-} as TRPCRouterRecord
+}

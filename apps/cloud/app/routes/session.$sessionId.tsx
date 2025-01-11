@@ -1,10 +1,19 @@
 import { useSpring, useSprings } from '@react-spring/web'
+import { json, LoaderFunctionArgs } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
+import { api } from '@repo/api/client'
+import { getSession } from '@repo/db/queries'
 import BoxMain from '@repo/ui/components/BoxMain'
+import Input from '@repo/ui/components/Input'
+import Spinner from '@repo/ui/components/Spinner'
 import { cn } from '@repo/ui/helpers'
 import { useDrag } from '@use-gesture/react'
-import { useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { z } from 'zod'
+import AddDemoLipButton from '~/components/AddDemoLipButton'
 import DragDropList from '~/components/DragDropList'
 import DragDropListItem from '~/components/DragDropListItem'
+import SessionMenu from '~/components/SessionMenu'
 import { createSpringEffect } from '~/helpers/create-spring-effect'
 
 type Lip = {
@@ -146,7 +155,80 @@ enum BoxType {
 
 type PageInView = 'left' | 'right'
 
-export default function Session() {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
+    const sessionId = z.string().parse(params.sessionId)
+    const session = await getSession(sessionId)
+
+    if (!session) {
+        throw new Response('Not Found', { status: 404 })
+    }
+
+    return json({ session })
+}
+
+export default function ActiveSession() {
+    /**
+     *
+     * Sever state
+     *
+     */
+
+    const { session: sessionFromLoader } = useLoaderData<typeof loader>()
+
+    const utils = api.useUtils()
+
+    useLayoutEffect(() => {
+        utils.session.get.setData(
+            { id: sessionFromLoader.id },
+            {
+                ...sessionFromLoader,
+                startsAt: new Date(sessionFromLoader.startsAt),
+                endsAt: new Date(sessionFromLoader.endsAt),
+                createdAt: sessionFromLoader.createdAt
+                    ? new Date(sessionFromLoader.createdAt)
+                    : null,
+            },
+        )
+    }, [utils])
+
+    const { data: session } = api.session.get.useQuery({
+        id: sessionFromLoader.id,
+    })
+
+    if (session === null) {
+        throw new Error(
+            'If the session is null, there was no session found in the BE, so this should not render.',
+        )
+    }
+
+    console.log('SESSION', session)
+
+    /**
+     *
+     * Idle lips filter
+     *
+     */
+
+    const [q, setQ] = useState('')
+
+    // const filteredSongs = useMemo(() => {
+    //     if (!songs) {
+    //         return []
+    //     }
+    //     return songs.filter((song) => {
+    //         return (
+    //             song.artist.toLowerCase().includes(q.toLowerCase()) ||
+    //             song.title.toLowerCase().includes(q.toLowerCase())
+    //         )
+    //     })
+    // }, [songs, q])
+
+    /**
+     *
+     * Local state
+     *
+     */
+
     const leftScrollBoxRef = useRef<HTMLDivElement>(null)
     const rightScrollBoxRef = useRef<HTMLDivElement>(null)
 
@@ -180,7 +262,7 @@ export default function Session() {
      *
      */
 
-    const [pageInView, setPageInView] = useState<PageInView>('left')
+    const [pageInView, setPageInView] = useState<PageInView>('right')
     const [isPageDragging, setIsPageDragging] = useState(false)
     const [pageOffsetX, setPageOffsetX] = useState(0)
 
@@ -547,6 +629,14 @@ export default function Session() {
         },
     )
 
+    if (session === undefined) {
+        return (
+            <BoxMain className='flex items-center justify-center'>
+                <Spinner light />
+            </BoxMain>
+        )
+    }
+
     return (
         <BoxMain className='relative overflow-visible'>
             <div
@@ -614,7 +704,24 @@ export default function Session() {
                             springs={idleSprings}
                             bind={bindLipDrag}
                             fixTop={scrollTopLock && scrollTopLock[1]}
-                            header={<div>Search field</div>}
+                            header={
+                                <div className='w-full max-w-96 space-y-4'>
+                                    <SessionMenu session={session} />
+
+                                    <Input
+                                        className='focus-visible:ring-blue-300'
+                                        id='song-search'
+                                        aria-label='Song search input'
+                                        defaultValue={q || ''}
+                                        name='q'
+                                        placeholder='Search'
+                                        type='search'
+                                        onChange={(event) => {
+                                            setQ(event.target.value)
+                                        }}
+                                    />
+                                </div>
+                            }
                         />
                     </section>
 
@@ -624,6 +731,12 @@ export default function Session() {
                     />
                 </div>
             </div>
+
+            {session.isDemo && (
+                <div className='absolute bottom-6 left-1/2 -translate-x-1/2'>
+                    <AddDemoLipButton session={session} />
+                </div>
+            )}
         </BoxMain>
     )
 }

@@ -1,18 +1,20 @@
 import { Link, useNavigation } from '@remix-run/react'
+import { api } from '@repo/api/client'
 import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import { ExternalLink, LogOut } from 'lucide-react'
 import { hasAccess } from '~/helpers/has-access'
-import { useSession } from '~/hooks/useSession'
+import { useUserSession } from '~/hooks/useUserSession'
 import logoWhite from '~/images/logo-white.png'
 
 export default function Index() {
     const navigation = useNavigation()
 
-    const { session } = useSession()
+    const { userSession } = useUserSession()
+    const accessRole = userSession?.user.accessRole
 
-    const accessRole = session?.user.accessRole
+    const { data: session } = api.session.getCurrent.useQuery()
 
     return (
         <BoxMain className='flex flex-col items-center'>
@@ -66,7 +68,7 @@ export default function Index() {
                             </li>
                         )}
 
-                        <li className='w-full'>
+                        {/* <li className='w-full'>
                             <Button
                                 variant='secondary'
                                 asChild
@@ -77,11 +79,11 @@ export default function Index() {
                             >
                                 <Link to='/'>Insights</Link>
                             </Button>
-                        </li>
+                        </li> */}
 
                         <hr className='w-full border-2 border-transparent' />
 
-                        {hasAccess(accessRole, 'host') && (
+                        {/* {hasAccess(accessRole, 'host') && (
                             <li className='w-full'>
                                 <Button variant='light' asChild>
                                     <Link to='/'>
@@ -90,7 +92,7 @@ export default function Index() {
                                     </Link>
                                 </Button>
                             </li>
-                        )}
+                        )} */}
                         <li className='w-full'>
                             <Button variant='light' asChild>
                                 <Link to='/'>
@@ -112,10 +114,20 @@ export default function Index() {
                                 asChild
                                 loading={
                                     navigation.state === 'loading' &&
-                                    navigation.location.pathname === '/session'
+                                    navigation.location.pathname.startsWith(
+                                        '/session',
+                                    )
                                 }
                             >
-                                <Link to='/session'>Session</Link>
+                                <Link
+                                    to={
+                                        session
+                                            ? `/session/${session.id}`
+                                            : '/session'
+                                    }
+                                >
+                                    Session
+                                </Link>
                             </Button>
                         </li>
                     </ul>

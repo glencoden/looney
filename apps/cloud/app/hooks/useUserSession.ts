@@ -3,13 +3,14 @@ import { skipToken, useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { supabase } from '~/lib/supabase.client'
 
-export const useUserSession = () => {
+export const useUserSession = (waitForInit = false) => {
     const { data: session, isLoading: isSessionLoading } = useQuery({
         queryKey: ['session'],
         queryFn: async () => {
             const { data } = await supabase.auth.getSession()
             return data?.session
         },
+        enabled: !waitForInit,
     })
 
     const { data: accessRole, isLoading: isAccessRoleLoading } =

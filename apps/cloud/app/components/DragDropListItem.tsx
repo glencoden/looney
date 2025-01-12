@@ -10,6 +10,8 @@ export default function DragDropListItem({
     spring: { zIndex, shadow, x, y, scale },
     bind,
     isLocked,
+    hideTime,
+    hideFavorites,
 }: {
     lip: LipDTO
     q?: string
@@ -22,6 +24,8 @@ export default function DragDropListItem({
     }
     bind: (...args: any[]) => ReactDOMAttributes
     isLocked: boolean
+    hideTime?: boolean
+    hideFavorites?: boolean
 }) {
     return (
         <animated.div
@@ -37,7 +41,12 @@ export default function DragDropListItem({
             }}
             children={
                 <>
-                    <SongLip lip={lip} q={q} />
+                    <SongLip
+                        lip={lip}
+                        q={q}
+                        hideTime={hideTime}
+                        hideFavorites={hideFavorites}
+                    />
                     <div
                         {...bind(lip.id)}
                         className={cn(

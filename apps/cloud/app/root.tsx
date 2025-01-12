@@ -14,7 +14,7 @@ import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
 import H1 from '@repo/ui/typography/H1'
 import { useEffectEvent } from '@repo/utils/hooks'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
 import { hasAccess } from '~/helpers/has-access'
 import { useUserSession } from '~/hooks/useUserSession'
@@ -92,8 +92,11 @@ export const meta: MetaFunction = () => {
 export default function App() {
     const navigate = useNavigate()
 
+    const [isInit, setIsInit] = useState(false)
+
     const handleLifecycle = useEffectEvent(async () => {
         window.addEventListener('beforeunload', handleBeforeUnload)
+        setIsInit(true)
 
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload)
@@ -104,7 +107,7 @@ export default function App() {
         void handleLifecycle()
     }, [handleLifecycle])
 
-    const { userSession, isUserSessionLoading } = useUserSession()
+    const { userSession, isUserSessionLoading } = useUserSession(!isInit)
 
     if (isUserSessionLoading) {
         return (

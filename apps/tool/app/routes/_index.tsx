@@ -1,5 +1,7 @@
 import { api } from '@repo/api/client'
 import Logo from '@repo/ui/components/Logo'
+import QRDemo from '@repo/ui/components/QRDemo'
+import QRLive from '@repo/ui/components/QRLive'
 import { cn } from '@repo/ui/helpers'
 import { useEffectEvent } from '@repo/utils/hooks'
 import { useEffect, useState } from 'react'
@@ -413,6 +415,9 @@ export default function Index() {
             >
                 {selectedText?.title ?? 'Looney tool'}
             </h1>
+
+            <QRLive className='absolute left-12 top-12' />
+            <QRDemo className='absolute right-12 top-12' />
 
             <section className='absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden px-12'>
                 <div

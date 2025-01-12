@@ -7,6 +7,8 @@
         "./helpers": "./src/helpers/index.ts",
         "./styles.css": "./dist/styles.css",
         "./components/Logo": "./src/components/Logo.tsx",
+        "./components/QRLive": "./src/components/QRLive.tsx",
+        "./components/QRDemo": "./src/components/QRDemo.tsx",
         "./components/BoxMain": "./src/components/BoxMain.tsx",
         "./components/BoxContentSlot": "./src/components/BoxContentSlot.tsx",
         "./components/BoxFullHeightSlot": "./src/components/BoxFullHeightSlot.tsx",
@@ -25,7 +27,8 @@
         "./typography/Subtitle1": "./src/typography/Subtitle1.tsx",
         "./typography/Subtitle2": "./src/typography/Subtitle2.tsx",
         "./typography/Body1": "./src/typography/Body1.tsx",
-        "./typography/Body2": "./src/typography/Body2.tsx"
+        "./typography/Body2": "./src/typography/Body2.tsx",
+        "./typography/Small": "./src/typography/Small.tsx"
     },
     "scripts": {
         "build": "tailwindcss -i ./src/styles.css -o dist/styles.css --minify",
@@ -36,11 +39,13 @@
         "react": "catalog:"
     },
     "dependencies": {
+        "@radix-ui/react-slot": "^1.1.0",
         "@repo/api": "workspace:*",
         "@repo/utils": "workspace:*",
-        "@radix-ui/react-slot": "^1.1.0",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
+        "date-fns": "^4.1.0",
+        "lucide-react": "^0.456.0",
         "tailwind-merge": "^2.5.2"
     },
     "devDependencies": {

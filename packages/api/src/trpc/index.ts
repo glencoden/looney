@@ -14,7 +14,11 @@ export const createContext = async ({
         return { db, user: null }
     }
 
+    const preAuthCall = performance.now()
+
     const { data, error } = await supabase.auth.getUser(accessToken)
+
+    console.log('AUTH IN MS', Math.round(performance.now() - preAuthCall))
 
     if (error) {
         throw new Error(error.message)

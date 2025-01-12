@@ -2,7 +2,7 @@ import { LipDTO } from '@repo/api'
 import { api } from '@repo/api/client'
 import { Song } from '@repo/db'
 import { skipToken } from '@tanstack/react-query'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { supabase } from '~/lib/supabase.client'
 
 type Response =
@@ -37,36 +37,20 @@ export const useAutoScreen = (): Response => {
     const liveLip = lips?.find((lip) => lip.status === 'live') ?? null
     const doneLip = lips?.find((lip) => lip.status === 'done') ?? null
 
-    const [isSessionActive, setIsSessionActive] = useState(false)
+    const isSessionActive =
+        Boolean(session) && !session!.isLocked && session!.endsAt > new Date()
 
     useEffect(() => {
-        let timeoutId: ReturnType<typeof setTimeout>
-
-        const checkSession = () => {
-            setIsSessionActive(
-                Boolean(session) &&
-                    !session!.isLocked &&
-                    session!.endsAt > new Date(),
-            )
-            return setTimeout(() => {
-                timeoutId = checkSession()
-            }, 1000 * 10)
+        if (!session?.id) {
+            return
         }
 
-        timeoutId = checkSession()
-
-        return () => {
-            clearTimeout(timeoutId)
-        }
-    }, [session])
-
-    useEffect(() => {
         const channel = supabase
             .channel('session')
             .on(
                 'postgres_changes',
                 {
-                    event: 'INSERT',
+                    event: '*',
                     schema: 'public',
                     table: 'session',
                 },
@@ -76,20 +60,6 @@ export const useAutoScreen = (): Response => {
                     })
                 },
             )
-            .subscribe()
-
-        return () => {
-            void supabase.removeChannel(channel)
-        }
-    }, [utils])
-
-    useEffect(() => {
-        if (!session?.id) {
-            return
-        }
-
-        const channel = supabase
-            .channel('session')
             .on(
                 'postgres_changes',
                 {
@@ -107,6 +77,31 @@ export const useAutoScreen = (): Response => {
             void supabase.removeChannel(channel)
         }
     }, [utils, session?.id])
+
+    // useEffect(() => {
+    //     if (!session?.id) {
+    //         return
+    //     }
+
+    //     const channel = supabase
+    //         .channel('session')
+    //         .on(
+    //             'postgres_changes',
+    //             {
+    //                 event: '*',
+    //                 schema: 'public',
+    //                 table: 'lip',
+    //             },
+    //             () => {
+    //                 void utils.lip.getBySessionId.invalidate({ id: session.id })
+    //             },
+    //         )
+    //         .subscribe()
+
+    //     return () => {
+    //         void supabase.removeChannel(channel)
+    //     }
+    // }, [utils, session?.id])
 
     return useMemo(() => {
         if (!isSessionActive) {

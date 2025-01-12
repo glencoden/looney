@@ -6,10 +6,12 @@ import { api } from '@repo/api/client'
 import { Session } from '@repo/db'
 import { getSession } from '@repo/db/queries'
 import BoxMain from '@repo/ui/components/BoxMain'
+import Button from '@repo/ui/components/Button'
 import Input from '@repo/ui/components/Input'
 import { cn } from '@repo/ui/helpers'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { useDrag } from '@use-gesture/react'
+import { PlayCircle, Radio } from 'lucide-react'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { z } from 'zod'
 import AddDemoLipButton from '~/components/AddDemoLipButton'
@@ -106,7 +108,7 @@ export default function ActiveSession() {
     const lips = data ?? ([] as LipDTO[])
 
     const { mutate: updateLip, isPending: isLipUpdatePending } =
-        api.lip.move.useMutation({
+        api.lip.update.useMutation({
             onSettled: () => {
                 void utils.lip.getBySessionId.invalidate({ id: session.id })
             },
@@ -118,112 +120,6 @@ export default function ActiveSession() {
                 void utils.lip.getBySessionId.invalidate({ id: session.id })
             },
         })
-
-    const handleLipMove = ({
-        id,
-        sessionId,
-        status,
-        sortNumber,
-    }: Pick<LipDTO, 'id' | 'sessionId' | 'status' | 'sortNumber'>) => {
-        if (sortNumber === null) {
-            throw new Error('Can not move a lip without a target sort number.')
-        }
-
-        const fromLip = lips.find((lip) => lip.id === id)!
-
-        if (fromLip.status === status && fromLip.sortNumber === sortNumber) {
-            return
-        }
-
-        // Optimistic update
-        void utils.lip.getBySessionId.setData(
-            { id: session.id },
-            (prevLips) => {
-                return prevLips
-                    ?.map((lip) => {
-                        if (lip.sortNumber === null) {
-                            return lip
-                        }
-                        if (lip.id === id) {
-                            return {
-                                ...lip,
-                                status,
-                                sortNumber,
-                            }
-                        }
-                        if (fromLip.status === status) {
-                            if (lip.status !== status) {
-                                return lip
-                            }
-                            const currentSortNumber = lip.sortNumber
-                            const fromSortNumber = fromLip.sortNumber!
-                            const toSortNumber = sortNumber
-
-                            let shift = 0
-
-                            if (currentSortNumber > fromSortNumber) {
-                                if (toSortNumber >= currentSortNumber) {
-                                    shift--
-                                }
-                            } else {
-                                if (toSortNumber <= currentSortNumber) {
-                                    shift++
-                                }
-                            }
-
-                            return {
-                                ...lip,
-                                sortNumber: currentSortNumber + shift,
-                            }
-                        } else {
-                            if (
-                                lip.status === fromLip.status &&
-                                lip.sortNumber > fromLip.sortNumber!
-                            ) {
-                                return {
-                                    ...lip,
-                                    sortNumber: lip.sortNumber - 1,
-                                }
-                            }
-                            if (
-                                lip.status === status &&
-                                lip.sortNumber >= sortNumber
-                            ) {
-                                return {
-                                    ...lip,
-                                    sortNumber: lip.sortNumber + 1,
-                                }
-                            }
-                        }
-                        return lip
-                    })
-                    .sort(
-                        (a, b) =>
-                            (a.sortNumber ?? Infinity) -
-                            (b.sortNumber ?? Infinity),
-                    )
-            },
-        )
-
-        // Database update
-        moveLip({
-            id,
-            sessionId,
-            status,
-            sortNumber,
-        })
-    }
-
-    const [isPending, setIsPending] = useState(false)
-
-    useEffect(() => {
-        if (!isLipsFetching && !isLipUpdatePending && !isLipMovePending) {
-            setIsPending(false)
-        }
-        if (isLipUpdatePending || isLipMovePending) {
-            setIsPending(true)
-        }
-    }, [isLipsFetching, isLipUpdatePending, isLipMovePending])
 
     /**
      *
@@ -363,6 +259,154 @@ export default function ActiveSession() {
         'SELECTED',
         selectedLips.map((lip) => lip.sortNumber),
     )
+
+    /**
+     *
+     * Event handling
+     *
+     */
+
+    const handleLiveButtonClick = () => {
+        if (!actionLip) {
+            return
+        }
+        utils.lip.getBySessionId.setData({ id: session.id }, (prevLips) => {
+            return prevLips?.map((lip) => {
+                if (lip.id !== actionLip.id) {
+                    return lip
+                }
+                return { ...lip, status: 'live' }
+            })
+        })
+        updateLip({
+            id: actionLip.id,
+            status: 'live',
+        })
+    }
+
+    const handleLipMove = ({
+        id,
+        sessionId,
+        status,
+        sortNumber,
+    }: Pick<LipDTO, 'id' | 'sessionId' | 'status' | 'sortNumber'>) => {
+        if (sortNumber === null) {
+            throw new Error('Can not move a lip without a target sort number.')
+        }
+
+        const fromLip = lips.find((lip) => lip.id === id)!
+
+        if (fromLip.status === status && fromLip.sortNumber === sortNumber) {
+            return
+        }
+
+        // TODO: add this to move update to avoid having two requests
+        if (actionLip && status === 'staged') {
+            const actionStatus =
+                actionLip.status === 'staged' ? 'no-show' : 'done'
+            utils.lip.getBySessionId.setData({ id: session.id }, (prevLips) => {
+                return prevLips?.map((lip) => {
+                    if (lip.id !== actionLip.id) {
+                        return lip
+                    }
+                    return { ...lip, status: actionStatus }
+                })
+            })
+            updateLip({
+                id: actionLip.id,
+                status: actionStatus,
+            })
+        }
+
+        // Optimistic update
+        void utils.lip.getBySessionId.setData(
+            { id: session.id },
+            (prevLips) => {
+                return prevLips
+                    ?.map((lip) => {
+                        if (lip.sortNumber === null) {
+                            return lip
+                        }
+                        if (lip.id === id) {
+                            return {
+                                ...lip,
+                                status,
+                                sortNumber,
+                            }
+                        }
+                        if (fromLip.status === status) {
+                            if (lip.status !== status) {
+                                return lip
+                            }
+                            const currentSortNumber = lip.sortNumber
+                            const fromSortNumber = fromLip.sortNumber!
+                            const toSortNumber = sortNumber
+
+                            let shift = 0
+
+                            if (currentSortNumber > fromSortNumber) {
+                                if (toSortNumber >= currentSortNumber) {
+                                    shift--
+                                }
+                            } else {
+                                if (toSortNumber <= currentSortNumber) {
+                                    shift++
+                                }
+                            }
+
+                            return {
+                                ...lip,
+                                sortNumber: currentSortNumber + shift,
+                            }
+                        } else {
+                            if (
+                                lip.status === fromLip.status &&
+                                lip.sortNumber > fromLip.sortNumber!
+                            ) {
+                                return {
+                                    ...lip,
+                                    sortNumber: lip.sortNumber - 1,
+                                }
+                            }
+                            if (
+                                lip.status === status &&
+                                lip.sortNumber >= sortNumber
+                            ) {
+                                return {
+                                    ...lip,
+                                    sortNumber: lip.sortNumber + 1,
+                                }
+                            }
+                        }
+                        return lip
+                    })
+                    .sort(
+                        (a, b) =>
+                            (a.sortNumber ?? Infinity) -
+                            (b.sortNumber ?? Infinity),
+                    )
+            },
+        )
+
+        // Database update
+        moveLip({
+            id,
+            sessionId,
+            status,
+            sortNumber,
+        })
+    }
+
+    const [isPending, setIsPending] = useState(false)
+
+    useEffect(() => {
+        if (!isLipsFetching && !isLipUpdatePending && !isLipMovePending) {
+            setIsPending(false)
+        }
+        if (isLipUpdatePending || isLipMovePending) {
+            setIsPending(true)
+        }
+    }, [isLipsFetching, isLipUpdatePending, isLipMovePending])
 
     /**
      *
@@ -747,6 +791,7 @@ export default function ActiveSession() {
                             springs={selectedSprings}
                             bind={bindLipDrag}
                             isLocked={session.isLocked || isPending}
+                            hideFavorites={session.hideFavorites ?? false}
                             fixTop={scrollTopLock && scrollTopLock[0]}
                             header={
                                 <div
@@ -769,14 +814,34 @@ export default function ActiveSession() {
                                     </Subtitle2>
 
                                     {actionLip && (
-                                        <DragDropListItem
-                                            lip={actionLip}
-                                            spring={actionSpring}
-                                            bind={bindLipDrag}
-                                            isLocked={
-                                                session.isLocked || isPending
-                                            }
-                                        />
+                                        <div className='relative w-full max-w-96'>
+                                            <DragDropListItem
+                                                lip={actionLip}
+                                                spring={actionSpring}
+                                                bind={bindLipDrag}
+                                                isLocked
+                                                hideTime
+                                                hideFavorites
+                                            />
+                                            <div className='absolute right-2 top-1/2 flex h-20 w-28 -translate-y-1/2 items-center justify-center'>
+                                                {actionLip.status ===
+                                                    'staged' && (
+                                                    <Button
+                                                        variant='ghost'
+                                                        onClick={
+                                                            handleLiveButtonClick
+                                                        }
+                                                        disabled={isPending}
+                                                    >
+                                                        <PlayCircle className='h-14 w-14 fill-pink-700 text-black' />
+                                                    </Button>
+                                                )}
+                                                {actionLip.status ===
+                                                    'live' && (
+                                                    <Radio className='h-14 w-14 fill-pink-700 text-black' />
+                                                )}
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                             }
@@ -798,6 +863,7 @@ export default function ActiveSession() {
                             springs={idleSprings}
                             bind={bindLipDrag}
                             isLocked={session.isLocked || isPending}
+                            hideFavorites={session.hideFavorites ?? false}
                             fixTop={scrollTopLock && scrollTopLock[1]}
                             header={
                                 <div className='w-full max-w-96 space-y-4'>
@@ -831,7 +897,7 @@ export default function ActiveSession() {
             </div>
 
             {session.isDemo && (
-                <div className='absolute bottom-6 left-1/2 -translate-x-1/2'>
+                <div className='absolute bottom-6 right-6'>
                     <AddDemoLipButton session={session} />
                 </div>
             )}

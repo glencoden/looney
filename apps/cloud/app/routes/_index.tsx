@@ -95,15 +95,26 @@ export default function Index() {
                         )} */}
                         <li className='w-full'>
                             <Button variant='light' asChild>
-                                <Link to='/'>
-                                    Tool{' '}
+                                <Link
+                                    to='https://rc.tool.looneytunez.de'
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                >
+                                    Tool&nbsp;
                                     <ExternalLink className='ml-2 h-5 w-5' />
                                 </Link>
                             </Button>
                         </li>
                         <li className='w-full'>
                             <Button variant='light' asChild>
-                                <Link to='/'>Sing</Link>
+                                <Link
+                                    to='https://sing.looneytunez.de'
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                >
+                                    Sing&nbsp;
+                                    <ExternalLink className='ml-2 h-5 w-5' />
+                                </Link>
                             </Button>
                         </li>
 

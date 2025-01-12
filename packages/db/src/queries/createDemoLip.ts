@@ -1,5 +1,12 @@
 import { and, eq } from 'drizzle-orm'
-import { db, guestsTable, lipsTable, Session, songsTable } from '../index.js'
+import {
+    db,
+    guestsTable,
+    Lip,
+    lipsTable,
+    Session,
+    songsTable,
+} from '../index.js'
 
 const DEMO_GUEST_NAMES = [
     'Bugs Bunny',
@@ -24,32 +31,16 @@ const DEMO_GUEST_NAMES = [
     'Lola Bunny',
 ]
 
+const MAX_NUM_DEMO_LIPS_PER_REQUEST = 5
+
 export const createDemoLip = (sessionId: Session['id']) => {
     return db.transaction(async (tx) => {
+        const numDemos = Math.ceil(
+            Math.random() * MAX_NUM_DEMO_LIPS_PER_REQUEST,
+        )
+
         const songs = await tx.select().from(songsTable)
-
-        const demoSong = songs[Math.floor(Math.random() * songs.length)]
-
-        if (!demoSong) {
-            throw new Error(
-                'There need to be songs in the database to create a demo lip.',
-            )
-        }
-
         const guests = await tx.select().from(guestsTable)
-
-        const demoGuest = guests[Math.floor(Math.random() * guests.length)]!
-
-        if (!demoGuest) {
-            throw new Error(
-                'There need to be guests in the database to create a demo lip.',
-            )
-        }
-
-        const demoGuestName =
-            DEMO_GUEST_NAMES[
-                Math.floor(Math.random() * DEMO_GUEST_NAMES.length)
-            ]!
 
         const prevLips = await tx
             .select()
@@ -61,12 +52,52 @@ export const createDemoLip = (sessionId: Session['id']) => {
                 ),
             )
 
-        return tx.insert(lipsTable).values({
-            sessionId,
-            songId: demoSong.id,
-            guestId: demoGuest.id,
-            singerName: demoGuestName,
-            sortNumber: prevLips.length + 1,
+        const startSortNumber = prevLips.length + 1
+
+        const demos: Pick<
+            Lip,
+            'songId' | 'guestId' | 'singerName' | 'sortNumber'
+        >[] = []
+
+        for (let i = 0; i < numDemos; i++) {
+            const demoSong = songs[Math.floor(Math.random() * songs.length)]
+
+            if (!demoSong) {
+                throw new Error(
+                    'There need to be songs in the database to create a demo lip.',
+                )
+            }
+
+            const demoGuest = guests[Math.floor(Math.random() * guests.length)]!
+
+            if (!demoGuest) {
+                throw new Error(
+                    'There need to be guests in the database to create a demo lip.',
+                )
+            }
+
+            const demoGuestName =
+                DEMO_GUEST_NAMES[
+                    Math.floor(Math.random() * DEMO_GUEST_NAMES.length)
+                ]!
+
+            demos.push({
+                songId: demoSong.id,
+                guestId: demoGuest.id,
+                singerName: demoGuestName,
+                sortNumber: startSortNumber + i,
+            })
+        }
+
+        const inserts = demos.map((demo) => {
+            return tx.insert(lipsTable).values({
+                sessionId,
+                ...demo,
+            })
         })
+
+        await Promise.all(inserts)
+
+        return true
     })
 }

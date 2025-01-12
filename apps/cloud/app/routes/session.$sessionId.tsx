@@ -92,7 +92,11 @@ export default function ActiveSession() {
         )
     }
 
-    const { data } = api.lip.getBySessionId.useQuery(
+    const {
+        data,
+        isLoading: isLipsLoading,
+        isFetching: isLipsFetching,
+    } = api.lip.getBySessionId.useQuery(
         { id: session.id },
         {
             refetchInterval: 1000 * 60,
@@ -101,12 +105,125 @@ export default function ActiveSession() {
 
     const lips = data ?? ([] as LipDTO[])
 
-    const { mutate: moveLip, isPending: isLipUpdatePending } =
+    const { mutate: updateLip, isPending: isLipUpdatePending } =
         api.lip.move.useMutation({
             onSettled: () => {
                 void utils.lip.getBySessionId.invalidate({ id: session.id })
             },
         })
+
+    const { mutate: moveLip, isPending: isLipMovePending } =
+        api.lip.move.useMutation({
+            onSettled: () => {
+                void utils.lip.getBySessionId.invalidate({ id: session.id })
+            },
+        })
+
+    const handleLipMove = ({
+        id,
+        sessionId,
+        status,
+        sortNumber,
+    }: Pick<LipDTO, 'id' | 'sessionId' | 'status' | 'sortNumber'>) => {
+        if (sortNumber === null) {
+            throw new Error('Can not move a lip without a target sort number.')
+        }
+
+        const fromLip = lips.find((lip) => lip.id === id)!
+
+        if (fromLip.status === status && fromLip.sortNumber === sortNumber) {
+            return
+        }
+
+        // Optimistic update
+        void utils.lip.getBySessionId.setData(
+            { id: session.id },
+            (prevLips) => {
+                return prevLips
+                    ?.map((lip) => {
+                        if (lip.sortNumber === null) {
+                            return lip
+                        }
+                        if (lip.id === id) {
+                            return {
+                                ...lip,
+                                status,
+                                sortNumber,
+                            }
+                        }
+                        if (fromLip.status === status) {
+                            if (lip.status !== status) {
+                                return lip
+                            }
+                            const currentSortNumber = lip.sortNumber
+                            const fromSortNumber = fromLip.sortNumber!
+                            const toSortNumber = sortNumber
+
+                            let shift = 0
+
+                            if (currentSortNumber > fromSortNumber) {
+                                if (toSortNumber >= currentSortNumber) {
+                                    shift--
+                                }
+                            } else {
+                                if (toSortNumber <= currentSortNumber) {
+                                    shift++
+                                }
+                            }
+
+                            return {
+                                ...lip,
+                                sortNumber: currentSortNumber + shift,
+                            }
+                        } else {
+                            if (
+                                lip.status === fromLip.status &&
+                                lip.sortNumber > fromLip.sortNumber!
+                            ) {
+                                return {
+                                    ...lip,
+                                    sortNumber: lip.sortNumber - 1,
+                                }
+                            }
+                            if (
+                                lip.status === status &&
+                                lip.sortNumber >= sortNumber
+                            ) {
+                                return {
+                                    ...lip,
+                                    sortNumber: lip.sortNumber + 1,
+                                }
+                            }
+                        }
+                        return lip
+                    })
+                    .sort(
+                        (a, b) =>
+                            (a.sortNumber ?? Infinity) -
+                            (b.sortNumber ?? Infinity),
+                    )
+            },
+        )
+
+        // Database update
+        moveLip({
+            id,
+            sessionId,
+            status,
+            sortNumber,
+        })
+    }
+
+    const [isPending, setIsPending] = useState(false)
+
+    useEffect(() => {
+        if (!isLipsFetching && !isLipUpdatePending && !isLipMovePending) {
+            setIsPending(false)
+        }
+        if (isLipUpdatePending || isLipMovePending) {
+            setIsPending(true)
+        }
+    }, [isLipsFetching, isLipUpdatePending, isLipMovePending])
 
     /**
      *
@@ -237,6 +354,15 @@ export default function ActiveSession() {
     const [actionSpring, actionAPI] = useSpring(defaultSpringEffect)
 
     const [isActionTarget, setIsActionTarget] = useState(false)
+
+    console.log(
+        'IDLE',
+        idleLips.map((lip) => lip.sortNumber),
+    )
+    console.log(
+        'SELECTED',
+        selectedLips.map((lip) => lip.sortNumber),
+    )
 
     /**
      *
@@ -475,64 +601,77 @@ export default function ActiveSession() {
 
             const targetSpringEffect = createSpringEffect(down, -1, targetIndex)
 
-            switch (dragBox) {
-                case BoxType.LEFT: {
-                    switch (targetBox) {
-                        case BoxType.LEFT:
-                            selectedAPI.start(sameTargetDragSpringEffect)
-                            idleAPI.start(defaultSpringEffect)
-                            actionAPI.start(defaultSpringEffect)
-                            break
-                        case BoxType.RIGHT:
-                            selectedAPI.start(siblingTargetDragSpringEffect)
-                            idleAPI.start(targetSpringEffect)
-                            break
-                        case BoxType.ACTION:
-                            selectedAPI.start(siblingTargetDragSpringEffect)
-                            idleAPI.start(defaultSpringEffect)
-                            break
+            if (down) {
+                switch (dragBox) {
+                    case BoxType.LEFT: {
+                        switch (targetBox) {
+                            case BoxType.LEFT:
+                                selectedAPI.start(sameTargetDragSpringEffect)
+                                idleAPI.start(defaultSpringEffect)
+                                actionAPI.start(defaultSpringEffect)
+                                break
+                            case BoxType.RIGHT:
+                                selectedAPI.start(siblingTargetDragSpringEffect)
+                                idleAPI.start(targetSpringEffect)
+                                break
+                            case BoxType.ACTION:
+                                selectedAPI.start(siblingTargetDragSpringEffect)
+                                idleAPI.start(defaultSpringEffect)
+                                break
+                        }
+                        break
                     }
-                    break
-                }
-                case BoxType.RIGHT: {
-                    switch (targetBox) {
-                        case BoxType.LEFT:
-                            idleAPI.start(siblingTargetDragSpringEffect)
-                            selectedAPI.start(targetSpringEffect)
-                            break
-                        case BoxType.RIGHT:
-                            idleAPI.start(sameTargetDragSpringEffect)
-                            selectedAPI.start(defaultSpringEffect)
-                            break
-                        case BoxType.ACTION:
-                            idleAPI.start(siblingTargetDragSpringEffect)
-                            selectedAPI.start(defaultSpringEffect)
-                            break
+                    case BoxType.RIGHT: {
+                        switch (targetBox) {
+                            case BoxType.LEFT:
+                                idleAPI.start(siblingTargetDragSpringEffect)
+                                selectedAPI.start(targetSpringEffect)
+                                break
+                            case BoxType.RIGHT:
+                                idleAPI.start(sameTargetDragSpringEffect)
+                                selectedAPI.start(defaultSpringEffect)
+                                break
+                            case BoxType.ACTION:
+                                idleAPI.start(siblingTargetDragSpringEffect)
+                                selectedAPI.start(defaultSpringEffect)
+                                break
+                        }
+                        break
                     }
-                    break
-                }
-                case BoxType.ACTION: {
-                    actionAPI.start(createSpringEffect(down, 0, 0, mx, my))
+                    case BoxType.ACTION: {
+                        actionAPI.start(createSpringEffect(down, 0, 0, mx, my))
 
-                    switch (targetBox) {
-                        case BoxType.LEFT:
-                            selectedAPI.start(targetSpringEffect)
-                            idleAPI.start(defaultSpringEffect)
-                            break
-                        case BoxType.RIGHT:
-                            selectedAPI.start(defaultSpringEffect)
-                            idleAPI.start(targetSpringEffect)
-                            break
-                        case BoxType.ACTION:
-                            selectedAPI.start(defaultSpringEffect)
-                            idleAPI.start(defaultSpringEffect)
-                            break
+                        switch (targetBox) {
+                            case BoxType.LEFT:
+                                selectedAPI.start(targetSpringEffect)
+                                idleAPI.start(defaultSpringEffect)
+                                break
+                            case BoxType.RIGHT:
+                                selectedAPI.start(defaultSpringEffect)
+                                idleAPI.start(targetSpringEffect)
+                                break
+                            case BoxType.ACTION:
+                                selectedAPI.start(defaultSpringEffect)
+                                idleAPI.start(defaultSpringEffect)
+                                break
+                        }
+                        break
                     }
-                    break
                 }
-            }
+            } else {
+                const resetSpringEffect = () => ({
+                    x: 0,
+                    y: 0,
+                    scale: 1,
+                    zIndex: 0,
+                    shadow: 0,
+                    immediate: true,
+                })
 
-            if (!down) {
+                selectedAPI.start(resetSpringEffect)
+                idleAPI.start(resetSpringEffect)
+                actionAPI.start(resetSpringEffect)
+
                 console.log('LIP ID', lipId)
 
                 console.log('DELETE', deleteOnDrop)
@@ -555,13 +694,14 @@ export default function ActiveSession() {
                     status = 'staged' // set live to done
                 }
 
-                // optimistic update
-                void moveLip({
-                    id: lipId,
-                    sessionId: session.id,
-                    status,
-                    sortNumber: targetIndex + 1,
-                })
+                setTimeout(() => {
+                    handleLipMove({
+                        id: lipId,
+                        sessionId: session.id,
+                        status,
+                        sortNumber: targetIndex + 1,
+                    })
+                }, 0)
 
                 setIsActionTarget(false)
                 unlockScroll()
@@ -579,6 +719,7 @@ export default function ActiveSession() {
         <BoxMain className='relative overflow-visible'>
             <div
                 className={cn('absolute inset-0', {
+                    'animate-pulse': isLipsLoading,
                     'transition-transform duration-300': !isPageDragging,
                 })}
                 style={{ transform: `translateX(${pageOffsetX}px)` }}
@@ -605,6 +746,7 @@ export default function ActiveSession() {
                             lips={selectedLips}
                             springs={selectedSprings}
                             bind={bindLipDrag}
+                            isLocked={session.isLocked || isPending}
                             fixTop={scrollTopLock && scrollTopLock[0]}
                             header={
                                 <div
@@ -617,7 +759,7 @@ export default function ActiveSession() {
                                 >
                                     <Subtitle2
                                         className={cn(
-                                            'absolute left-1/2 top-1/2 w-24 -translate-x-1/2 -translate-y-1/2 text-white opacity-30',
+                                            'absolute left-1/2 top-1/2 w-24 -translate-x-1/2 -translate-y-1/2 select-none text-white opacity-30',
                                             {
                                                 'opacity-100': isActionTarget,
                                             },
@@ -631,6 +773,9 @@ export default function ActiveSession() {
                                             lip={actionLip}
                                             spring={actionSpring}
                                             bind={bindLipDrag}
+                                            isLocked={
+                                                session.isLocked || isPending
+                                            }
                                         />
                                     )}
                                 </div>
@@ -652,10 +797,14 @@ export default function ActiveSession() {
                             q={q}
                             springs={idleSprings}
                             bind={bindLipDrag}
+                            isLocked={session.isLocked || isPending}
                             fixTop={scrollTopLock && scrollTopLock[1]}
                             header={
                                 <div className='w-full max-w-96 space-y-4'>
-                                    <SessionMenu session={session} />
+                                    <SessionMenu
+                                        session={session}
+                                        isSessionPending={isPending}
+                                    />
 
                                     <Input
                                         className='focus-visible:ring-blue-300'

@@ -10,6 +10,7 @@ import {
     getLipsByGuestId,
     getLipsBySessionId,
     moveLip,
+    updateLip,
 } from '@repo/db/queries'
 import { protectedProcedure, publicProcedure } from '../../index.js'
 
@@ -29,6 +30,16 @@ export const lipRouter = {
     create: publicProcedure.input(LipInsertSchema).mutation(({ input }) => {
         return createLip(input)
     }),
+
+    update: protectedProcedure
+        .input(
+            LipSchema.omit({ id: true })
+                .partial()
+                .extend({ id: LipSchema.shape.id }),
+        )
+        .mutation(({ input }) => {
+            return updateLip(input)
+        }),
 
     move: protectedProcedure
         .input(

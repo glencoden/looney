@@ -8,16 +8,19 @@ import { CircleDollarSign, House, Lock, LockOpen, Star } from 'lucide-react'
 
 export default function SessionMenu({
     session,
-}: Readonly<{ session: Session }>) {
+    isSessionPending,
+}: Readonly<{
+    session: Session
+    isSessionPending: boolean
+}>) {
     const utils = api.useUtils()
 
-    const { mutate: updateSession, isPending } = api.session.update.useMutation(
-        {
+    const { mutate: updateSession, isPending: isUpdatePending } =
+        api.session.update.useMutation({
             onSettled: () => {
                 void utils.session.get.invalidate({ id: session.id })
             },
-        },
-    )
+        })
 
     const handleLockButtonClick = () => {
         void updateSession({ id: session.id, isLocked: !session.isLocked })
@@ -57,9 +60,11 @@ export default function SessionMenu({
         )
     }
 
+    const isPending = isSessionPending || isUpdatePending
+
     return (
         <div className='flex justify-between'>
-            <section className='flex gap-4'>
+            <section className='flex items-center gap-4'>
                 <Button
                     variant='ghost'
                     size='icon'
@@ -111,11 +116,15 @@ export default function SessionMenu({
                 </Button>
             </section>
 
-            <Button asChild variant='ghost' size='icon'>
-                <Link to='/'>
-                    <House className='h-6 w-6 text-white' />
-                </Link>
-            </Button>
+            <section className='flex items-center gap-7'>
+                {isPending && <Spinner light />}
+
+                <Button asChild variant='ghost' size='icon'>
+                    <Link to='/'>
+                        <House className='h-6 w-6 text-white' />
+                    </Link>
+                </Button>
+            </section>
         </div>
     )
 }

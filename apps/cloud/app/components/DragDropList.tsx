@@ -18,10 +18,11 @@ const DragDropList = forwardRef<
             scale: SpringValue<number>
         }[]
         bind: (...args: any[]) => ReactDOMAttributes
+        isLocked: boolean
         fixTop: number | null
         header: ReactNode
     }
->(({ lips, q, springs, bind, fixTop, header }, ref) => {
+>(({ lips, q, springs, bind, isLocked, fixTop, header }, ref) => {
     return (
         <div
             ref={ref}
@@ -56,6 +57,7 @@ const DragDropList = forwardRef<
                         q={q}
                         spring={spring}
                         bind={bind}
+                        isLocked={isLocked}
                     />
                 )
             })}

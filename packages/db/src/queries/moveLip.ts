@@ -87,7 +87,6 @@ export const moveLip = (
                                   lip.sortNumber > fromLip.sortNumber!,
                           )
                           .map((lip) => {
-                              console.log('FROM', lip.sortNumber! - 1)
                               return tx
                                   .update(lipsTable)
                                   .set({ sortNumber: lip.sortNumber! - 1 })
@@ -100,7 +99,6 @@ export const moveLip = (
                                   lip.sortNumber >= payload.sortNumber!,
                           )
                           .map((lip) => {
-                              console.log('TO', lip.sortNumber! + 1)
                               return tx
                                   .update(lipsTable)
                                   .set({ sortNumber: lip.sortNumber! + 1 })

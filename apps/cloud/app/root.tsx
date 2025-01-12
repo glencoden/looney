@@ -12,9 +12,11 @@ import BoxMain from '@repo/ui/components/BoxMain'
 import Spinner from '@repo/ui/components/Spinner'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
+import H1 from '@repo/ui/typography/H1'
 import { useEffectEvent } from '@repo/utils/hooks'
 import { ReactNode, useEffect } from 'react'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
+import { hasAccess } from '~/helpers/has-access'
 import { useUserSession } from '~/hooks/useUserSession'
 import { supabase } from '~/lib/supabase.client'
 import './tailwind.css'
@@ -113,20 +115,21 @@ export default function App() {
     }
 
     if (
-        userSession?.expires_at &&
-        new Date(userSession.expires_at * 1000) < new Date()
+        !userSession ||
+        (userSession.expires_at &&
+            new Date(userSession.expires_at * 1000) < new Date())
     ) {
         navigate('/signin')
         return null
     }
 
-    // if (!hasAccess(userSession?.user.accessRole)) {
-    //     return (
-    //         <BoxMain className='flex items-center justify-center'>
-    //             <H1>Unauthorized</H1>
-    //         </BoxMain>
-    //     )
-    // }
+    if (!hasAccess(userSession?.user.accessRole)) {
+        return (
+            <BoxMain className='flex items-center justify-center'>
+                <H1>Unauthorized</H1>
+            </BoxMain>
+        )
+    }
 
     return <Outlet />
 }

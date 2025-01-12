@@ -1,7 +1,7 @@
 import { and, eq, gt, lt } from 'drizzle-orm'
 import { db, sessionsTable } from '../index.js'
 
-export const getCurrentSession = async () => {
+export const getCurrentSession = async (includeDemo?: boolean) => {
     const currentDate = new Date()
     const result = await db
         .select()
@@ -10,7 +10,7 @@ export const getCurrentSession = async () => {
             and(
                 lt(sessionsTable.startsAt, currentDate),
                 gt(sessionsTable.endsAt, currentDate),
-                eq(sessionsTable.isDemo, false),
+                includeDemo ? undefined : eq(sessionsTable.isDemo, false),
             ),
         )
 

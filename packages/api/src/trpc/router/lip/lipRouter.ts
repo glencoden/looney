@@ -14,7 +14,7 @@ import {
 import { protectedProcedure, publicProcedure } from '../../index.js'
 
 export const lipRouter = {
-    getBySessionId: protectedProcedure
+    getBySessionId: publicProcedure
         .input(SessionSchema.pick({ id: true }))
         .query(({ input }) => {
             return getLipsBySessionId(input.id)

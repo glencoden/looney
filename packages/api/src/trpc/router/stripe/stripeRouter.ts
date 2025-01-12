@@ -2,7 +2,8 @@ import assert from 'assert'
 import Stripe from 'stripe'
 import { publicProcedure } from '../../index.js'
 
-const HOST = 'http://localhost:3001' // process.env.HOST_SING
+// const HOST = 'http://localhost:3001'
+const HOST = process.env.HOST_SING
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY
 const TIP_STRIPE_PRICE = process.env.TIP_STRIPE_PRICE

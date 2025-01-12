@@ -8,13 +8,13 @@ import { getSession } from '@repo/db/queries'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Input from '@repo/ui/components/Input'
 import { cn } from '@repo/ui/helpers'
+import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { useDrag } from '@use-gesture/react'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { z } from 'zod'
 import AddDemoLipButton from '~/components/AddDemoLipButton'
 import DragDropList from '~/components/DragDropList'
 import DragDropListItem from '~/components/DragDropListItem'
-import Logo from '~/components/Logo'
 import SessionMenu from '~/components/SessionMenu'
 import { createSpringEffect } from '~/helpers/create-spring-effect'
 
@@ -543,7 +543,7 @@ export default function ActiveSession() {
                 console.log('TARGET INDEX', targetIndex)
 
                 // staged - live toggle on lip
-                // remove looney prefixes from docker compose services
+                // no moving lip away from live stack > implement no-show status
 
                 let status: LipDTO['status'] = 'idle'
 
@@ -615,14 +615,16 @@ export default function ActiveSession() {
                                         },
                                     )}
                                 >
-                                    <Logo
+                                    <Subtitle2
                                         className={cn(
-                                            'absolute left-1/2 top-1/2 w-24 -translate-x-1/2 -translate-y-1/2 opacity-30',
+                                            'absolute left-1/2 top-1/2 w-24 -translate-x-1/2 -translate-y-1/2 text-white opacity-30',
                                             {
                                                 'opacity-100': isActionTarget,
                                             },
                                         )}
-                                    />
+                                    >
+                                        Live Stack
+                                    </Subtitle2>
 
                                     {actionLip && (
                                         <DragDropListItem

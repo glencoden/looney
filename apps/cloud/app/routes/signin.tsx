@@ -1,7 +1,7 @@
 import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
-import Logo from '~/components/Logo'
+import Logo from '@repo/ui/components/Logo'
 import { supabase } from '~/lib/supabase.client'
 
 export default function Signin() {

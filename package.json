@@ -7,8 +7,8 @@
         "lint": "prettier --write . && turbo lint",
         "db:start": "supabase start",
         "db:stop": "supabase stop",
-        "docker:start": "docker compose up -d --build && docker system prune -f",
-        "docker:stop": "docker compose down",
+        "repo:start": "docker compose up -d --build && docker system prune -f",
+        "repo:stop": "docker compose down",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "glencoden",

@@ -6,17 +6,19 @@ volumes:
   acme:
 
 services:
-  looney-api-server:
+  api-server:
     build:
       context: .
       dockerfile: apps/api-server/Dockerfile
     image: looney-api-server:latest
+    container_name: looney_api_server
     ports:
       - "5555:5555"
     environment:
       DATABASE_URL: ${DOCKER_DATABASE_URL}
       API_CORS_ORIGIN: ${DOCKER_API_CORS_ORIGIN}
-      SUPABASE_URL: ${SUPABASE_URL}
+      SING_RESET_ID: ${SING_RESET_ID}
+      SUPABASE_URL: ${DOCKER_SUPABASE_URL}
       SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       LOONEY_CHAT_IDS: ${LOONEY_CHAT_IDS}
@@ -28,12 +30,13 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
       TIP_STRIPE_PRICE: ${TIP_STRIPE_PRICE}
+      HOST_SING: ${HOST_SING}
       VIRTUAL_HOST: ${HOST_API_SERVER}
       LETSENCRYPT_HOST: ${HOST_API_SERVER}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  looney-cloud:
+  cloud:
     build:
       context: .
       dockerfile: apps/cloud/Dockerfile
@@ -43,60 +46,66 @@ services:
         VITE_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
         VITE_SUPABASE_REDIRECT_URL: ${DOCKER_VITE_SUPABASE_REDIRECT_URL}
     image: looney-cloud:latest
+    container_name: looney_cloud
     ports:
       - "3000:3000"
     environment:
       DATABASE_URL: ${DOCKER_DATABASE_URL}
-      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_URL: ${DOCKER_SUPABASE_URL}
       SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
       VIRTUAL_HOST: ${HOST_CLOUD}
       LETSENCRYPT_HOST: ${HOST_CLOUD}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  looney-sing:
+  sing:
     build:
       context: .
       dockerfile: apps/sing/Dockerfile
       args:
         VITE_API_URL: ${API_URL}
     image: looney-sing:latest
+    container_name: looney_sing
     ports:
       - "3001:3001"
     environment:
       DATABASE_URL: ${DOCKER_DATABASE_URL}
-      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_URL: ${DOCKER_SUPABASE_URL}
       SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
       VIRTUAL_HOST: ${HOST_SING}
       LETSENCRYPT_HOST: ${HOST_SING}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  looney-tool:
+  tool:
     build:
       context: .
       dockerfile: apps/tool/Dockerfile
       args:
         VITE_API_URL: ${API_URL}
+        VITE_SUPABASE_URL: ${SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
     image: looney-tool:latest
+    container_name: looney_tool
     ports:
       - "3002:3002"
     environment:
       DATABASE_URL: ${DOCKER_DATABASE_URL}
-      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_URL: ${DOCKER_SUPABASE_URL}
       SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
       VIRTUAL_HOST: ${HOST_TOOL}
       LETSENCRYPT_HOST: ${HOST_TOOL}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  looney-setlist:
+  setlist:
     build:
       context: .
       dockerfile: apps/setlist/Dockerfile
       args:
         VITE_API_URL: ${API_URL}
     image: looney-setlist:latest
+    container_name: looney_setlist
     ports:
       - "3003:3003"
     environment:
@@ -106,7 +115,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  looney-nginx:
+  nginx:
     image: nginx:1.21.4-alpine
     container_name: nginx-proxy
     restart: always
@@ -119,11 +128,11 @@ services:
       - html:/usr/share/nginx/html
       - certs:/etc/nginx/certs:ro
 
-  looney-gen:
+  gen:
     image: jwilder/docker-gen:0.9.1
     container_name: nginx-proxy-gen
     depends_on:
-      - looney-nginx
+      - nginx
     volumes:
       - conf:/etc/nginx/conf.d
       - vhost:/etc/nginx/vhost.d
@@ -133,12 +142,12 @@ services:
       - ./nginx-proxy/templates:/etc/docker-gen/templates:ro
     command: -notify-sighup nginx-proxy -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
 
-  looney-acme:
+  acme:
     image: nginxproxy/acme-companion:2.3
     container_name: nginx-proxy-acme
     depends_on:
-      - looney-nginx
-      - looney-gen
+      - nginx
+      - gen
     volumes:
       - conf:/etc/nginx/conf.d
       - vhost:/etc/nginx/vhost.d

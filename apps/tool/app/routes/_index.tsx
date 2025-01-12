@@ -1,11 +1,12 @@
 import { api } from '@repo/api/client'
+import Logo from '@repo/ui/components/Logo'
 import { cn } from '@repo/ui/helpers'
 import { useEffectEvent } from '@repo/utils/hooks'
 import { useEffect, useState } from 'react'
 import { Text } from '~/classes/Text'
 import JoinedLine from '~/components/JoinedLine'
 import { parseLyrics } from '~/helpers/parse-lyrics'
-import logoWhite from '~/images/logo-white.png'
+import { useAutoScreen } from '~/hooks/useAutoScreen'
 import type { Index } from '~/types/Index'
 import type { Position } from '~/types/Position'
 
@@ -374,6 +375,16 @@ export default function Index() {
 
     /**
      *
+     * Auto screen changes
+     *
+     */
+
+    const screen = useAutoScreen()
+
+    console.log('screen', screen)
+
+    /**
+     *
      * Render
      *
      */
@@ -388,12 +399,8 @@ export default function Index() {
             : (position.current / position.totalSyllables) * 100
 
     return (
-        <div className='relative flex h-screen cursor-none flex-col items-center justify-center'>
-            <img
-                src={logoWhite}
-                alt='Logo'
-                className='absolute right-12 top-12 w-40'
-            />
+        <main className='relative flex h-screen cursor-none flex-col items-center justify-center'>
+            <Logo className='absolute right-12 top-12 w-40' />
 
             <h1
                 className={cn(
@@ -421,6 +428,6 @@ export default function Index() {
                     <JoinedLine line={next} className='opacity-60' />
                 </div>
             </section>
-        </div>
+        </main>
     )
 }

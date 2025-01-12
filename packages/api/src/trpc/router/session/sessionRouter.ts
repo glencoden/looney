@@ -1,5 +1,6 @@
 import { SessionSchema } from '@repo/db'
 import { getCurrentSession, getSession, updateSession } from '@repo/db/queries'
+import { z } from 'zod'
 import { protectedProcedure, publicProcedure } from '../../index.js'
 
 export const sessionRouter = {
@@ -9,9 +10,17 @@ export const sessionRouter = {
             return getSession(input.id)
         }),
 
-    getCurrent: publicProcedure.query(() => {
-        return getCurrentSession()
-    }),
+    getCurrent: publicProcedure
+        .input(
+            z
+                .object({
+                    includeDemo: z.boolean(),
+                })
+                .optional(),
+        )
+        .query(({ input }) => {
+            return getCurrentSession(input?.includeDemo)
+        }),
 
     update: protectedProcedure
         .input(

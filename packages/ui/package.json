@@ -6,6 +6,7 @@
         "./constants": "./src/CONSTANTS.ts",
         "./helpers": "./src/helpers/index.ts",
         "./styles.css": "./dist/styles.css",
+        "./components/Logo": "./src/components/Logo.tsx",
         "./components/BoxMain": "./src/components/BoxMain.tsx",
         "./components/BoxContentSlot": "./src/components/BoxContentSlot.tsx",
         "./components/BoxFullHeightSlot": "./src/components/BoxFullHeightSlot.tsx",

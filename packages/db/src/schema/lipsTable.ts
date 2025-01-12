@@ -23,7 +23,15 @@ export const lipsTable = pgTable('lip', {
         .references(() => guestsTable.id, { onDelete: 'cascade' }),
     singerName: varchar('singer_name', { length: 255 }).notNull(),
     status: text('status', {
-        enum: ['idle', 'selected', 'staged', 'live', 'done', 'deleted'],
+        enum: [
+            'idle',
+            'selected',
+            'staged',
+            'no-show',
+            'live',
+            'done',
+            'deleted',
+        ],
     })
         .notNull()
         .default('idle'),

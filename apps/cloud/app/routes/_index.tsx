@@ -24,7 +24,7 @@ export default function Index() {
                     className='float-end'
                     variant='ghost'
                     size='icon'
-                    loading={navigation.state === 'loading'}
+                    disabled={navigation.state === 'loading'}
                 >
                     <Link to='/signout'>
                         <LogOut className='h-6 w-6 text-white' />

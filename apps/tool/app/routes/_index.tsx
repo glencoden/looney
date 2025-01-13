@@ -4,6 +4,7 @@ import QRDemo from '@repo/ui/components/QRDemo'
 import QRLive from '@repo/ui/components/QRLive'
 import { cn } from '@repo/ui/helpers'
 import { useEffectEvent } from '@repo/utils/hooks'
+import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { Text } from '~/classes/Text'
 import JoinedLine from '~/components/JoinedLine'
@@ -377,13 +378,116 @@ export default function Index() {
 
     /**
      *
+     * Auto lyrics
+     *
+     */
+
+    const [isAutoLyricsDisabled, setIsAutoLyricsDisabled] = useState(false)
+    const [isAutoLyricsConnected, setIsAutoLyricsConnected] = useState(false)
+
+    const { data: autoToolServerIP } = useQuery({
+        queryKey: ['auto-tool-server-ip'],
+        queryFn: async () => {
+            const response = await fetch(
+                'https://api.looneytunez.de/live/auto_tool_server_ip',
+            )
+            if (!response.ok) {
+                throw new Error(
+                    'No response from the API trying to get auto tool server IP.',
+                )
+            }
+            const result = await response.json()
+            if (result.error !== null) {
+                throw new Error(
+                    'Error on API server trying to get auto tool server IP.',
+                )
+            }
+            return result.data
+        },
+    })
+
+    useEffect(() => {
+        if (!autoToolServerIP) {
+            return
+        }
+
+        let websocket: WebSocket
+
+        let timeoutId: ReturnType<typeof setTimeout>
+        const retryInterval = 5000 // ms
+
+        const connect = () => {
+            websocket = new WebSocket(`ws://${autoToolServerIP}:5555`)
+
+            websocket.addEventListener('error', (error) => {
+                console.log(
+                    `Websocket error: ${JSON.stringify(error)}. Retry in ${retryInterval / 1000} s.`,
+                )
+
+                clearTimeout(timeoutId)
+
+                timeoutId = setTimeout(() => {
+                    connect()
+                }, retryInterval)
+            })
+
+            websocket.addEventListener('open', () => {
+                setIsAutoLyricsConnected(true)
+            })
+
+            websocket.addEventListener('close', () => {
+                setIsAutoLyricsConnected(false)
+            })
+
+            websocket.addEventListener('message', (event) => {
+                const messageCode = parseInt(event.data)
+
+                if (Number.isNaN(messageCode)) {
+                    console.warn(
+                        'websocket on message listener expects a number',
+                    )
+                    return
+                }
+
+                switch (messageCode) {
+                    // next syllable
+                    case 0: {
+                        if (isAutoLyricsDisabled) {
+                            break
+                        }
+                        nextHighlight()
+                        break
+                    }
+                    // send back the received number (presumed timestamp) to test network latency
+                    default:
+                        websocket.send(`${messageCode}`)
+                }
+            })
+        }
+
+        connect()
+
+        return () => {
+            websocket?.close()
+        }
+    }, [nextHighlight, autoToolServerIP, isAutoLyricsDisabled])
+
+    /**
+     *
      * Auto screen changes
      *
      */
 
     const screen = useAutoScreen()
 
-    console.log('screen', screen)
+    useEffect(() => {
+        console.log('NEW SCREEN')
+        if (screen.type === 'lyrics') {
+            setSelectedSongId(screen.songId)
+            return
+        }
+        setSelectedSongId(null)
+    }, [screen])
 
     /**
      *
@@ -413,7 +517,7 @@ export default function Index() {
                     },
                 )}
             >
-                {selectedText?.title ?? 'Looney tool'}
+                {selectedText?.title ?? screen.type}
             </h1>
 
             <QRLive className='absolute left-12 top-12' />

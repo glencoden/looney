@@ -32,7 +32,7 @@ const DragDropList = forwardRef<
             <div
                 ref={ref}
                 className={cn(
-                    'px-main relative flex w-full flex-grow flex-col items-center gap-3 pb-24',
+                    'px-main relative flex w-full flex-grow flex-col items-center gap-3 pb-48',
                     {
                         'overflow-y-scroll': fixTop === null,
                     },

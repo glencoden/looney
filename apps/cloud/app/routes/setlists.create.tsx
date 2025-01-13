@@ -109,6 +109,8 @@ export default function SetlistsCreate() {
 
                     <hr className='w-full border-2 border-transparent' />
 
+                    <Subtitle2>You can add songs later</Subtitle2>
+
                     <Button type={isLoading ? 'button' : 'submit'}>
                         Create
                     </Button>

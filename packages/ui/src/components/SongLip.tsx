@@ -25,19 +25,19 @@ export default function SongLip({
             <div className='absolute left-1 top-1 h-full w-full bg-black' />
             <div className='relative flex h-full w-full justify-between gap-4 border-2 border-black bg-white px-3 py-2'>
                 <section className='h-full'>
-                    <Subtitle2 className='text-black'>
+                    <Subtitle2 className='whitespace-nowrap text-black'>
                         <SearchHighlight
                             text={toNonBreaking(lip.singerName)}
                             searchString={searchString}
                         />
                     </Subtitle2>
-                    <Small className='mt-2.5 text-black'>
+                    <Small className='mt-2.5 whitespace-nowrap text-black'>
                         <SearchHighlight
                             text={toNonBreaking(lip.artist)}
                             searchString={searchString}
                         />
                     </Small>
-                    <Subtitle1 className='mt-1 text-black'>
+                    <Subtitle1 className='mt-1 whitespace-nowrap text-black'>
                         <SearchHighlight
                             text={toNonBreaking(lip.songTitle)}
                             searchString={searchString}

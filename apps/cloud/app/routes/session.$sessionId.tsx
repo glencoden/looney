@@ -891,7 +891,7 @@ export default function ActiveSession() {
 
                     <div
                         {...bindPageDrag()}
-                        className='absolute bottom-0 left-1/2 h-32 w-[calc(100vw-96px)] -translate-x-1/2 touch-none select-none md:hidden'
+                        className='absolute bottom-0 left-1/2 h-32 w-full -translate-x-1/2 touch-none select-none md:hidden'
                     />
                 </div>
             </div>

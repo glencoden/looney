@@ -35,8 +35,15 @@ export const TRPCQueryClientProvider: FC<
                             return authHeaders
                         }
 
+                        const preAuthCall = performance.now()
+
                         const { data, error } =
                             await supabaseClient.auth.getSession()
+
+                        console.log(
+                            'FE AUTH IN MS',
+                            Math.round(performance.now() - preAuthCall),
+                        )
 
                         if (error !== null) {
                             throw new Error(error.message)

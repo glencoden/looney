@@ -5,6 +5,7 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
+    useLocation,
     useNavigate,
 } from '@remix-run/react'
 import { TRPCQueryClientProvider } from '@repo/api/provider'
@@ -13,8 +14,7 @@ import Spinner from '@repo/ui/components/Spinner'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
 import H1 from '@repo/ui/typography/H1'
-import { useEffectEvent } from '@repo/utils/hooks'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
 import { hasAccess } from '~/helpers/has-access'
 import { useUserSession } from '~/hooks/useUserSession'
@@ -92,46 +92,51 @@ export const meta: MetaFunction = () => {
 export default function App() {
     const navigate = useNavigate()
 
-    const [isInit, setIsInit] = useState(false)
+    const { userSession, isUserSessionLoading } = useUserSession()
 
-    const handleLifecycle = useEffectEvent(async () => {
+    useEffect(() => {
+        if (isUserSessionLoading) {
+            return
+        }
+        if (
+            !userSession ||
+            (userSession.expires_at &&
+                new Date(userSession.expires_at * 1000) < new Date())
+        ) {
+            navigate('/signin')
+        }
+    }, [userSession, isUserSessionLoading])
+
+    const location = useLocation()
+
+    const isSigninRoute = location.pathname === '/signin'
+
+    useEffect(() => {
+        if (isSigninRoute) {
+            return
+        }
         window.addEventListener('beforeunload', handleBeforeUnload)
-        setIsInit(true)
-
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload)
         }
-    })
+    }, [isSigninRoute])
 
-    useEffect(() => {
-        void handleLifecycle()
-    }, [handleLifecycle])
+    if (!isSigninRoute) {
+        if (!userSession || isUserSessionLoading) {
+            return (
+                <BoxMain className='flex items-center justify-center'>
+                    <Spinner light />
+                </BoxMain>
+            )
+        }
 
-    const { userSession, isUserSessionLoading } = useUserSession(!isInit)
-
-    if (isUserSessionLoading) {
-        return (
-            <BoxMain className='flex items-center justify-center'>
-                <Spinner light />
-            </BoxMain>
-        )
-    }
-
-    if (
-        !userSession ||
-        (userSession.expires_at &&
-            new Date(userSession.expires_at * 1000) < new Date())
-    ) {
-        navigate('/signin')
-        return null
-    }
-
-    if (!hasAccess(userSession?.user.accessRole)) {
-        return (
-            <BoxMain className='flex items-center justify-center'>
-                <H1>Unauthorized</H1>
-            </BoxMain>
-        )
+        if (!hasAccess(userSession?.user.accessRole)) {
+            return (
+                <BoxMain className='flex items-center justify-center'>
+                    <H1>Unauthorized</H1>
+                </BoxMain>
+            )
+        }
     }
 
     return <Outlet />

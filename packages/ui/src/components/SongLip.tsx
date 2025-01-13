@@ -23,30 +23,29 @@ export default function SongLip({
     return (
         <div className='relative h-24 w-full max-w-96 select-none'>
             <div className='absolute left-1 top-1 h-full w-full bg-black' />
-            <div className='relative flex h-full w-full justify-between gap-4 border-2 border-black bg-white px-3 py-2'>
-                <section className='h-full'>
-                    <Subtitle2 className='whitespace-nowrap text-black'>
-                        <SearchHighlight
-                            text={toNonBreaking(lip.singerName)}
-                            searchString={searchString}
-                        />
-                    </Subtitle2>
-                    <Small className='mt-2.5 whitespace-nowrap text-black'>
-                        <SearchHighlight
-                            text={toNonBreaking(lip.artist)}
-                            searchString={searchString}
-                        />
-                    </Small>
-                    <Subtitle1 className='mt-1 whitespace-nowrap text-black'>
-                        <SearchHighlight
-                            text={toNonBreaking(lip.songTitle)}
-                            searchString={searchString}
-                        />
-                    </Subtitle1>
-                </section>
-                <section className='flex h-full flex-col items-end justify-between py-1.5'>
+            <div className='relative h-full w-full border-2 border-black bg-white px-3 py-2'>
+                <Subtitle2 className='max-w-[70%] overflow-hidden text-ellipsis whitespace-nowrap text-black'>
+                    <SearchHighlight
+                        text={toNonBreaking(lip.singerName)}
+                        searchString={searchString}
+                    />
+                </Subtitle2>
+                <Small className='mt-2 max-w-[80%] overflow-hidden text-ellipsis whitespace-nowrap text-black'>
+                    <SearchHighlight
+                        text={toNonBreaking(lip.artist)}
+                        searchString={searchString}
+                    />
+                </Small>
+                <Subtitle1 className='max-w-[80%] overflow-hidden text-ellipsis whitespace-nowrap text-black'>
+                    <SearchHighlight
+                        text={toNonBreaking(lip.songTitle)}
+                        searchString={searchString}
+                    />
+                </Subtitle1>
+
+                <section className='absolute right-3 top-0 flex h-full w-[25%] flex-col items-end justify-between py-3'>
                     {!hideTime && (
-                        <Small className='text-black'>
+                        <Small className='text-pink-700'>
                             {formatDistanceToNow(lip.createdAt!)}
                         </Small>
                     )}

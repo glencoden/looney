@@ -41,10 +41,6 @@ export const useAutoScreen = (): Response => {
         Boolean(session) && !session!.isLocked && session!.endsAt > new Date()
 
     useEffect(() => {
-        if (!session?.id) {
-            return
-        }
-
         const channel = supabase
             .channel('session')
             .on(
@@ -60,6 +56,19 @@ export const useAutoScreen = (): Response => {
                     })
                 },
             )
+            .subscribe()
+
+        return () => {
+            void supabase.removeChannel(channel)
+        }
+    }, [utils])
+
+    useEffect(() => {
+        if (!session?.id) {
+            return
+        }
+        const channel = supabase
+            .channel('lip')
             .on(
                 'postgres_changes',
                 {
@@ -72,36 +81,10 @@ export const useAutoScreen = (): Response => {
                 },
             )
             .subscribe()
-
         return () => {
             void supabase.removeChannel(channel)
         }
     }, [utils, session?.id])
-
-    // useEffect(() => {
-    //     if (!session?.id) {
-    //         return
-    //     }
-
-    //     const channel = supabase
-    //         .channel('session')
-    //         .on(
-    //             'postgres_changes',
-    //             {
-    //                 event: '*',
-    //                 schema: 'public',
-    //                 table: 'lip',
-    //             },
-    //             () => {
-    //                 void utils.lip.getBySessionId.invalidate({ id: session.id })
-    //             },
-    //         )
-    //         .subscribe()
-
-    //     return () => {
-    //         void supabase.removeChannel(channel)
-    //     }
-    // }, [utils, session?.id])
 
     return useMemo(() => {
         if (!isSessionActive) {

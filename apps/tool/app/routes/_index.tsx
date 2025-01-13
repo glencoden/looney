@@ -4,7 +4,6 @@ import QRDemo from '@repo/ui/components/QRDemo'
 import QRLive from '@repo/ui/components/QRLive'
 import { cn } from '@repo/ui/helpers'
 import { useEffectEvent } from '@repo/utils/hooks'
-import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { Text } from '~/classes/Text'
 import JoinedLine from '~/components/JoinedLine'
@@ -382,95 +381,95 @@ export default function Index() {
      *
      */
 
-    const [isAutoLyricsDisabled, setIsAutoLyricsDisabled] = useState(false)
-    const [isAutoLyricsConnected, setIsAutoLyricsConnected] = useState(false)
+    // const [isAutoLyricsDisabled, setIsAutoLyricsDisabled] = useState(false)
+    // const [isAutoLyricsConnected, setIsAutoLyricsConnected] = useState(false)
 
-    const { data: autoToolServerIP } = useQuery({
-        queryKey: ['auto-tool-server-ip'],
-        queryFn: async () => {
-            const response = await fetch(
-                'https://api.looneytunez.de/live/auto_tool_server_ip',
-            )
-            if (!response.ok) {
-                throw new Error(
-                    'No response from the API trying to get auto tool server IP.',
-                )
-            }
-            const result = await response.json()
-            if (result.error !== null) {
-                throw new Error(
-                    'Error on API server trying to get auto tool server IP.',
-                )
-            }
-            return result.data
-        },
-    })
+    // const { data: autoToolServerIP } = useQuery({
+    //     queryKey: ['auto-tool-server-ip'],
+    //     queryFn: async () => {
+    //         const response = await fetch(
+    //             'https://api.looneytunez.de/live/auto_tool_server_ip',
+    //         )
+    //         if (!response.ok) {
+    //             throw new Error(
+    //                 'No response from the API trying to get auto tool server IP.',
+    //             )
+    //         }
+    //         const result = await response.json()
+    //         if (result.error !== null) {
+    //             throw new Error(
+    //                 'Error on API server trying to get auto tool server IP.',
+    //             )
+    //         }
+    //         return result.data
+    //     },
+    // })
 
-    useEffect(() => {
-        if (!autoToolServerIP) {
-            return
-        }
+    // useEffect(() => {
+    //     if (!autoToolServerIP) {
+    //         return
+    //     }
 
-        let websocket: WebSocket
+    //     let websocket: WebSocket
 
-        let timeoutId: ReturnType<typeof setTimeout>
-        const retryInterval = 5000 // ms
+    //     let timeoutId: ReturnType<typeof setTimeout>
+    //     const retryInterval = 5000 // ms
 
-        const connect = () => {
-            websocket = new WebSocket(`ws://${autoToolServerIP}:5555`)
+    //     const connect = () => {
+    //         websocket = new WebSocket(`ws://${autoToolServerIP}:5555`)
 
-            websocket.addEventListener('error', (error) => {
-                console.log(
-                    `Websocket error: ${JSON.stringify(error)}. Retry in ${retryInterval / 1000} s.`,
-                )
+    //         websocket.addEventListener('error', (error) => {
+    //             console.log(
+    //                 `Websocket error: ${JSON.stringify(error)}. Retry in ${retryInterval / 1000} s.`,
+    //             )
 
-                clearTimeout(timeoutId)
+    //             clearTimeout(timeoutId)
 
-                timeoutId = setTimeout(() => {
-                    connect()
-                }, retryInterval)
-            })
+    //             timeoutId = setTimeout(() => {
+    //                 connect()
+    //             }, retryInterval)
+    //         })
 
-            websocket.addEventListener('open', () => {
-                setIsAutoLyricsConnected(true)
-            })
+    //         websocket.addEventListener('open', () => {
+    //             setIsAutoLyricsConnected(true)
+    //         })
 
-            websocket.addEventListener('close', () => {
-                setIsAutoLyricsConnected(false)
-            })
+    //         websocket.addEventListener('close', () => {
+    //             setIsAutoLyricsConnected(false)
+    //         })
 
-            websocket.addEventListener('message', (event) => {
-                const messageCode = parseInt(event.data)
+    //         websocket.addEventListener('message', (event) => {
+    //             const messageCode = parseInt(event.data)
 
-                if (Number.isNaN(messageCode)) {
-                    console.warn(
-                        'websocket on message listener expects a number',
-                    )
-                    return
-                }
+    //             if (Number.isNaN(messageCode)) {
+    //                 console.warn(
+    //                     'websocket on message listener expects a number',
+    //                 )
+    //                 return
+    //             }
 
-                switch (messageCode) {
-                    // next syllable
-                    case 0: {
-                        if (isAutoLyricsDisabled) {
-                            break
-                        }
-                        nextHighlight()
-                        break
-                    }
-                    // send back the received number (presumed timestamp) to test network latency
-                    default:
-                        websocket.send(`${messageCode}`)
-                }
-            })
-        }
+    //             switch (messageCode) {
+    //                 // next syllable
+    //                 case 0: {
+    //                     if (isAutoLyricsDisabled) {
+    //                         break
+    //                     }
+    //                     nextHighlight()
+    //                     break
+    //                 }
+    //                 // send back the received number (presumed timestamp) to test network latency
+    //                 default:
+    //                     websocket.send(`${messageCode}`)
+    //             }
+    //         })
+    //     }
 
-        connect()
+    //     connect()
 
-        return () => {
-            websocket?.close()
-        }
-    }, [nextHighlight, autoToolServerIP, isAutoLyricsDisabled])
+    //     return () => {
+    //         websocket?.close()
+    //     }
+    // }, [nextHighlight, autoToolServerIP, isAutoLyricsDisabled])
 
     /**
      *

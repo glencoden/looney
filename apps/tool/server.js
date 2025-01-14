@@ -48,9 +48,6 @@ app.use(morgan('tiny'))
 // handle SSR requests
 app.all('*', remixHandler)
 
-// Add this line to disable HTTPS redirects
-app.set('trust proxy', false)
-
 const port = process.env.PORT || 3002
 app.listen(port, () =>
     console.log(`Express server listening at http://localhost:${port}`),

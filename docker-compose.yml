@@ -13,7 +13,7 @@ services:
     image: looney-api-server:latest
     container_name: looney_api_server
     ports:
-      - "5555:5555"
+      - "5400:5400"
     environment:
       DATABASE_URL: ${DOCKER_DATABASE_URL}
       API_CORS_ORIGIN: ${DOCKER_API_CORS_ORIGIN}

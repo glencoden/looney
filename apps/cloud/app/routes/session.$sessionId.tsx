@@ -301,6 +301,14 @@ export default function ActiveSession() {
         }
 
         // TODO: add this to move update to avoid having two requests
+        // ALSO let staged lip be moved away
+        // ALSO mobile page indicator dots
+        // Song select loading spinner
+        // Session start buttons loading spinner rather than page pulse
+        // Refactor drop shadows by the example of SongLip
+        // Always five demo lips
+        // Remove shadow from lips on live stack
+        // Hook up stripe and tool ws locally
         if (actionLip && status === 'staged') {
             const actionStatus =
                 actionLip.status === 'staged' ? 'no-show' : 'done'
@@ -760,7 +768,7 @@ export default function ActiveSession() {
     )
 
     return (
-        <BoxMain className='relative overflow-visible'>
+        <BoxMain className='relative lg:overflow-visible'>
             <div
                 className={cn('absolute inset-0', {
                     'animate-pulse': isLipsLoading,
@@ -831,7 +839,10 @@ export default function ActiveSession() {
                                                         onClick={
                                                             handleLiveButtonClick
                                                         }
-                                                        disabled={isPending}
+                                                        disabled={
+                                                            isPending ||
+                                                            !!session.isLocked
+                                                        }
                                                     >
                                                         <PlayCircle className='h-14 w-14 fill-pink-700 text-black' />
                                                     </Button>
@@ -891,13 +902,13 @@ export default function ActiveSession() {
 
                     <div
                         {...bindPageDrag()}
-                        className='absolute bottom-0 left-1/2 h-32 w-full -translate-x-1/2 touch-none select-none md:hidden'
+                        className='absolute bottom-0 left-1/2 h-32 w-2/3 -translate-x-1/2 touch-none select-none md:hidden'
                     />
                 </div>
             </div>
 
             {session.isDemo && (
-                <div className='absolute bottom-6 right-6'>
+                <div className='absolute bottom-6 right-6 select-none'>
                     <AddDemoLipButton session={session} />
                 </div>
             )}

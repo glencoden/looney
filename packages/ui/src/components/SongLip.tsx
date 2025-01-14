@@ -43,7 +43,7 @@ export default function SongLip({
                     />
                 </Subtitle1>
 
-                <section className='absolute right-3 top-0 flex h-full w-[25%] flex-col items-end justify-between py-3'>
+                <section className='absolute right-3 top-0 flex h-full max-w-[25%] flex-col items-end justify-between py-3'>
                     {!hideTime && (
                         <Small className='text-pink-700'>
                             {formatDistanceToNow(lip.createdAt!)}

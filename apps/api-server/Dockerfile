@@ -35,6 +35,6 @@ USER expressjs
 
 COPY --from=installer /app .
 
-EXPOSE 5555
+EXPOSE 5400
 
 CMD [ "pm2-runtime", "apps/api-server/dist/index.js" ]

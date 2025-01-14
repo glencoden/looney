@@ -417,8 +417,8 @@ export default function Index() {
         const retryInterval = 5000 // ms
 
         const connect = () => {
-            // websocket = new WebSocket(`wss://${autoToolServerIP}:5555`)
-            websocket = new WebSocket(`wss://localhost:5555`)
+            websocket = new WebSocket(`wss://${autoToolServerIP}:5555`)
+            // websocket = new WebSocket(`wss://localhost:5555`)
 
             websocket.addEventListener('error', (error) => {
                 console.log(

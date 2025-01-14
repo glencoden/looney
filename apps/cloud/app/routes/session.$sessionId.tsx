@@ -19,6 +19,7 @@ import DragDropList from '~/components/DragDropList'
 import DragDropListItem from '~/components/DragDropListItem'
 import SessionMenu from '~/components/SessionMenu'
 import { createSpringEffect } from '~/helpers/create-spring-effect'
+import { useLips } from '~/hooks/useLips'
 
 const FULL_LIP_HEIGHT = 108 // px, lip height 96 + list gap 12
 const FULL_ACTION_LIP_BOX_HEIGHT = 124 // px, lip box height 112 + list gap 12
@@ -98,12 +99,7 @@ export default function ActiveSession() {
         data,
         isLoading: isLipsLoading,
         isFetching: isLipsFetching,
-    } = api.lip.getBySessionId.useQuery(
-        { id: session.id },
-        {
-            refetchInterval: 1000 * 60,
-        },
-    )
+    } = useLips(session.id)
 
     const lips = data ?? ([] as LipDTO[])
 
@@ -300,31 +296,13 @@ export default function ActiveSession() {
             return
         }
 
-        // TODO: add this to move update to avoid having two requests
-        // ALSO let staged lip be moved away
-        // ALSO mobile page indicator dots
-        // Song select loading spinner
+        // TODO:
+        // Mobile page indicator dots
         // Session start buttons loading spinner rather than page pulse
-        // Refactor drop shadows by the example of SongLip
+        // Refactor Button drop shadows by the example of SongLip
         // Always five demo lips
-        // Remove shadow from lips on live stack
+        // Remove shadow from lips on live stack?
         // Hook up stripe and tool ws locally
-        if (actionLip && status === 'staged') {
-            const actionStatus =
-                actionLip.status === 'staged' ? 'no-show' : 'done'
-            utils.lip.getBySessionId.setData({ id: session.id }, (prevLips) => {
-                return prevLips?.map((lip) => {
-                    if (lip.id !== actionLip.id) {
-                        return lip
-                    }
-                    return { ...lip, status: actionStatus }
-                })
-            })
-            updateLip({
-                id: actionLip.id,
-                status: actionStatus,
-            })
-        }
 
         // Optimistic update
         void utils.lip.getBySessionId.setData(
@@ -335,11 +313,22 @@ export default function ActiveSession() {
                         if (lip.sortNumber === null) {
                             return lip
                         }
+                        // Update moved lip
                         if (lip.id === id) {
                             return {
                                 ...lip,
                                 status,
                                 sortNumber,
+                            }
+                        }
+                        // Update current lip on live stack
+                        if (lip.id === actionLip?.id && status === 'staged') {
+                            return {
+                                ...lip,
+                                status:
+                                    lip.status === 'staged'
+                                        ? 'no-show'
+                                        : ('done' as LipDTO['status']),
                             }
                         }
                         if (fromLip.status === status) {
@@ -733,9 +722,6 @@ export default function ActiveSession() {
                 console.log('DRAG INDEX', dragIndex)
                 console.log('TARGET INDEX', targetIndex)
 
-                // staged - live toggle on lip
-                // no moving lip away from live stack > implement no-show status
-
                 let status: LipDTO['status'] = 'idle'
 
                 if (deleteOnDrop) {
@@ -827,11 +813,21 @@ export default function ActiveSession() {
                                                 lip={actionLip}
                                                 spring={actionSpring}
                                                 bind={bindLipDrag}
-                                                isLocked
+                                                isLocked={
+                                                    actionLip.status === 'live'
+                                                }
                                                 hideTime
                                                 hideFavorites
                                             />
-                                            <div className='absolute right-2 top-1/2 flex h-20 w-28 -translate-y-1/2 items-center justify-center'>
+                                            <div
+                                                className={cn(
+                                                    'absolute right-2 top-1/2 flex h-20 w-28 -translate-y-1/2 items-center justify-center',
+                                                    {
+                                                        'animate-pulse':
+                                                            isLipUpdatePending,
+                                                    },
+                                                )}
+                                            >
                                                 {actionLip.status ===
                                                     'staged' && (
                                                     <Button

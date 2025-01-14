@@ -32,7 +32,7 @@ const DragDropList = forwardRef<
             <div
                 ref={ref}
                 className={cn(
-                    'px-main relative flex w-full flex-grow flex-col items-center gap-3 pb-48',
+                    'px-main relative flex w-full flex-grow flex-col items-center gap-3',
                     {
                         'overflow-y-scroll': fixTop === null,
                     },
@@ -40,15 +40,21 @@ const DragDropList = forwardRef<
                 style={fixTop ? { transform: `translateY(-${fixTop}px)` } : {}}
             >
                 <div
-                    className='sticky left-0 top-0 z-10 h-36 w-full shrink-0 lg:h-40'
+                    className={cn(
+                        'sticky left-0 top-0 z-10 h-36 w-full shrink-0 lg:h-40',
+                        {
+                            absolute: fixTop !== null,
+                            'px-main': fixTop !== null,
+                        },
+                    )}
                     style={fixTop ? { top: `${fixTop}px` } : {}}
                 >
-                    <div className='absolute bottom-0 left-1/2 h-64 w-full -translate-x-1/2 bg-blue-800 max-md:w-[100vw]'>
-                        <div className='absolute bottom-0 left-1/2 flex h-28 w-full -translate-x-1/2 items-center justify-center px-6'>
-                            {header}
-                        </div>
+                    <div className='absolute bottom-0 left-1/2 h-64 w-full -translate-x-1/2 bg-blue-800 max-lg:w-[50vw] max-md:w-[100vw]' />
+                    <div className='relative mt-8 flex h-28 w-full items-center justify-center lg:mt-12'>
+                        {header}
                     </div>
                 </div>
+                {fixTop !== null && <div className='h-36 lg:h-40' />}
 
                 {springs.map((spring, index) => {
                     const lip = lips[index]

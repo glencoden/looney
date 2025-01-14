@@ -45,7 +45,7 @@ export default function SongLip({
 
                 <section className='absolute right-3 top-0 flex h-full max-w-[25%] flex-col items-end justify-between py-3'>
                     {!hideTime && (
-                        <Small className='text-pink-700'>
+                        <Small className='text-right text-pink-700'>
                             {formatDistanceToNow(lip.createdAt!)}
                         </Small>
                     )}

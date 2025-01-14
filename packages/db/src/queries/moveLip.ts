@@ -1,4 +1,4 @@
-import { and, eq } from 'drizzle-orm'
+import { and, eq, or } from 'drizzle-orm'
 import { db, Lip, lipsTable } from '../index.js'
 
 export const moveLip = (
@@ -48,6 +48,30 @@ export const moveLip = (
                               eq(lipsTable.status, payload.status),
                           ),
                       )
+
+        const [actionLip] = await tx
+            .select()
+            .from(lipsTable)
+            .where(
+                and(
+                    eq(lipsTable.sessionId, payload.sessionId),
+                    or(
+                        eq(lipsTable.status, 'staged'),
+                        eq(lipsTable.status, 'live'),
+                    ),
+                ),
+            )
+            .limit(1)
+
+        if (actionLip && payload.status === 'staged') {
+            await tx
+                .update(lipsTable)
+                .set({
+                    status: actionLip.status === 'staged' ? 'no-show' : 'done',
+                    sortNumber: 1,
+                })
+                .where(eq(lipsTable.id, actionLip.id))
+        }
 
         const updates =
             toList === null

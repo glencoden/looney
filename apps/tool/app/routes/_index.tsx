@@ -3,6 +3,7 @@ import Logo from '@repo/ui/components/Logo'
 import QRDemo from '@repo/ui/components/QRDemo'
 import QRLive from '@repo/ui/components/QRLive'
 import { cn } from '@repo/ui/helpers'
+import H3 from '@repo/ui/typography/H3'
 import { useEffectEvent } from '@repo/utils/hooks'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -417,8 +418,8 @@ export default function Index() {
         const retryInterval = 5000 // ms
 
         const connect = () => {
-            websocket = new WebSocket(`wss://${autoToolServerIP}:5555`)
-            // websocket = new WebSocket(`wss://localhost:5555`)
+            websocket = new WebSocket(`ws://${autoToolServerIP}:5555`)
+            // websocket = new WebSocket(`ws://localhost:5555`)
 
             websocket.addEventListener('error', (error) => {
                 console.log(
@@ -433,7 +434,6 @@ export default function Index() {
             })
 
             websocket.addEventListener('open', () => {
-                console.log('WEBSOCKET OPEN')
                 setIsAutoLyricsConnected(true)
             })
 
@@ -483,7 +483,6 @@ export default function Index() {
     const screen = useAutoScreen()
 
     useEffect(() => {
-        console.log('NEW SCREEN')
         if (screen.type === 'lyrics') {
             setSelectedSongId(screen.songId)
             return
@@ -510,6 +509,10 @@ export default function Index() {
         <main className='relative flex h-screen cursor-none flex-col items-center justify-center'>
             <Logo className='absolute right-12 top-12 w-40' />
 
+            <H3 className='absolute left-12 top-12 w-40'>
+                {isAutoLyricsConnected ? 'CONNECTED' : 'WAITING...'}
+            </H3>
+
             <h1
                 className={cn(
                     'duration-[1.5s]e absolute left-1/2 top-20 w-full -translate-x-1/2 px-72 text-center text-yellow-400 opacity-0 transition-opacity',
@@ -522,8 +525,8 @@ export default function Index() {
                 {selectedText?.title ?? screen.type}
             </h1>
 
-            <QRLive className='absolute left-12 top-12' />
-            <QRDemo className='absolute right-12 top-12' />
+            <QRLive className='absolute bottom-12 left-12' />
+            <QRDemo className='absolute bottom-12 right-12' />
 
             <section className='absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden px-12'>
                 <div

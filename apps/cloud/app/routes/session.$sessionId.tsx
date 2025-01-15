@@ -837,7 +837,9 @@ export default function ActiveSession() {
                                                         }
                                                         disabled={
                                                             isPending ||
-                                                            !!session.isLocked
+                                                            Boolean(
+                                                                session.isLocked,
+                                                            )
                                                         }
                                                     >
                                                         <PlayCircle className='h-14 w-14 fill-pink-700 text-black' />

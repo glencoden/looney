@@ -94,7 +94,7 @@ services:
       SUPABASE_URL: ${DOCKER_SUPABASE_URL}
       SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
       VIRTUAL_HOST: ${HOST_TOOL}
-      LETSENCRYPT_HOST: ${HOST_TOOL}
+      VIRTUAL_PROTO: http
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

@@ -7,6 +7,6 @@ export const songRouter = {
     }),
 
     getAllWithLyrics: publicProcedure.query(() => {
-        return getSongs(null, true)
+        return getSongs(null, true, true)
     }),
 }

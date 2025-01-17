@@ -1,13 +1,25 @@
 import { json, LoaderFunctionArgs } from '@remix-run/node'
-import { Link, Outlet, useLoaderData } from '@remix-run/react'
+import {
+    Link,
+    Outlet,
+    useLoaderData,
+    useLocation,
+    useNavigate,
+} from '@remix-run/react'
 import { Guest, Session } from '@repo/db'
-import { getSongs, getSongsBySetlistId } from '@repo/db/queries'
+import {
+    getGuest,
+    getSession,
+    getSongs,
+    getSongsBySetlistId,
+} from '@repo/db/queries'
 import Button from '@repo/ui/components/Button'
 import Input from '@repo/ui/components/Input'
 import SearchHighlight from '@repo/ui/components/SearchHighlight'
 import { cn } from '@repo/ui/helpers'
 import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
+import H2 from '@repo/ui/typography/H2'
 import H4 from '@repo/ui/typography/H4'
 import { toNonBreaking } from '@repo/utils/text'
 import { Star } from 'lucide-react'
@@ -37,22 +49,20 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         return json<LoaderResponse>({ guest: null, session: null, songs })
     }
 
-    const guest = null // await getGuest(guestId)
+    const guest = await getGuest(guestId)
 
-    // Throw an error if there is no db record for that guestId
+    if (!guest) {
+        throw new Error(`Couldn't find this guest.`)
+    }
 
-    const session = null // guest.sessionId ? await getSession(guest.sessionId) : null
-    const songs = null // session ? await getSongBySetlistId(session.setlistId) : null
+    const session = guest.sessionId ? await getSession(guest.sessionId) : null
+    const songs = session ? await getSongsBySetlistId(session.setlistId) : null
 
     return json<LoaderResponse>({ guest, session, songs })
 }
 
 export default function Index() {
     const { guest, session, songs } = useLoaderData<typeof loader>()
-
-    console.log('guest', guest)
-    console.log('session', session)
-    console.log('songs', songs)
 
     // We are in demo mode!
     //
@@ -77,11 +87,12 @@ export default function Index() {
      */
 
     const pages = useMemo(() => {
-        const navigationPages: NavigationPage[] = ['songs', 'feedback', 'tip']
-        if (session?.hideTipCollection) {
-            return navigationPages.filter((page) => page !== 'tip')
-        }
-        return navigationPages
+        return ['songs', 'feedback']
+        // const navigationPages: NavigationPage[] = ['songs', 'feedback', 'tip']
+        // if (session?.hideTipCollection) {
+        //     return navigationPages.filter((page) => page !== 'tip')
+        // }
+        // return navigationPages
     }, [session])
 
     const drawerBoxRef = useRef<HTMLElement>(null)
@@ -100,21 +111,11 @@ export default function Index() {
      *
      */
 
-    const [isDrawerOpen, setIsDrawerOpen] = useState(true)
-    const [selectedPage, setSelectedPage] = useState<NavigationPage>('tip')
+    const root = guest ? `/${guest.id}` : '/'
+    const base = guest ? `/${guest.id}` : ''
 
-    const createHandleNavButtonClick = (page: NavigationPage) => {
-        return () => {
-            setSelectedPage((prevPage) => {
-                if (prevPage === page && isDrawerOpen) {
-                    setIsDrawerOpen(false)
-                } else {
-                    setIsDrawerOpen(true)
-                }
-                return page
-            })
-        }
-    }
+    const navigate = useNavigate()
+    const location = useLocation()
 
     /**
      *
@@ -136,6 +137,17 @@ export default function Index() {
         })
     }, [songs, q])
 
+    if (!session) {
+        return (
+            <H2>
+                {intl.formatMessage({
+                    id: 'root.waiting.headline',
+                    defaultMessage: 'The show will start soon!',
+                })}
+            </H2>
+        )
+    }
+
     return (
         <>
             <section className='mobile-sim-height overflow-y-auto px-6 py-12'>
@@ -155,6 +167,13 @@ export default function Index() {
                     }}
                 />
 
+                <H2 className='mt-6'>
+                    {intl.formatMessage({
+                        id: 'home.heading',
+                        defaultMessage: 'Click on a Song',
+                    })}
+                </H2>
+
                 <ul className='mt-8 space-y-2 pb-48'>
                     {filteredSongs.map(
                         ({ id, artist, title, genre, isFavorite }, index) => (
@@ -164,7 +183,10 @@ export default function Index() {
                                         {genre ?? 'Unknown'}
                                     </H4>
                                 )}
-                                <div className='flex items-center gap-3'>
+                                <Link
+                                    to={`${base}/create/${id}`}
+                                    className='flex items-center gap-3'
+                                >
                                     <Star
                                         className={cn('h-4 w-4 text-pink-500', {
                                             'fill-white text-white': isFavorite,
@@ -185,7 +207,7 @@ export default function Index() {
                                             />
                                         </Body1>
                                     </div>
-                                </div>
+                                </Link>
                             </li>
                         ),
                     )}
@@ -198,84 +220,104 @@ export default function Index() {
             >
                 {drawerBoxElement && (
                     <Drawer.Root
-                        open={isDrawerOpen}
+                        open={location.pathname !== root}
                         container={drawerBoxElement}
                     >
                         <div className='absolute inset-x-0 bottom-0 h-1 bg-black' />
                         <div className='absolute inset-x-0 bottom-1 h-24 rounded-t-2xl bg-black' />
 
-                        <nav className='pointer-events-auto absolute bottom-0 left-1 right-1 z-20 grid h-24 grid-cols-3 place-items-center rounded-t-[13px] bg-blue-800'>
+                        <nav
+                            className={cn(
+                                'pointer-events-auto absolute bottom-0 left-1 right-1 z-20 grid h-24 place-items-center rounded-t-[13px] bg-blue-800',
+                                {
+                                    'grid-cols-2': pages.length === 2,
+                                    'grid-cols-3': pages.length === 3,
+                                },
+                            )}
+                        >
                             {pages.includes('songs') && (
                                 <Button
+                                    asChild
                                     size='sm'
-                                    className='px-1'
-                                    onClick={createHandleNavButtonClick(
-                                        'songs',
-                                    )}
+                                    className={cn('px-1', {
+                                        'text-white':
+                                            location.pathname ===
+                                            `${base}/songs`,
+                                    })}
                                 >
-                                    Songs
+                                    <Link
+                                        to={
+                                            location.pathname ===
+                                            `${base}/songs`
+                                                ? root
+                                                : `${base}/songs`
+                                        }
+                                    >
+                                        {intl.formatMessage({
+                                            id: 'nav.button.songs',
+                                            defaultMessage: 'Songs',
+                                        })}
+                                    </Link>
                                 </Button>
                             )}
                             {pages.includes('feedback') && (
                                 <Button
+                                    asChild
                                     size='sm'
-                                    className='px-1'
-                                    onClick={createHandleNavButtonClick(
-                                        'feedback',
-                                    )}
+                                    className={cn('px-1', {
+                                        'text-white':
+                                            location.pathname ===
+                                            `${base}/feedback`,
+                                    })}
                                 >
-                                    Feedback
+                                    <Link
+                                        to={
+                                            location.pathname ===
+                                            `${base}/feedback`
+                                                ? root
+                                                : `${base}/feedback`
+                                        }
+                                    >
+                                        {intl.formatMessage({
+                                            id: 'nav.button.feedback',
+                                            defaultMessage: 'Feedback',
+                                        })}
+                                    </Link>
                                 </Button>
                             )}
                             {pages.includes('tip') && (
-                                <Button asChild size='sm' className='px-1'>
-                                    <Link to='/tip'>
+                                <Button
+                                    asChild
+                                    size='sm'
+                                    className={cn('px-1', {
+                                        'text-white':
+                                            location.pathname === `${base}/tip`,
+                                    })}
+                                >
+                                    <Link
+                                        to={
+                                            location.pathname === `${base}/tip`
+                                                ? root
+                                                : `${base}/tip`
+                                        }
+                                    >
                                         {intl.formatMessage({
                                             id: 'nav.button.tip',
                                             defaultMessage: 'Tip the band',
                                         })}
                                     </Link>
                                 </Button>
-                                // <Button
-                                //     size='sm'
-                                //     className='px-1'
-                                //     onClick={createHandleNavButtonClick('tip')}
-                                // >
-                                //     {intl.formatMessage({
-                                //         id: 'nav.button.tip',
-                                //         defaultMessage: 'Tip the band',
-                                //     })}
-                                // </Button>
                             )}
                         </nav>
 
                         <Drawer.Overlay
                             className='absolute inset-x-0 bottom-24 h-dvh'
-                            onClick={() => setIsDrawerOpen(false)}
+                            onClick={() => navigate(root)}
                         />
 
                         <Drawer.Content className='absolute inset-x-0 bottom-20 z-10 mt-24 box-content flex h-auto flex-col items-center gap-8 rounded-t-2xl border-l-4 border-r-4 border-t-4 border-black bg-blue-800 px-6 py-12 pb-4 shadow-[0_-6px_14px_rgba(0,0,0,0.25)] outline-0'>
                             <div className='min-h-80 w-full'>
-                                {(() => {
-                                    switch (selectedPage) {
-                                        case 'songs':
-                                            return 'songs'
-                                        case 'feedback':
-                                            return (
-                                                <Input
-                                                    className='focus-visible:ring-blue-300'
-                                                    id='feedback-input'
-                                                    aria-label='Feedback input'
-                                                    defaultValue={q || ''}
-                                                    name='feedback'
-                                                    placeholder='Feedback'
-                                                    type='text'
-                                                />
-                                            )
-                                        case 'tip':
-                                            return <Outlet />
-                                    }
-                                })()}
+                                <Outlet />
                             </div>
                         </Drawer.Content>
                     </Drawer.Root>

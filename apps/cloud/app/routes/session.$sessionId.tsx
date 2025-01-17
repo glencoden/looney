@@ -296,14 +296,6 @@ export default function ActiveSession() {
             return
         }
 
-        // TODO:
-        // Mobile page indicator dots
-        // Session start buttons loading spinner rather than page pulse
-        // Refactor Button drop shadows by the example of SongLip
-        // Always five demo lips
-        // Remove shadow from lips on live stack?
-        // Hook up stripe and tool ws locally
-
         // Optimistic update
         void utils.lip.getBySessionId.setData(
             { id: session.id },

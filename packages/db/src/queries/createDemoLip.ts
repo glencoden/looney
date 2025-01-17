@@ -24,13 +24,11 @@ const DEMO_GUEST_NAMES = [
     'Lola Bunny',
 ]
 
-const MAX_NUM_DEMO_LIPS_PER_REQUEST = 5
+const NUM_DEMO_LIPS_PER_REQUEST = 4
 
 export const createDemoLip = (sessionId: Session['id']) => {
     return db.transaction(async (tx) => {
-        const numDemos = Math.ceil(
-            Math.random() * MAX_NUM_DEMO_LIPS_PER_REQUEST,
-        )
+        const numDemos = NUM_DEMO_LIPS_PER_REQUEST
 
         const songs = await tx
             .select()

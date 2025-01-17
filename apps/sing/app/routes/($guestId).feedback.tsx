@@ -68,7 +68,7 @@ export default function Feedback() {
             <H3 className='mb-10 leading-10'>
                 {intl.formatMessage({
                     id: 'feedback.heading',
-                    defaultMessage: 'Tell us about your experience here.',
+                    defaultMessage: 'Tell us about your experience',
                 })}
             </H3>
 
@@ -86,10 +86,15 @@ export default function Feedback() {
             <hr className='w-full border-2 border-transparent' />
 
             <Button onClick={handleSendButtonClick} loading={isPending}>
-                {intl.formatMessage({
-                    id: 'feedback.button.submit',
-                    defaultMessage: 'Send',
-                })}
+                {guest.feedback
+                    ? intl.formatMessage({
+                          id: 'feedback.button.update',
+                          defaultMessage: 'Update',
+                      })
+                    : intl.formatMessage({
+                          id: 'feedback.button.send',
+                          defaultMessage: 'Send',
+                      })}
             </Button>
         </div>
     )

@@ -94,7 +94,7 @@ export default function Create() {
                 {intl.formatMessage(
                     {
                         id: 'create.heading',
-                        defaultMessage: 'Sing {songTitle} by {artistName}!',
+                        defaultMessage: 'Sing {songTitle} by {artistName}',
                     },
                     {
                         songTitle: toNonBreaking(song.title),

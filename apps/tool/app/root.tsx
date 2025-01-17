@@ -9,12 +9,23 @@ import {
 } from '@remix-run/react'
 
 import { TRPCQueryClientProvider } from '@repo/api/provider'
+import { FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
 import { useEffect } from 'react'
 import './styles/fonts.css'
 import './styles/tailwind.css'
 
 export const links: LinksFunction = () => [
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossOrigin: 'anonymous',
+    },
+    {
+        rel: 'stylesheet',
+        href: FONT_SERIF_URL,
+    },
     {
         rel: 'preload',
         href: '/fonts/AvantGardGothEF-Med.otf',

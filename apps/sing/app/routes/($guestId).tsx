@@ -170,7 +170,7 @@ export default function Index() {
                 <H2 className='mt-6'>
                     {intl.formatMessage({
                         id: 'home.heading',
-                        defaultMessage: 'Click on a Song',
+                        defaultMessage: 'Click on a Song!',
                     })}
                 </H2>
 

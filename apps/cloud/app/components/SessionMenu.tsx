@@ -4,6 +4,7 @@ import { Session } from '@repo/db'
 import Button from '@repo/ui/components/Button'
 import Spinner from '@repo/ui/components/Spinner'
 import { cn } from '@repo/ui/helpers'
+import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { CircleDollarSign, House, Lock, LockOpen, Star } from 'lucide-react'
 
 export default function SessionMenu({
@@ -118,6 +119,9 @@ export default function SessionMenu({
 
             <section className='flex items-center gap-7'>
                 {isPending && <Spinner light />}
+                {session.isDemo && !isPending && (
+                    <Subtitle2 className='text-pink-700'>Demo</Subtitle2>
+                )}
 
                 <Button asChild variant='ghost' size='icon'>
                     <Link to='/'>

@@ -27,8 +27,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useIntl } from 'react-intl'
 import { Drawer } from 'vaul'
 
-type NavigationPage = 'songs' | 'feedback' | 'tip'
-
 type LoaderResponse = {
     guest: Guest | null
     session: Session | null
@@ -87,7 +85,7 @@ export default function Index() {
      */
 
     const pages = useMemo(() => {
-        return ['songs', 'feedback']
+        return ['songs']
         // const navigationPages: NavigationPage[] = ['songs', 'feedback', 'tip']
         // if (session?.hideTipCollection) {
         //     return navigationPages.filter((page) => page !== 'tip')
@@ -184,7 +182,7 @@ export default function Index() {
                                     </H4>
                                 )}
                                 <Link
-                                    to={`${base}/create/${id}`}
+                                    to={`/create/${guest!.id}/${id}`}
                                     className='flex items-center gap-3'
                                 >
                                     <Star

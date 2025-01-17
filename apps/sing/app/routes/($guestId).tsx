@@ -85,7 +85,7 @@ export default function Index() {
      */
 
     const pages = useMemo(() => {
-        return ['songs']
+        return ['songs', 'feedback']
         // const navigationPages: NavigationPage[] = ['songs', 'feedback', 'tip']
         // if (session?.hideTipCollection) {
         //     return navigationPages.filter((page) => page !== 'tip')

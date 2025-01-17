@@ -1,4 +1,17 @@
 {
-    "nav.button.tip": "Tip the band",
-    "search.placeholder": "Search"
+  "create.button.submit": "Let's go!",
+  "create.heading": "Sing {songTitle} by {artistName}",
+  "create.input.name": "What's your name?",
+  "create.max.lips": "You can only sign up for 3 songs at a time.",
+  "feedback.button.send": "Send",
+  "feedback.button.update": "Update",
+  "feedback.heading": "Tell us about your experience",
+  "home.heading": "Click on a Song!",
+  "nav.button.feedback": "Feedback",
+  "nav.button.songs": "Songs",
+  "nav.button.tip": "Tip the band",
+  "root.waiting.headline": "The show will start soon!",
+  "search.placeholder": "Search",
+  "songs.none.headline": "You have no Songs yet",
+  "songs.some.headline": "My Songs"
 }

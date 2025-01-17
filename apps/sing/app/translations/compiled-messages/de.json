@@ -1,4 +1,17 @@
 {
-    "nav.button.tip": "Trinkgeld",
-    "search.placeholder": "Suche"
+  "create.button.submit": "Los get's!",
+  "create.heading": "Sing {songTitle} von {artistName}",
+  "create.input.name": "Wie heißt du?",
+  "create.max.lips": "Du kannst dich nur für 3 Songs auf einmal anmelden.",
+  "feedback.button.send": "Senden",
+  "feedback.button.update": "Updaten",
+  "feedback.heading": "Erzähl uns von deinem Erlebnis",
+  "home.heading": "Klick auf einen Song!",
+  "nav.button.feedback": "Feedback",
+  "nav.button.songs": "Songs",
+  "nav.button.tip": "Trinkgeld",
+  "root.waiting.headline": "Die Show fängt bald an!",
+  "search.placeholder": "Suche",
+  "songs.none.headline": "Du hast noch keine Songs",
+  "songs.some.headline": "Meine Songs"
 }

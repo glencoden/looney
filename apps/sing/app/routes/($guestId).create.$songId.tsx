@@ -81,7 +81,7 @@ export default function Create() {
                     {intl.formatMessage({
                         id: 'create.max.lips',
                         defaultMessage:
-                            'You can only sign up for 3 lips at a time.',
+                            'You can only sign up for 3 songs at a time.',
                     })}
                 </H2>
             </div>

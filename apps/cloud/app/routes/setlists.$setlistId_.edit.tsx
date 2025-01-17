@@ -185,30 +185,26 @@ export default function SetlistEdit() {
                                                 : 'submit'
                                         }
                                     >
-                                        <Circle
-                                            className={cn(
-                                                'h-4 w-4 text-blue-700',
-                                                {
-                                                    'fill-white text-white':
-                                                        (() => {
-                                                            if (
-                                                                fetcher.state !==
-                                                                    'idle' &&
-                                                                fetcher.formData?.get(
-                                                                    'id',
-                                                                ) === id
-                                                            ) {
-                                                                return (
-                                                                    fetcher.formData?.get(
-                                                                        'selected',
-                                                                    ) === 'true'
-                                                                )
-                                                            }
-                                                            return isSelected
-                                                        })(),
-                                                },
+                                        <div className='relative h-4 w-4'>
+                                            {fetcher.state !== 'idle' &&
+                                            fetcher.formData?.get('songId') ===
+                                                id ? (
+                                                <Spinner
+                                                    light
+                                                    className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+                                                />
+                                            ) : (
+                                                <Circle
+                                                    className={cn(
+                                                        'h-4 w-4 text-blue-700',
+                                                        {
+                                                            'fill-white text-white':
+                                                                isSelected,
+                                                        },
+                                                    )}
+                                                />
                                             )}
-                                        />
+                                        </div>
                                     </Button>
                                 </fetcher.Form>
 

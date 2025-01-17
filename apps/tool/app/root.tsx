@@ -9,6 +9,7 @@ import {
 } from '@remix-run/react'
 
 import { TRPCQueryClientProvider } from '@repo/api/provider'
+import '@repo/ui/styles.css'
 import { useEffect } from 'react'
 import './styles/fonts.css'
 import './styles/tailwind.css'

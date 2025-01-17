@@ -3,7 +3,9 @@ import Logo from '@repo/ui/components/Logo'
 import QRDemo from '@repo/ui/components/QRDemo'
 import QRLive from '@repo/ui/components/QRLive'
 import { cn } from '@repo/ui/helpers'
-import H3 from '@repo/ui/typography/H3'
+import Body1 from '@repo/ui/typography/Body1'
+import H1 from '@repo/ui/typography/H1'
+import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { useEffectEvent } from '@repo/utils/hooks'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -419,7 +421,6 @@ export default function Index() {
 
         const connect = () => {
             websocket = new WebSocket(`ws://${autoToolServerIP}:5555`)
-            // websocket = new WebSocket(`ws://localhost:5555`)
 
             websocket.addEventListener('error', (error) => {
                 console.log(
@@ -507,41 +508,91 @@ export default function Index() {
 
     return (
         <main className='relative flex h-screen cursor-none flex-col items-center justify-center'>
-            <Logo className='absolute right-12 top-12 w-40' />
+            <Logo className='absolute left-12 top-12' />
 
-            <H3 className='absolute left-12 top-12 w-40'>
-                {isAutoLyricsConnected ? 'CONNECTED' : 'WAITING...'}
-            </H3>
+            <Subtitle2 className='absolute right-12 top-12 text-blue-700'>
+                {isAutoLyricsConnected ? 'Connected' : 'Waiting...'}
+            </Subtitle2>
 
-            <h1
-                className={cn(
-                    'duration-[1.5s]e absolute left-1/2 top-20 w-full -translate-x-1/2 px-72 text-center text-yellow-400 opacity-0 transition-opacity',
-                    {
-                        'opacity-100':
-                            isFirst('line') && !isThirdOrHigher('word'),
-                    },
-                )}
-            >
-                {selectedText?.title ?? screen.type}
-            </h1>
+            {(() => {
+                switch (screen.type) {
+                    case 'home':
+                        return (
+                            <div className='space-y-10'>
+                                <h1 className='text-center text-yellow-400'>
+                                    {screen.sessionTitle}
+                                </h1>
+                                {screen.isDemo ? (
+                                    <QRDemo className='w-80' />
+                                ) : (
+                                    <QRLive className='w-80' />
+                                )}
+                                <H1>Scan me to sing!</H1>
+                            </div>
+                        )
+                    case 'call':
+                        return (
+                            <div>
+                                {screen.prevLip && (
+                                    <H1 className='mb-24 text-6xl'>
+                                        Give it up for{' '}
+                                        {screen.prevLip.singerName} !!!
+                                    </H1>
+                                )}
+                                <Subtitle2 className='text-4xl'>
+                                    Next:
+                                </Subtitle2>
+                                <Body1 className='mt-4 text-8xl'>
+                                    {screen.nextLip.singerName}
+                                </Body1>
+                                <Body1 className='mt-10 text-6xl text-yellow-400'>
+                                    {screen.nextLip.artist}
+                                </Body1>
+                                <Body1 className='mt-4 text-8xl text-yellow-400'>
+                                    {screen.nextLip.songTitle}
+                                </Body1>
+                            </div>
+                        )
+                }
+                return (
+                    <>
+                        <h1
+                            className={cn(
+                                'duration-[1.5s]e absolute left-1/2 top-20 w-full -translate-x-1/2 px-72 text-center text-yellow-400 opacity-0 transition-opacity',
+                                {
+                                    'opacity-100':
+                                        isFirst('line') &&
+                                        !isThirdOrHigher('word'),
+                                },
+                            )}
+                        >
+                            {selectedText?.title ?? 'Looney tool'}
+                        </h1>
 
-            <QRLive className='absolute bottom-12 left-12' />
-            <QRDemo className='absolute bottom-12 right-12' />
-
-            <section className='absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden px-12'>
-                <div
-                    className={cn({
-                        'transition-transform duration-300': transformY > 0,
-                    })}
-                    style={{
-                        transform: `translateY(-${transformY / 3}%)`,
-                    }}
-                >
-                    <JoinedLine line={prev} className='opacity-10' />
-                    <JoinedLine line={current} index={index} />
-                    <JoinedLine line={next} className='opacity-60' />
-                </div>
-            </section>
+                        <section className='absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden px-12'>
+                            <div
+                                className={cn({
+                                    'transition-transform duration-300':
+                                        transformY > 0,
+                                })}
+                                style={{
+                                    transform: `translateY(-${transformY / 3}%)`,
+                                }}
+                            >
+                                <JoinedLine
+                                    line={prev}
+                                    className='opacity-10'
+                                />
+                                <JoinedLine line={current} index={index} />
+                                <JoinedLine
+                                    line={next}
+                                    className='opacity-60'
+                                />
+                            </div>
+                        </section>
+                    </>
+                )
+            })()}
         </main>
     )
 }

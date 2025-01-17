@@ -1,6 +1,6 @@
 import { LipDTO } from '@repo/api'
 import { api } from '@repo/api/client'
-import { Song } from '@repo/db'
+import { Session, Song } from '@repo/db'
 import { skipToken } from '@tanstack/react-query'
 import { useEffect, useMemo } from 'react'
 import { supabase } from '~/lib/supabase.client'
@@ -11,6 +11,8 @@ type Response =
       }
     | {
           type: 'home'
+          sessionTitle: Session['title']
+          isDemo: boolean
       }
     | {
           type: 'call'
@@ -107,6 +109,14 @@ export const useAutoScreen = (): Response => {
         }
         return {
             type: 'home',
+            sessionTitle: session!.title,
+            isDemo: session!.isDemo ?? false,
         }
-    }, [isSessionActive, stagedLip?.id, liveLip?.id, doneLip?.id])
+    }, [
+        isSessionActive,
+        session?.isDemo,
+        stagedLip?.id,
+        liveLip?.id,
+        doneLip?.id,
+    ])
 }

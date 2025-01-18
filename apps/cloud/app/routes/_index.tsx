@@ -7,6 +7,7 @@ import Logo from '@repo/ui/components/Logo'
 import { ExternalLink, LogOut } from 'lucide-react'
 import { hasAccess } from '~/helpers/has-access'
 import { useUserSession } from '~/hooks/useUserSession'
+import songsV1 from '~/songs_v1.json'
 
 export default function Index() {
     const navigation = useNavigation()
@@ -15,6 +16,24 @@ export default function Index() {
     const accessRole = userSession?.user.accessRole
 
     const { data: session } = api.session.getCurrent.useQuery()
+
+    const { data: songs } = api.song.getAllWithLyrics.useQuery()
+
+    if (songs) {
+        for (const song of songs) {
+            if (!song.title.endsWith('*👾*')) {
+                continue
+            }
+            const songV1 = songsV1.find((s) =>
+                s.title.toLocaleLowerCase().endsWith(song.title.toLowerCase()),
+            )
+            if (!songV1) {
+                console.log('song not found', song.title)
+                continue
+            }
+            console.log(song.title, songV1.title, song.lyrics === songV1.lyrics)
+        }
+    }
 
     return (
         <BoxMain className='flex flex-col items-center'>

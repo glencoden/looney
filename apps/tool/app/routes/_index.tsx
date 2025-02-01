@@ -410,7 +410,7 @@ export default function Index() {
     })
 
     useEffect(() => {
-        if (!autoToolServerIP) {
+        if (!autoToolServerIP || isAutoLyricsDisabled) {
             return
         }
 
@@ -455,9 +455,6 @@ export default function Index() {
                 switch (messageCode) {
                     // next syllable
                     case 0: {
-                        if (isAutoLyricsDisabled) {
-                            break
-                        }
                         nextHighlight()
                         break
                     }

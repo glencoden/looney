@@ -59,7 +59,12 @@ export default function JoinedLine({
     }
 
     return (
-        <p className={cn('h-[180px] text-center text-white', className)}>
+        <p
+            className={cn(
+                'h-[180px] text-center leading-tight text-white',
+                className,
+            )}
+        >
             {highlight.length > 0 && (
                 <span className='text-red-400'>{highlight}</span>
             )}

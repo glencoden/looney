@@ -11,11 +11,11 @@ export const copySongsToSetlist = (
             .from(setlistsToSongsTable)
             .where(eq(setlistsToSongsTable.setlistId, fromSetlistId))
 
-        for (const song of songs) {
-            await tx.insert(setlistsToSongsTable).values({
+        await tx.insert(setlistsToSongsTable).values(
+            songs.map((song) => ({
                 setlistId: toSetlistId,
                 songId: song.songId,
-            })
-        }
+            })),
+        )
     })
 }

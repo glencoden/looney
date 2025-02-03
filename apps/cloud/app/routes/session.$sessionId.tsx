@@ -388,6 +388,7 @@ export default function ActiveSession() {
 
     const [isPending, setIsPending] = useState(false)
 
+    // TODO: This should not be pending by isLipsFetching. Likely cancel the lips fetch if an update occurs before it's done. See what happens when fetch succeeds while lip is being dragged.
     useEffect(() => {
         if (!isLipsFetching && !isLipUpdatePending && !isLipMovePending) {
             setIsPending(false)

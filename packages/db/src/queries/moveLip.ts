@@ -110,7 +110,10 @@ export const moveLip = (
 
         await tx
             .update(lipsTable)
-            .set(payload)
+            .set({
+                status: payload.status,
+                sortNumber: payload.sortNumber,
+            })
             .where(eq(lipsTable.id, payload.id))
 
         return true

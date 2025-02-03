@@ -50,8 +50,14 @@ export const lipRouter = {
                 sortNumber: LipSchema.shape.sortNumber,
             }),
         )
-        .mutation(({ input }) => {
-            return moveLip(input)
+        .mutation(async ({ input }) => {
+            const preLipMove = performance.now()
+            const result = await moveLip(input)
+            console.log(
+                'LIP MOVED IN:',
+                Math.round(performance.now() - preLipMove),
+            )
+            return result
         }),
 
     createDemo: protectedProcedure

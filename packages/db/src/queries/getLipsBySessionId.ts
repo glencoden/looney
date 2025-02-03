@@ -12,6 +12,7 @@ export const getLipsBySessionId = (sessionId: Session['id']) => {
             status: lipsTable.status,
             sortNumber: lipsTable.sortNumber,
             createdAt: lipsTable.createdAt,
+            updatedAt: lipsTable.updatedAt,
 
             artist: songsTable.artist,
             songTitle: songsTable.title,

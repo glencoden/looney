@@ -6,12 +6,11 @@ import { api } from '@repo/api/client'
 import { Session } from '@repo/db'
 import { getSession } from '@repo/db/queries'
 import BoxMain from '@repo/ui/components/BoxMain'
-import Button from '@repo/ui/components/Button'
 import Input from '@repo/ui/components/Input'
 import { cn } from '@repo/ui/helpers'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { useDrag } from '@use-gesture/react'
-import { PlayCircle, Radio } from 'lucide-react'
+import { Radio } from 'lucide-react'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { z } from 'zod'
 import AddDemoLipButton from '~/components/AddDemoLipButton'
@@ -226,9 +225,7 @@ export default function ActiveSession() {
     }, [lips])
 
     const actionLip = useMemo(() => {
-        return lips.find(
-            (lip) => lip.status === 'staged' || lip.status === 'live',
-        )
+        return lips.find((lip) => lip.status === 'live')
     }, [lips])
 
     const defaultSpringEffect = createSpringEffect()
@@ -246,15 +243,6 @@ export default function ActiveSession() {
     const [actionSpring, actionAPI] = useSpring(defaultSpringEffect)
 
     const [isActionTarget, setIsActionTarget] = useState(false)
-
-    console.log(
-        'IDLE',
-        idleLips.map((lip) => lip.sortNumber),
-    )
-    console.log(
-        'SELECTED',
-        selectedLips.map((lip) => lip.sortNumber),
-    )
 
     /**
      *
@@ -314,13 +302,18 @@ export default function ActiveSession() {
                             }
                         }
                         // Update current lip on live stack
-                        if (lip.id === actionLip?.id && status === 'staged') {
+                        if (lip.id === actionLip?.id && status === 'live') {
+                            const hour = 1000 * 60 * 60
+                            const isNoShow =
+                                lip.updatedAt &&
+                                (Date.now() % hour) -
+                                    (lip.updatedAt.getTime() % hour) <
+                                    1000 * 60 * 3
                             return {
                                 ...lip,
-                                status:
-                                    lip.status === 'staged'
-                                        ? 'no-show'
-                                        : ('done' as LipDTO['status']),
+                                status: (isNoShow
+                                    ? 'no-show'
+                                    : 'done') as LipDTO['status'],
                             }
                         }
                         if (fromLip.status === status) {
@@ -523,7 +516,6 @@ export default function ActiveSession() {
                     }
                     break
                 }
-                case 'staged':
                 case 'live': {
                     dragBox = BoxType.ACTION
 
@@ -722,9 +714,10 @@ export default function ActiveSession() {
                 } else if (targetBox === 'left') {
                     status = 'selected'
                 } else if (targetBox === 'action') {
-                    status = 'staged' // set live to done
+                    status = 'live'
                 }
 
+                // TODO: Is this timeout necessary?
                 setTimeout(() => {
                     handleLipMove({
                         id: lipId,
@@ -821,27 +814,7 @@ export default function ActiveSession() {
                                                     },
                                                 )}
                                             >
-                                                {actionLip.status ===
-                                                    'staged' && (
-                                                    <Button
-                                                        variant='ghost'
-                                                        onClick={
-                                                            handleLiveButtonClick
-                                                        }
-                                                        disabled={
-                                                            isPending ||
-                                                            Boolean(
-                                                                session.isLocked,
-                                                            )
-                                                        }
-                                                    >
-                                                        <PlayCircle className='h-14 w-14 fill-pink-700 text-black' />
-                                                    </Button>
-                                                )}
-                                                {actionLip.status ===
-                                                    'live' && (
-                                                    <Radio className='h-14 w-14 fill-pink-700 text-black' />
-                                                )}
+                                                <Radio className='h-14 w-14 fill-pink-700 text-black' />
                                             </div>
                                         </div>
                                     )}

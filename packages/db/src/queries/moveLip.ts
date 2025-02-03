@@ -1,4 +1,4 @@
-import { and, eq, or, sql } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { db, Lip, lipsTable } from '../index.js'
 
 export const moveLip = (
@@ -25,28 +25,31 @@ export const moveLip = (
             )
         }
 
-        if (payload.status === 'staged') {
+        if (payload.status === 'live') {
             const [actionLip] = await tx
                 .select()
                 .from(lipsTable)
                 .where(
                     and(
                         eq(lipsTable.sessionId, payload.sessionId),
-                        or(
-                            eq(lipsTable.status, 'staged'),
-                            eq(lipsTable.status, 'live'),
-                        ),
+                        eq(lipsTable.status, 'live'),
                     ),
                 )
                 .limit(1)
 
             if (actionLip) {
+                const hour = 1000 * 60 * 60
+                const isNoShow =
+                    actionLip.updatedAt &&
+                    (Date.now() % hour) -
+                        (actionLip.updatedAt.getTime() % hour) <
+                        1000 * 60 * 3
                 await tx
                     .update(lipsTable)
                     .set({
-                        status:
-                            actionLip.status === 'staged' ? 'no-show' : 'done',
+                        status: isNoShow ? 'no-show' : 'done',
                         sortNumber: 1,
+                        updatedAt: new Date(),
                     })
                     .where(eq(lipsTable.id, actionLip.id))
             }
@@ -69,10 +72,10 @@ export const moveLip = (
                 .update(lipsTable)
                 .set({
                     sortNumber: sql<number>`CASE
-            WHEN id = ${payload.id} THEN ${payload.sortNumber}
-            WHEN ${payload.sortNumber} > ${fromLip.sortNumber} AND sort_number BETWEEN ${fromLip.sortNumber} + 1 AND ${payload.sortNumber} THEN sort_number - 1
-            WHEN ${payload.sortNumber} < ${fromLip.sortNumber} AND sort_number BETWEEN ${payload.sortNumber} AND ${fromLip.sortNumber} - 1 THEN sort_number + 1
-            ELSE sort_number END`,
+                        WHEN id = ${payload.id} THEN ${payload.sortNumber}
+                        WHEN ${payload.sortNumber} > ${fromLip.sortNumber} AND sort_number BETWEEN ${fromLip.sortNumber} + 1 AND ${payload.sortNumber} THEN sort_number - 1
+                        WHEN ${payload.sortNumber} < ${fromLip.sortNumber} AND sort_number BETWEEN ${payload.sortNumber} AND ${fromLip.sortNumber} - 1 THEN sort_number + 1
+                        ELSE sort_number END`,
                 })
                 .where(
                     and(
@@ -113,6 +116,7 @@ export const moveLip = (
             .set({
                 status: payload.status,
                 sortNumber: payload.sortNumber,
+                updatedAt: new Date(),
             })
             .where(eq(lipsTable.id, payload.id))
 

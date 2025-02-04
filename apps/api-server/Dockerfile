@@ -1,7 +1,8 @@
 FROM node:18-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN npm install -g pnpm
+RUN corepack enable
+RUN npm install -g corepack@latest
 
 FROM base AS builder
 WORKDIR /app

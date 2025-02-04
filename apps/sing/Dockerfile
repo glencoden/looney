@@ -1,7 +1,8 @@
 FROM node:18-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN npm install -g pnpm
+RUN corepack enable
+RUN npm install -g corepack@latest
 
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL

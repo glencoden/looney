@@ -4,8 +4,6 @@ import { db, sessionsTable } from '../index.js'
 export const getCurrentSession = async (includeDemo?: boolean) => {
     const currentDate = new Date()
 
-    console.log('CURRENT DATE', currentDate)
-
     if (includeDemo) {
         const result = await db
             .select()
@@ -16,8 +14,6 @@ export const getCurrentSession = async (includeDemo?: boolean) => {
                     gt(sessionsTable.endsAt, currentDate),
                 ),
             )
-
-        console.log('DEMO INCL RESULT', result)
 
         if (result.length > 1) {
             throw new Error('There should only ever be one demo session.')

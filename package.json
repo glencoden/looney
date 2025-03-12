@@ -13,12 +13,13 @@
     },
     "author": "glencoden",
     "license": "ISC",
-    "packageManager": "pnpm@9.11.0",
+    "packageManager": "pnpm@10.5.2",
     "devDependencies": {
         "dotenv": "catalog:",
         "dotenv-cli": "catalog:",
         "prettier": "^3.3.3",
         "prettier-plugin-tailwindcss": "^0.6.8",
-        "turbo": "^2.2.3"
+        "turbo": "^2.4.0",
+        "vitest": "^1.3.1"
     }
 }

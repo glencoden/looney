@@ -6,7 +6,10 @@ export const useAutoToolConnection = (
     isDisabled?: boolean,
 ) => {
     const [isConnected, setIsConnected] = useState(false)
-    const [possibleIPs, setPossibleIPs] = useState<string[]>([])
+
+    const [possibleIPs, setPossibleIPs] = useState<
+        { value: string; successCount: number }[]
+    >([])
 
     /**
      *
@@ -42,7 +45,12 @@ export const useAutoToolConnection = (
         if (!autoToolServerIP) {
             return
         }
-        setPossibleIPs((prev) => [...prev, autoToolServerIP])
+        setPossibleIPs((prev) => {
+            if (prev.find((entry) => entry.value === autoToolServerIP)) {
+                return prev
+            }
+            return [...prev, { value: autoToolServerIP, successCount: 0 }]
+        })
     }, [autoToolServerIP])
 
     /**
@@ -50,68 +58,105 @@ export const useAutoToolConnection = (
      * Websocket connection
      *
      */
+    const { data: websocket, refetch: refetchWebsocket } =
+        useQuery<WebSocket | null>({
+            queryKey: ['auto-tool-websocket'],
+            queryFn: async () => {
+                if (possibleIPs.length === 0) {
+                    return null
+                }
+                const IPs = possibleIPs.sort(
+                    (a, b) => b.successCount - a.successCount,
+                )
+
+                let ws: WebSocket | null = null
+                let index = 0
+
+                while (index < IPs.length) {
+                    const IP = IPs[index]?.value!
+
+                    ws = await new Promise((resolve) => {
+                        const currentWebsocket = new WebSocket(
+                            `ws://${IP}:5555`,
+                        )
+                        currentWebsocket.addEventListener('open', () => {
+                            resolve(currentWebsocket)
+                        })
+                        currentWebsocket.addEventListener('error', () => {
+                            console.log(`Websocket failed for IP: ${IP}`)
+                            resolve(null)
+                        })
+                    })
+
+                    if (ws == null) {
+                        index++
+                        continue
+                    }
+
+                    setPossibleIPs((prev) =>
+                        prev.map((entry) => {
+                            if (entry.value !== IP) {
+                                return entry
+                            }
+                            return {
+                                ...entry,
+                                successCount: entry.successCount + 1,
+                            }
+                        }),
+                    )
+                    console.log(`SET WEBSOCKET FOR IP: ${IP}`)
+                    break
+                }
+
+                return ws
+            },
+            enabled: possibleIPs.length > 0,
+        })
+
     useEffect(() => {
-        if (!autoToolServerIP || isDisabled) {
+        if (isDisabled || websocket?.readyState !== 1) {
             return
         }
 
-        let websocket: WebSocket
-
-        let timeoutId: ReturnType<typeof setTimeout>
-        const retryInterval = 5000 // ms
-
-        const connect = () => {
-            websocket = new WebSocket(`ws://${autoToolServerIP}:5555`)
-
-            websocket.addEventListener('error', (error) => {
-                console.log(
-                    `Websocket error: ${JSON.stringify(error)}. Retry in ${retryInterval / 1000} s.`,
-                )
-
-                clearTimeout(timeoutId)
-
-                timeoutId = setTimeout(() => {
-                    connect()
-                }, retryInterval)
-            })
-
-            websocket.addEventListener('open', () => {
-                setIsConnected(true)
-            })
-
-            websocket.addEventListener('close', () => {
-                setIsConnected(false)
-            })
-
-            websocket.addEventListener('message', (event) => {
-                const messageCode = parseInt(event.data)
-
-                if (Number.isNaN(messageCode)) {
-                    console.warn(
-                        'websocket on message listener expects a number',
-                    )
-                    return
-                }
-
-                switch (messageCode) {
-                    // next syllable
-                    case 0: {
-                        next()
-                        break
-                    }
-                    // send back the received number (presumed timestamp) to test network latency
-                    default:
-                        websocket.send(`${messageCode}`)
-                }
-            })
+        const onInactive = () => {
+            console.log('ON INACTIVE')
+            setIsConnected(false)
+            refetchWebsocket()
         }
 
-        connect()
+        websocket.addEventListener('error', onInactive)
+        websocket.addEventListener('close', onInactive)
+
+        const handleMessage = (event: MessageEvent) => {
+            const messageCode = parseInt(event.data)
+
+            if (Number.isNaN(messageCode)) {
+                console.warn('websocket on message listener expects a number')
+                return
+            }
+
+            switch (messageCode) {
+                // next syllable
+                case 0: {
+                    next()
+                    break
+                }
+                // send back the received number (presumed timestamp) to test network latency
+                default:
+                    websocket.send(`${messageCode}`)
+            }
+        }
+
+        websocket.addEventListener('message', handleMessage)
+
+        setIsConnected(true)
 
         return () => {
-            websocket?.close()
+            websocket.removeEventListener('error', onInactive)
+            websocket.removeEventListener('close', onInactive)
+            websocket.removeEventListener('message', handleMessage)
         }
-    }, [next, autoToolServerIP, isDisabled])
+    }, [next, isDisabled, websocket])
 
     return isConnected
 }

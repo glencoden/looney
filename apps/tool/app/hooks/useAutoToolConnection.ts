@@ -111,6 +111,7 @@ export const useAutoToolConnection = (
                 return ws
             },
             enabled: possibleIPs.length > 0,
+            refetchInterval: isConnected ? Infinity : 1000,
         })
 
     useEffect(() => {
@@ -118,14 +119,20 @@ export const useAutoToolConnection = (
             return
         }
 
-        const onInactive = () => {
-            console.log('ON INACTIVE')
+        let isRefetching = false
+
+        const onConnectionLost = () => {
+            if (isRefetching) {
+                return
+            }
+            console.log('ON CONNECTION LOST')
             setIsConnected(false)
             refetchWebsocket()
+            isRefetching = true
         }
 
-        websocket.addEventListener('error', onInactive)
-        websocket.addEventListener('close', onInactive)
+        websocket.addEventListener('error', onConnectionLost)
+        websocket.addEventListener('close', onConnectionLost)
 
         const handleMessage = (event: MessageEvent) => {
             const messageCode = parseInt(event.data)
@@ -152,8 +159,8 @@ export const useAutoToolConnection = (
         setIsConnected(true)
 
         return () => {
-            websocket.removeEventListener('error', onInactive)
-            websocket.removeEventListener('close', onInactive)
+            websocket.removeEventListener('error', onConnectionLost)
+            websocket.removeEventListener('close', onConnectionLost)
             websocket.removeEventListener('message', handleMessage)
         }
     }, [next, isDisabled, websocket])

@@ -9,22 +9,29 @@ import {
     createLip,
     getLipsByGuestId,
     getLipsBySessionId,
+    getLiveLipBySessionId,
     moveLip,
     updateLip,
 } from '@repo/db/queries'
 import { protectedProcedure, publicProcedure } from '../../index.js'
 
 export const lipRouter = {
+    getByGuestId: publicProcedure
+        .input(GuestSchema.pick({ id: true }))
+        .query(({ input }) => {
+            return getLipsByGuestId(input.id)
+        }),
+
     getBySessionId: publicProcedure
         .input(SessionSchema.pick({ id: true }))
         .query(({ input }) => {
             return getLipsBySessionId(input.id)
         }),
 
-    getByGuestId: publicProcedure
-        .input(GuestSchema.pick({ id: true }))
+    getLiveBySessionId: publicProcedure
+        .input(SessionSchema.pick({ id: true }))
         .query(({ input }) => {
-            return getLipsByGuestId(input.id)
+            return getLiveLipBySessionId(input.id)
         }),
 
     create: publicProcedure.input(LipInsertSchema).mutation(({ input }) => {

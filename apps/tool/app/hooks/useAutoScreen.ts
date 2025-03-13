@@ -1,4 +1,3 @@
-import { LipDTO } from '@repo/api'
 import { api } from '@repo/api/client'
 import { Session, Song } from '@repo/db'
 import { skipToken } from '@tanstack/react-query'
@@ -15,11 +14,6 @@ type Response =
           isDemo: boolean
       }
     | {
-          type: 'call'
-          prevLip: LipDTO | null
-          nextLip: LipDTO
-      }
-    | {
           type: 'lyrics'
           songId: Song['id']
       }
@@ -31,13 +25,9 @@ export const useAutoScreen = (): Response => {
         includeDemo: true,
     })
 
-    const { data: lips } = api.lip.getBySessionId.useQuery(
+    const { data: liveLip } = api.lip.getLiveBySessionId.useQuery(
         session ? { id: session.id } : skipToken,
     )
-
-    const stagedLip = lips?.find((lip) => lip.status === 'staged') ?? null
-    const liveLip = lips?.find((lip) => lip.status === 'live') ?? null
-    const doneLip = lips?.find((lip) => lip.status === 'done') ?? null
 
     const isSessionActive =
         Boolean(session) && !session!.isLocked && session!.endsAt > new Date()
@@ -79,7 +69,9 @@ export const useAutoScreen = (): Response => {
                     table: 'lip',
                 },
                 () => {
-                    void utils.lip.getBySessionId.invalidate({ id: session.id })
+                    void utils.lip.getLiveBySessionId.invalidate({
+                        id: session.id,
+                    })
                 },
             )
             .subscribe()
@@ -100,23 +92,10 @@ export const useAutoScreen = (): Response => {
                 songId: liveLip.songId,
             }
         }
-        if (stagedLip) {
-            return {
-                type: 'call',
-                prevLip: doneLip,
-                nextLip: stagedLip,
-            }
-        }
         return {
             type: 'home',
             sessionTitle: session!.title,
             isDemo: session!.isDemo ?? false,
         }
-    }, [
-        isSessionActive,
-        session?.isDemo,
-        stagedLip?.id,
-        liveLip?.id,
-        doneLip?.id,
-    ])
+    }, [isSessionActive, session?.isDemo, liveLip?.id])
 }

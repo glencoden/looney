@@ -3,7 +3,6 @@ import Logo from '@repo/ui/components/Logo'
 import QRDemo from '@repo/ui/components/QRDemo'
 import QRLive from '@repo/ui/components/QRLive'
 import { cn } from '@repo/ui/helpers'
-import Body1 from '@repo/ui/typography/Body1'
 import H1 from '@repo/ui/typography/H1'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { useEffectEvent } from '@repo/utils/hooks'
@@ -446,29 +445,6 @@ export default function Index() {
                                     <QRLive className='w-80' />
                                 )}
                                 <H1>Scan me to sing!</H1>
-                            </div>
-                        )
-                    case 'call':
-                        return (
-                            <div>
-                                {screen.prevLip && (
-                                    <H1 className='mb-24 text-6xl'>
-                                        Give it up for{' '}
-                                        {screen.prevLip.singerName} !!!
-                                    </H1>
-                                )}
-                                <Subtitle2 className='text-4xl'>
-                                    Next:
-                                </Subtitle2>
-                                <Body1 className='mt-4 text-8xl'>
-                                    {screen.nextLip.singerName}
-                                </Body1>
-                                <Body1 className='mt-10 text-6xl text-yellow-400'>
-                                    {screen.nextLip.artist}
-                                </Body1>
-                                <Body1 className='mt-4 text-8xl text-yellow-400'>
-                                    {screen.nextLip.songTitle}
-                                </Body1>
                             </div>
                         )
                 }

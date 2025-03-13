@@ -4,8 +4,15 @@ import { useEffect, useState } from 'react'
 // TEST
 let lostAt: number | null = null
 
-// store IPs in local storage
+// test refetchIntervalInBackground
+// test auto server open/close
+// test wlan on/off
+// test providing wrong IP
+// remove disconnect test
+// test lyrics
 // remove logs
+
+const POSSIBLE_IPS_STORAGE_KEY = 'POSSIBLE_AUTO_TOOL_SERVER_IPS'
 
 export const useAutoToolConnection = (
     next: () => void,
@@ -14,8 +21,27 @@ export const useAutoToolConnection = (
     const [isConnected, setIsConnected] = useState(false)
 
     const [possibleIPs, setPossibleIPs] = useState<
-        { value: string; successCount: number }[]
+        { value: string; connectionSuccess: boolean }[]
     >([])
+
+    useEffect(() => {
+        if (possibleIPs.length === 0) {
+            const storage = localStorage.getItem(POSSIBLE_IPS_STORAGE_KEY)
+            if (storage === null) {
+                return
+            }
+            try {
+                setPossibleIPs(JSON.parse(storage))
+            } catch (err) {
+                console.error('Unable to parse possible IPs from storage.', err)
+            }
+            return
+        }
+        localStorage.setItem(
+            POSSIBLE_IPS_STORAGE_KEY,
+            JSON.stringify(possibleIPs),
+        )
+    }, [possibleIPs])
 
     /**
      *
@@ -55,7 +81,10 @@ export const useAutoToolConnection = (
             if (prev.find((entry) => entry.value === autoToolServerIP)) {
                 return prev
             }
-            return [...prev, { value: autoToolServerIP, successCount: 0 }]
+            return [
+                ...prev,
+                { value: autoToolServerIP, connectionSuccess: false },
+            ]
         })
     }, [autoToolServerIP])
 
@@ -72,7 +101,9 @@ export const useAutoToolConnection = (
                     return null
                 }
                 const IPs = possibleIPs.sort(
-                    (a, b) => b.successCount - a.successCount,
+                    (a, b) =>
+                        Number(b.connectionSuccess) -
+                        Number(a.connectionSuccess),
                 )
 
                 let ws: WebSocket | null = null
@@ -102,11 +133,14 @@ export const useAutoToolConnection = (
                     setPossibleIPs((prev) =>
                         prev.map((entry) => {
                             if (entry.value !== IP) {
-                                return entry
+                                return {
+                                    ...entry,
+                                    connectionSuccess: false,
+                                }
                             }
                             return {
                                 ...entry,
-                                successCount: entry.successCount + 1,
+                                connectionSuccess: true,
                             }
                         }),
                     )

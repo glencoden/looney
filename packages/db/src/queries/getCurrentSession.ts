@@ -33,8 +33,6 @@ export const getCurrentSession = async (includeDemo?: boolean) => {
             ),
         )
 
-    console.log('LIVE RESULT', result)
-
     if (result.length > 1) {
         throw new Error('There should only ever be one active session.')
     }

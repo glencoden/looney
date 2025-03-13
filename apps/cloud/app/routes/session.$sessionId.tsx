@@ -698,14 +698,14 @@ export default function ActiveSession() {
                 idleAPI.start(resetSpringEffect)
                 actionAPI.start(resetSpringEffect)
 
-                console.log('LIP ID', lipId)
+                // console.log('LIP ID', lipId)
 
-                console.log('DELETE', deleteOnDrop)
+                // console.log('DELETE', deleteOnDrop)
 
-                console.log('DRAG BOX', dragBox)
-                console.log('TARGET BOX', targetBox)
-                console.log('DRAG INDEX', dragIndex)
-                console.log('TARGET INDEX', targetIndex)
+                // console.log('DRAG BOX', dragBox)
+                // console.log('TARGET BOX', targetBox)
+                // console.log('DRAG INDEX', dragIndex)
+                // console.log('TARGET INDEX', targetIndex)
 
                 let status: LipDTO['status'] = 'idle'
 

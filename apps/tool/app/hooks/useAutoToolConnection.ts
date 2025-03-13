@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
-// track times
-// test breaking socket
+// TEST
+let lostAt: number | null = null
+
 // store IPs in local storage
 // remove logs
 
@@ -136,6 +137,7 @@ export const useAutoToolConnection = (
             setIsConnected(false)
             refetchWebsocket()
             isRefetching = true
+            lostAt = performance.now()
         }
 
         websocket.addEventListener('error', onConnectionLost)
@@ -163,10 +165,25 @@ export const useAutoToolConnection = (
 
         websocket.addEventListener('message', handleMessage)
 
-        console.log('CONNECTED!')
         setIsConnected(true)
 
+        // TEST
+
+        console.log(
+            'CONNECTED!',
+            lostAt === null ? '-' : performance.now() - lostAt,
+        )
+
+        const timeoutId = setTimeout(
+            () => {
+                websocket.close()
+            },
+            1000 * (Math.random() * 10 + 5),
+        )
+
         return () => {
+            clearTimeout(timeoutId)
+
             websocket.removeEventListener('error', onConnectionLost)
             websocket.removeEventListener('close', onConnectionLost)
             websocket.removeEventListener('message', handleMessage)

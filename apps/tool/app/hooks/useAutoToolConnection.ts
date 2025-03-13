@@ -1,6 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
+// track times
+// test breaking socket
+// store IPs in local storage
+// remove logs
+
 export const useAutoToolConnection = (
     next: () => void,
     isDisabled?: boolean,
@@ -110,12 +115,14 @@ export const useAutoToolConnection = (
 
                 return ws
             },
-            enabled: possibleIPs.length > 0,
+            enabled: !isDisabled && possibleIPs.length > 0,
             refetchInterval: isConnected ? Infinity : 1000,
         })
 
     useEffect(() => {
         if (isDisabled || websocket?.readyState !== 1) {
+            websocket?.close()
+            setIsConnected(false)
             return
         }
 
@@ -125,7 +132,7 @@ export const useAutoToolConnection = (
             if (isRefetching) {
                 return
             }
-            console.log('ON CONNECTION LOST')
+            console.log('CONNECTION LOST')
             setIsConnected(false)
             refetchWebsocket()
             isRefetching = true
@@ -156,6 +163,7 @@ export const useAutoToolConnection = (
 
         websocket.addEventListener('message', handleMessage)
 
+        console.log('CONNECTED!')
         setIsConnected(true)
 
         return () => {

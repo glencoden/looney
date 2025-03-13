@@ -340,6 +340,35 @@ export default function Index() {
 
     /**
      *
+     * Auto lyrics
+     *
+     */
+
+    const [isAutoLyricsDisabled, setIsAutoLyricsDisabled] = useState(false)
+
+    const isConnected = useAutoToolConnection(
+        nextHighlight,
+        isAutoLyricsDisabled,
+    )
+
+    /**
+     *
+     * Auto screen changes
+     *
+     */
+
+    const screen = useAutoScreen()
+
+    useEffect(() => {
+        if (screen.type === 'lyrics') {
+            setSelectedSongId(screen.songId)
+            return
+        }
+        setSelectedSongId(null)
+    }, [screen])
+
+    /**
+     *
      * Attach event handlers
      *
      */
@@ -367,6 +396,7 @@ export default function Index() {
                 nextSong()
             } else if (event.key === '.') {
                 // Open menu
+                setIsAutoLyricsDisabled((prev) => !prev)
             } else {
                 findSong(event.key.toLowerCase())
             }
@@ -378,32 +408,6 @@ export default function Index() {
             document.removeEventListener('keydown', handleKeyDown)
         }
     }, [findSong, nextSong, prevSong, nextHighlight, prevHighlight])
-
-    /**
-     *
-     * Auto lyrics
-     *
-     */
-
-    const [isAutoLyricsDisabled, setIsAutoLyricsDisabled] = useState(false)
-
-    const isConnected = useAutoToolConnection(nextHighlight)
-
-    /**
-     *
-     * Auto screen changes
-     *
-     */
-
-    const screen = useAutoScreen()
-
-    useEffect(() => {
-        if (screen.type === 'lyrics') {
-            setSelectedSongId(screen.songId)
-            return
-        }
-        setSelectedSongId(null)
-    }, [screen])
 
     /**
      *

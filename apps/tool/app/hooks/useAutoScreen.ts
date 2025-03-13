@@ -27,6 +27,9 @@ export const useAutoScreen = (): Response => {
 
     const { data: liveLip } = api.lip.getLiveBySessionId.useQuery(
         session ? { id: session.id } : skipToken,
+        {
+            refetchInterval: 1000 * 10,
+        },
     )
 
     const isSessionActive =

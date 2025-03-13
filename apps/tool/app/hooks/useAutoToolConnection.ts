@@ -1,17 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
-// TEST
-let lostAt: number | null = null
-
-// test refetchIntervalInBackground
-// test auto server open/close
-// test wlan on/off
-// test providing wrong IP
-// remove disconnect test
-// test lyrics
-// remove logs
-
 const POSSIBLE_IPS_STORAGE_KEY = 'POSSIBLE_AUTO_TOOL_SERVER_IPS'
 
 export const useAutoToolConnection = (
@@ -100,27 +89,36 @@ export const useAutoToolConnection = (
                 if (possibleIPs.length === 0) {
                     return null
                 }
-                const IPs = possibleIPs.sort(
-                    (a, b) =>
-                        Number(b.connectionSuccess) -
-                        Number(a.connectionSuccess),
-                )
+                const IPs = possibleIPs
+                    .sort(
+                        (a, b) =>
+                            Number(b.connectionSuccess) -
+                            Number(a.connectionSuccess),
+                    )
+                    .map((possibleIP) => possibleIP.value)
 
                 let ws: WebSocket | null = null
                 let index = 0
 
-                while (index < IPs.length) {
-                    const IP = IPs[index]?.value!
-
+                for (const IP of IPs) {
                     ws = await new Promise((resolve) => {
                         const currentWebsocket = new WebSocket(
                             `ws://${IP}:5555`,
                         )
+
+                        const timeoutId = setTimeout(() => {
+                            currentWebsocket.close()
+                            resolve(null)
+                        }, 1000 * 2)
+
                         currentWebsocket.addEventListener('open', () => {
+                            clearTimeout(timeoutId)
                             resolve(currentWebsocket)
                         })
+
                         currentWebsocket.addEventListener('error', () => {
-                            console.log(`Websocket failed for IP: ${IP}`)
+                            clearTimeout(timeoutId)
+                            currentWebsocket.close()
                             resolve(null)
                         })
                     })
@@ -144,14 +142,13 @@ export const useAutoToolConnection = (
                             }
                         }),
                     )
-                    console.log(`SET WEBSOCKET FOR IP: ${IP}`)
                     break
                 }
 
                 return ws
             },
             enabled: !isDisabled && possibleIPs.length > 0,
-            refetchInterval: isConnected ? Infinity : 1000,
+            refetchInterval: isConnected ? Infinity : 1000 * 10,
         })
 
     useEffect(() => {
@@ -167,11 +164,9 @@ export const useAutoToolConnection = (
             if (isRefetching) {
                 return
             }
-            console.log('CONNECTION LOST')
             setIsConnected(false)
             refetchWebsocket()
             isRefetching = true
-            lostAt = performance.now()
         }
 
         websocket.addEventListener('error', onConnectionLost)
@@ -201,23 +196,7 @@ export const useAutoToolConnection = (
 
         setIsConnected(true)
 
-        // TEST
-
-        console.log(
-            'CONNECTED!',
-            lostAt === null ? '-' : performance.now() - lostAt,
-        )
-
-        const timeoutId = setTimeout(
-            () => {
-                websocket.close()
-            },
-            1000 * (Math.random() * 10 + 5),
-        )
-
         return () => {
-            clearTimeout(timeoutId)
-
             websocket.removeEventListener('error', onConnectionLost)
             websocket.removeEventListener('close', onConnectionLost)
             websocket.removeEventListener('message', handleMessage)

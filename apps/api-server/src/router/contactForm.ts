@@ -19,19 +19,20 @@ telegramBot.on('message', (message) => {
 export const contactFormRouter: Router = Router()
 
 contactFormRouter.get('/health', async (_req, res) => {
-    for (const chatId of CHAT_IDS) {
-        await telegramBot.sendMessage(chatId, 'Glen was on Telegram.')
+    try {
+        await telegramBot.sendMessage(CHAT_IDS[0]!, 'Glen was on Telegram.')
+    } catch (error) {
+        console.error(error)
     }
     res.send('Messages sent.')
 })
 
 contactFormRouter.post('/', async (req, res) => {
     const { name, email, content } = req.body
+    const message = `LOONEY ANFRAGE\n\nName: ${name}\nEmail: ${email}\n\n${content}`
+    console.log(message)
     for (const chatId of CHAT_IDS) {
-        await telegramBot.sendMessage(
-            chatId,
-            `LOONEY ANFRAGE\n\nName: ${name}\nEmail: ${email}\n\n${content}`,
-        )
+        await telegramBot.sendMessage(chatId, message)
     }
     res.json({ success: true })
 })

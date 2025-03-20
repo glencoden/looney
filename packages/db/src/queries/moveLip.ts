@@ -1,7 +1,31 @@
-import { and, eq, sql } from 'drizzle-orm'
+import { and, eq, inArray, sql } from 'drizzle-orm'
 import { db, Lip, lipsTable } from '../index.js'
 
-export const moveLip = (
+export const moveLip = async (
+    lips: Pick<Lip, 'id' | 'status' | 'sortNumber'>[],
+) => {
+    return db
+        .update(lipsTable)
+        .set({
+            status: sql`CASE id ${lips
+                .map((lip) => sql`WHEN ${lip.id} THEN ${lip.status}`)
+                .reduce((acc, curr) => sql`${acc} ${curr}`)} ELSE status END`,
+            sortNumber: sql`CASE id ${lips
+                .map((lip) => sql`WHEN ${lip.id} THEN ${lip.sortNumber}`)
+                .reduce(
+                    (acc, curr) => sql`${acc} ${curr}`,
+                )} ELSE sort_number END`,
+            updatedAt: new Date(),
+        })
+        .where(
+            inArray(
+                lipsTable.id,
+                lips.map((lip) => lip.id),
+            ),
+        )
+}
+
+export const moveLipDeprecated = (
     payload: Pick<Lip, 'id' | 'sessionId' | 'status' | 'sortNumber'> &
         Partial<Omit<Lip, 'id' | 'sessionId' | 'status' | 'sortNumber'>>,
 ): Promise<boolean> => {
@@ -87,7 +111,7 @@ export const moveLip = (
             // CASE B: Moved to a different list.
             //
             // First, update the source list: any lip in the source status with a
-            // sortNumber greater than the moved lip’s sortNumber gets decremented.
+            // sortNumber greater than the moved lip's sortNumber gets decremented.
             await tx
                 .update(lipsTable)
                 .set({ sortNumber: sql`sort_number - 1` })

@@ -13,6 +13,7 @@ import {
     moveLip,
     updateLip,
 } from '@repo/db/queries'
+import { z } from 'zod'
 import { protectedProcedure, publicProcedure } from '../../index.js'
 
 export const lipRouter = {
@@ -50,12 +51,13 @@ export const lipRouter = {
 
     move: protectedProcedure
         .input(
-            LipSchema.omit({ id: true }).partial().extend({
-                id: LipSchema.shape.id,
-                sessionId: LipInsertSchema.shape.sessionId,
-                status: LipSchema.shape.status,
-                sortNumber: LipSchema.shape.sortNumber,
-            }),
+            z.array(
+                LipSchema.pick({
+                    id: true,
+                    status: true,
+                    sortNumber: true,
+                }),
+            ),
         )
         .mutation(async ({ input }) => {
             const preLipMove = performance.now()

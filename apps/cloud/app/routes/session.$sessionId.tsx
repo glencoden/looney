@@ -284,12 +284,14 @@ export default function ActiveSession() {
             return
         }
 
-        // Optimistic update
         void utils.lip.getBySessionId.setData(
             { id: session.id },
             (prevLips) => {
-                return prevLips
-                    ?.map((lip) => {
+                if (!prevLips) {
+                    return
+                }
+                const update = prevLips
+                    .map((lip) => {
                         if (lip.sortNumber === null) {
                             return lip
                         }
@@ -367,16 +369,18 @@ export default function ActiveSession() {
                             (a.sortNumber ?? Infinity) -
                             (b.sortNumber ?? Infinity),
                     )
+                // Database update
+                moveLip(
+                    update.map((lip) => ({
+                        id: lip.id,
+                        status: lip.status,
+                        sortNumber: lip.sortNumber,
+                    })),
+                )
+                // Optimistic update
+                return update
             },
         )
-
-        // Database update
-        moveLip({
-            id,
-            sessionId,
-            status,
-            sortNumber,
-        })
     }
 
     const [isPending, setIsPending] = useState(false)

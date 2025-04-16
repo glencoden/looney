@@ -94,20 +94,9 @@ export default function ActiveSession() {
         )
     }
 
-    const {
-        data,
-        isLoading: isLipsLoading,
-        isFetching: isLipsFetching,
-    } = useLips(session.id)
+    const { data, isLoading: isLipsLoading } = useLips(session.id)
 
     const lips = data ?? ([] as LipDTO[])
-
-    const { mutate: updateLip, isPending: isLipUpdatePending } =
-        api.lip.update.useMutation({
-            onSettled: () => {
-                void utils.lip.getBySessionId.invalidate({ id: session.id })
-            },
-        })
 
     const { mutate: moveLip, isPending: isLipMovePending } =
         api.lip.move.useMutation({
@@ -118,24 +107,24 @@ export default function ActiveSession() {
 
     /**
      *
-     * Check for session expiry
+     * Check for session end
      *
      */
 
     useEffect(() => {
         let timeoutId: ReturnType<typeof setTimeout>
 
-        const checkSessionExpired = () => {
+        const checkSessionEnded = () => {
             return setTimeout(() => {
                 if (session.endsAt < new Date()) {
                     navigate('/', { replace: true })
                     return
                 }
-                timeoutId = checkSessionExpired()
+                timeoutId = checkSessionEnded()
             }, 1000 * 10)
         }
 
-        timeoutId = checkSessionExpired()
+        timeoutId = checkSessionEnded()
 
         return () => {
             clearTimeout(timeoutId)
@@ -249,24 +238,6 @@ export default function ActiveSession() {
      * Event handling
      *
      */
-
-    const handleLiveButtonClick = () => {
-        if (!actionLip) {
-            return
-        }
-        utils.lip.getBySessionId.setData({ id: session.id }, (prevLips) => {
-            return prevLips?.map((lip) => {
-                if (lip.id !== actionLip.id) {
-                    return lip
-                }
-                return { ...lip, status: 'live' }
-            })
-        })
-        updateLip({
-            id: actionLip.id,
-            status: 'live',
-        })
-    }
 
     const handleLipMove = ({
         id,
@@ -382,18 +353,6 @@ export default function ActiveSession() {
             },
         )
     }
-
-    const [isPending, setIsPending] = useState(false)
-
-    // TODO: This should not be pending by isLipsFetching. Likely cancel the lips fetch if an update occurs before it's done. See what happens when fetch succeeds while lip is being dragged.
-    useEffect(() => {
-        if (!isLipsFetching && !isLipUpdatePending && !isLipMovePending) {
-            setIsPending(false)
-        }
-        if (isLipUpdatePending || isLipMovePending) {
-            setIsPending(true)
-        }
-    }, [isLipsFetching, isLipUpdatePending, isLipMovePending])
 
     /**
      *
@@ -774,7 +733,7 @@ export default function ActiveSession() {
                             lips={selectedLips}
                             springs={selectedSprings}
                             bind={bindLipDrag}
-                            isLocked={session.isLocked || isPending}
+                            isLocked={session.isLocked || isLipMovePending}
                             hideFavorites={session.hideFavorites ?? false}
                             fixTop={scrollTopLock && scrollTopLock[0]}
                             header={
@@ -809,15 +768,7 @@ export default function ActiveSession() {
                                                 hideTime
                                                 hideFavorites
                                             />
-                                            <div
-                                                className={cn(
-                                                    'absolute right-2 top-1/2 flex h-20 w-28 -translate-y-1/2 items-center justify-center',
-                                                    {
-                                                        'animate-pulse':
-                                                            isLipUpdatePending,
-                                                    },
-                                                )}
-                                            >
+                                            <div className='absolute right-2 top-1/2 flex h-20 w-28 -translate-y-1/2 items-center justify-center'>
                                                 <Radio className='h-14 w-14 fill-pink-700 text-black' />
                                             </div>
                                         </div>
@@ -841,14 +792,14 @@ export default function ActiveSession() {
                             q={q}
                             springs={idleSprings}
                             bind={bindLipDrag}
-                            isLocked={session.isLocked || isPending}
+                            isLocked={session.isLocked || isLipMovePending}
                             hideFavorites={session.hideFavorites ?? false}
                             fixTop={scrollTopLock && scrollTopLock[1]}
                             header={
                                 <div className='w-full max-w-96 space-y-4'>
                                     <SessionMenu
                                         session={session}
-                                        isSessionPending={isPending}
+                                        isSessionPending={isLipMovePending}
                                     />
 
                                     <Input

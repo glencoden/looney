@@ -59,14 +59,8 @@ export const lipRouter = {
                 }),
             ),
         )
-        .mutation(async ({ input }) => {
-            const preLipMove = performance.now()
-            const result = await moveLip(input)
-            console.log(
-                'LIP MOVED IN:',
-                Math.round(performance.now() - preLipMove),
-            )
-            return result
+        .mutation(({ input }) => {
+            return moveLip(input)
         }),
 
     createDemo: protectedProcedure

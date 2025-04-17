@@ -14,6 +14,6 @@ export const songsTable = pgTable('song', {
     lyrics: text('lyrics').notNull(),
     genre: text('genre'),
     isFavorite: boolean('is_favorite').notNull().default(false),
-    createdAt: timestamp('created_at').defaultNow(),
-    updatedAt: timestamp('updated_at').defaultNow(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 })

@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS "guest" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"session_id" uuid,
-	"feedback" text NOT NULL,
+	"feedback" text,
 	"tip" integer DEFAULT 0,
 	"created_at" timestamp DEFAULT now()
 );
@@ -16,6 +16,12 @@ CREATE TABLE IF NOT EXISTS "lip" (
 	"sort_number" integer,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "permission" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"email" varchar(255) NOT NULL,
+	"role" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (

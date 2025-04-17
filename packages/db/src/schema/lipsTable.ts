@@ -36,6 +36,6 @@ export const lipsTable = pgTable('lip', {
         .notNull()
         .default('idle'),
     sortNumber: integer('sort_number'),
-    createdAt: timestamp('created_at').defaultNow(),
-    updatedAt: timestamp('updated_at').defaultNow(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 })

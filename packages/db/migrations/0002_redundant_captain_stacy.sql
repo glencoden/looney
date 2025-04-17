@@ -1,1 +1,0 @@
-ALTER TABLE "permission" RENAME COLUMN "permission" TO "role";

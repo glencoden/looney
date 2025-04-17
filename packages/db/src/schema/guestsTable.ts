@@ -8,5 +8,5 @@ export const guestsTable = pgTable('guest', {
     }),
     feedback: text('feedback'),
     tip: integer('tip').default(0),
-    createdAt: timestamp('created_at').defaultNow(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 })

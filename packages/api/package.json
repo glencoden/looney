@@ -8,11 +8,6 @@
             "require": "./dist/index.js",
             "types": "./dist/index.d.ts"
         },
-        "./adapter": {
-            "import": "./dist/trpc/adapter/index.js",
-            "require": "./dist/trpc/adapter/index.js",
-            "types": "./dist/trpc/adapter/index.d.ts"
-        },
         "./provider": {
             "import": "./dist/trpc/provider/index.jsx",
             "require": "./dist/trpc/provider/index.jsx",
@@ -40,7 +35,7 @@
         "@tanstack/react-query": "^5.56.2",
         "@trpc/client": "11.0.0-rc.498",
         "@trpc/react-query": "11.0.0-rc.498",
-        "@trpc/server": "11.0.0-rc.498",
+        "@trpc/server": "catalog:",
         "node-telegram-bot-api": "^0.66.0",
         "openai": "^4.77.0",
         "react": "catalog:",

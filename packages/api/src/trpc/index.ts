@@ -1,14 +1,13 @@
 import { db } from '@repo/db'
 import { initTRPC, TRPCError } from '@trpc/server'
-import type * as trpcExpress from '@trpc/server/adapters/express'
 import superjson from 'superjson'
 import { ZodError } from 'zod'
 import { supabase } from '../lib/supabase.js'
 
-export const createContext = async ({
-    req,
-}: trpcExpress.CreateExpressContextOptions) => {
-    const accessToken = req.headers['authorization']?.replace('Bearer ', '')
+export const createContext = async (opts: { req: Request }) => {
+    const accessToken = opts.req.headers
+        .get('authorization')
+        ?.replace('Bearer ', '')
 
     if (!accessToken) {
         return { db, user: null }

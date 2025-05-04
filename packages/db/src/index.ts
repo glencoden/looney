@@ -84,6 +84,10 @@ const databaseUrl = process.env.DATABASE_URL
 
 assert(databaseUrl !== undefined, 'Database URL is required')
 
-const client = postgres(databaseUrl, { prepare: false })
+const client = postgres(databaseUrl, {
+    prepare: false,
+    idle_timeout: 20,
+    max_lifetime: 60 * 30,
+})
 
 export const db = drizzle(client, { schema })

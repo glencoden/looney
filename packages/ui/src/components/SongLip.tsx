@@ -1,4 +1,4 @@
-import { LipDTO } from '@repo/api'
+import type { LipDTO } from '@repo/api/types'
 import { toNonBreaking } from '@repo/utils/text'
 import { formatDistanceToNow } from 'date-fns'
 import { Star } from 'lucide-react'

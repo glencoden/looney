@@ -11,3 +11,9 @@ npm-debug.log*
 
 supabase
 calendar-credentials.json
+
+# vercel
+.vercel
+
+# next
+.next

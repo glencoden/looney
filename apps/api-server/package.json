@@ -11,7 +11,6 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "@repo/api": "workspace:*",
         "body-parser": "^1.20.3",
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",

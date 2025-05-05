@@ -1,5 +1,5 @@
 import { animated, SpringValue } from '@react-spring/web'
-import { LipDTO } from '@repo/api'
+import type { LipDTO } from '@repo/api/types'
 import SongLip from '@repo/ui/components/SongLip'
 import { cn } from '@repo/ui/helpers'
 import { ReactDOMAttributes } from '@use-gesture/react/dist/declarations/src/types'

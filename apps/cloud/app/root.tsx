@@ -8,7 +8,7 @@ import {
     useLocation,
     useNavigate,
 } from '@remix-run/react'
-import { TRPCQueryClientProvider } from '@repo/api/provider'
+import { TRPCQueryClientProvider } from '@repo/api/client'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Spinner from '@repo/ui/components/Spinner'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'

@@ -8,7 +8,7 @@ import {
 } from '@remix-run/react'
 import type { LinksFunction } from '@vercel/remix'
 
-import { TRPCQueryClientProvider } from '@repo/api/provider'
+import { TRPCQueryClientProvider } from '@repo/api/client'
 import { FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
 import { useEffect } from 'react'

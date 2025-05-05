@@ -1,5 +1,3 @@
-import { API_PORT } from '@repo/api'
-import { trpcExpressAdapter } from '@repo/api/adapter'
 import assert from 'assert'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
@@ -24,10 +22,9 @@ app.use(bodyParser.json({ limit: '1mb' }))
 
 app.use('/calendar', googleCalendarRouter)
 app.use('/contact', contactFormRouter)
-app.use('/trpc', trpcExpressAdapter)
 
 app.get('/', (_req, res) => {
     res.send('Hello from the Looney Cloud API server.')
 })
 
-app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}.`))
+app.listen(5400, () => console.log(`Listening on port ${5400}.`))

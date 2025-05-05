@@ -1,5 +1,5 @@
 import { SpringValue } from '@react-spring/web'
-import { LipDTO } from '@repo/api'
+import type { LipDTO } from '@repo/api/types'
 import { cn } from '@repo/ui/helpers'
 import { ReactDOMAttributes } from '@use-gesture/react/dist/declarations/src/types'
 import { forwardRef, ReactNode } from 'react'

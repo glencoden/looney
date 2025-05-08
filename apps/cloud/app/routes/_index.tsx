@@ -96,7 +96,7 @@ export default function Index() {
                         <li className='w-full'>
                             <Button variant='light' asChild>
                                 <Link
-                                    to='http://rc.tool.looneytunez.de'
+                                    to='http://tool.looneytunez.de'
                                     rel='noopener noreferrer'
                                     target='_blank'
                                 >

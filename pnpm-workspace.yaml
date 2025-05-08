@@ -6,30 +6,21 @@ catalog:
     '@types/node': ^20.14.9
     '@types/react': ^18.3.7
     '@types/react-dom': ^18.3.0
-    '@types/express': ^4.17.21
     typescript: ^5.1.6
     eslint: ^8
     zod: ^3.23.8
     react: ^18.3.1
     react-dom: ^18.3.1
-    express: ^4.19.2
     autoprefixer: ^10.4.19
     postcss: ^8.4.38
     tailwindcss: ^3.4.4
     '@supabase/supabase-js': ^2.45.4
     dotenv: ^16.4.5
     dotenv-cli: ^7.4.2
-    '@types/compression': ^1.7.5
-    '@types/morgan': ^1.9.9
-    '@remix-run/express': ^2.12.1
     '@remix-run/node': ^2
     '@remix-run/react': ^2
     '@remix-run/dev': ^2
     '@vercel/remix': ^2
-    compression: ^1.7.4
-    cross-env: ^7.0.3
-    isbot: ^4.1.0
-    morgan: ^1.10.0
     vite: ^5.1.0
     vite-tsconfig-paths: ^4.2.1
     '@trpc/server': 11.0.0-rc.498

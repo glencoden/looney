@@ -42,8 +42,6 @@
         "@repo/config-eslint": "workspace:*",
         "@repo/config-typescript": "workspace:*",
         "@supabase/supabase-js": "catalog:",
-        "@types/express": "catalog:",
-        "@types/node-telegram-bot-api": "^0.64.7",
         "@types/react": "^18.3.9",
         "eslint": "catalog:",
         "typescript": "catalog:"

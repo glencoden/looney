@@ -1,5 +1,5 @@
-import { ActionFunctionArgs, redirect } from '@remix-run/node'
 import { deleteSetlist } from '@repo/db/queries'
+import { ActionFunctionArgs, redirect } from '@vercel/remix'
 import { z } from 'zod'
 
 export const action = async ({ params }: ActionFunctionArgs) => {

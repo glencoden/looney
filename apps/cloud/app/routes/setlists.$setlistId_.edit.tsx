@@ -1,4 +1,3 @@
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node'
 import {
     Form,
     Link,
@@ -25,6 +24,7 @@ import Body2 from '@repo/ui/typography/Body2'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { toNonBreaking } from '@repo/utils/text'
+import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@vercel/remix'
 import { AudioLines, Circle } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { z } from 'zod'

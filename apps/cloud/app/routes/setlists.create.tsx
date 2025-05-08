@@ -1,4 +1,3 @@
-import { ActionFunctionArgs, json } from '@remix-run/node'
 import {
     Form,
     Link,
@@ -19,6 +18,7 @@ import Select from '@repo/ui/components/Select'
 import { cn } from '@repo/ui/helpers'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
+import { ActionFunctionArgs, json } from '@vercel/remix'
 import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 import { z } from 'zod'

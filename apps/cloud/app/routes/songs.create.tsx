@@ -1,4 +1,3 @@
-import { ActionFunctionArgs, redirect } from '@remix-run/node'
 import { Form, Link, useNavigation } from '@remix-run/react'
 import { api } from '@repo/api/client'
 import { SongInsertSchema } from '@repo/db'
@@ -10,6 +9,7 @@ import { Textarea } from '@repo/ui/components/Textarea'
 import { cn } from '@repo/ui/helpers'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
+import { ActionFunctionArgs, redirect } from '@vercel/remix'
 import { ArrowLeft } from 'lucide-react'
 
 export const action = async ({ request }: ActionFunctionArgs) => {

@@ -1,4 +1,3 @@
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node'
 import {
     Form,
     Link,
@@ -24,6 +23,7 @@ import Body2 from '@repo/ui/typography/Body2'
 import H2 from '@repo/ui/typography/H2'
 import H4 from '@repo/ui/typography/H4'
 import { toNonBreaking } from '@repo/utils/text'
+import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@vercel/remix'
 import { ArrowLeft, Star } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 

@@ -1,6 +1,5 @@
 import { Form, Link } from '@remix-run/react'
 
-import { json, LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData, useNavigation } from '@remix-run/react'
 import { getSetlist, getSongsBySetlistId } from '@repo/db/queries'
 import Button from '@repo/ui/components/Button'
@@ -11,6 +10,7 @@ import H3 from '@repo/ui/typography/H3'
 import H4 from '@repo/ui/typography/H4'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { toNonBreaking } from '@repo/utils/text'
+import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { ArrowLeft, AudioLines } from 'lucide-react'
 import { z } from 'zod'
 

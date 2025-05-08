@@ -1,9 +1,4 @@
 import {
-    json,
-    type LinksFunction,
-    type LoaderFunctionArgs,
-} from '@remix-run/node'
-import {
     Links,
     Meta,
     MetaFunction,
@@ -16,6 +11,11 @@ import { TRPCQueryClientProvider } from '@repo/api/client'
 import BoxMain from '@repo/ui/components/BoxMain'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
+import {
+    json,
+    type LinksFunction,
+    type LoaderFunctionArgs,
+} from '@vercel/remix'
 import parser from 'accept-language-parser'
 import { ReactNode } from 'react'
 import { IntlProvider } from 'react-intl'

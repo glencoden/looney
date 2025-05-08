@@ -1,4 +1,3 @@
-import { json } from '@remix-run/node'
 import {
     Link,
     NavLink,
@@ -14,6 +13,7 @@ import { cn } from '@repo/ui/helpers'
 import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
 import H2 from '@repo/ui/typography/H2'
+import { json } from '@vercel/remix'
 import { format } from 'date-fns'
 import { ArrowLeft } from 'lucide-react'
 

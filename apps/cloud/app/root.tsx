@@ -1,4 +1,3 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/node'
 import {
     Links,
     Meta,
@@ -14,6 +13,7 @@ import Spinner from '@repo/ui/components/Spinner'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
 import H1 from '@repo/ui/typography/H1'
+import type { LinksFunction, MetaFunction } from '@vercel/remix'
 import { ReactNode, useEffect } from 'react'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
 import { hasAccess } from '~/helpers/has-access'

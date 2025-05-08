@@ -1,4 +1,3 @@
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node'
 import { Form, redirect, useLoaderData, useNavigation } from '@remix-run/react'
 import { api } from '@repo/api/client'
 import { LipInsertSchema } from '@repo/db'
@@ -10,6 +9,7 @@ import H2 from '@repo/ui/typography/H2'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { toNonBreaking } from '@repo/utils/text'
+import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@vercel/remix'
 import { useIntl } from 'react-intl'
 import { z } from 'zod'
 

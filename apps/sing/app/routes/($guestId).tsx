@@ -1,4 +1,3 @@
-import { json, LoaderFunctionArgs } from '@remix-run/node'
 import {
     Link,
     Outlet,
@@ -22,6 +21,7 @@ import Body2 from '@repo/ui/typography/Body2'
 import H2 from '@repo/ui/typography/H2'
 import H4 from '@repo/ui/typography/H4'
 import { toNonBreaking } from '@repo/utils/text'
+import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { Star } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useIntl } from 'react-intl'

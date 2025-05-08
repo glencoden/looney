@@ -19,13 +19,13 @@ catalog:
     '@supabase/supabase-js': ^2.45.4
     dotenv: ^16.4.5
     dotenv-cli: ^7.4.2
-    #    Remix - add as catalogs/remix?
     '@types/compression': ^1.7.5
     '@types/morgan': ^1.9.9
     '@remix-run/express': ^2.12.1
-    '@remix-run/node': ^2.12.1
-    '@remix-run/react': ^2.12.1
-    '@remix-run/dev': ^2.12.1
+    '@remix-run/node': ^2
+    '@remix-run/react': ^2
+    '@remix-run/dev': ^2
+    '@vercel/remix': ^2
     compression: ^1.7.4
     cross-env: ^7.0.3
     isbot: ^4.1.0
@@ -33,3 +33,4 @@ catalog:
     vite: ^5.1.0
     vite-tsconfig-paths: ^4.2.1
     '@trpc/server': 11.0.0-rc.498
+    '@tanstack/react-query': ^5

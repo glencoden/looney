@@ -15,10 +15,10 @@
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
         "@repo/utils": "workspace:*",
-        "@supabase/supabase-js": "^2.47.12",
-        "@tanstack/react-query": "^5.56.2",
+        "@supabase/supabase-js": "catalog:",
+        "@tanstack/react-query": "catalog:",
         "@trpc/server": "catalog:",
-        "@vercel/remix": "^2.15.3",
+        "@vercel/remix": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:"
     },

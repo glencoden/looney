@@ -27,7 +27,7 @@
     },
     "dependencies": {
         "@repo/db": "workspace:*",
-        "@tanstack/react-query": "^5.56.2",
+        "@tanstack/react-query": "catalog:",
         "@trpc/client": "11.0.0-rc.498",
         "@trpc/react-query": "11.0.0-rc.498",
         "@trpc/server": "catalog:",

@@ -150,16 +150,16 @@ export default function Index() {
         <>
             <section className='mobile-sim-height overflow-y-auto px-6 py-12'>
                 <Input
-                    className='focus-visible:ring-blue-300'
                     id='song-search'
-                    aria-label='Song search input'
-                    defaultValue={q || ''}
+                    className='focus-visible:ring-blue-300'
+                    type='search'
                     name='q'
+                    aria-label='Song search input'
                     placeholder={intl.formatMessage({
                         id: 'search.placeholder',
                         defaultMessage: 'Search',
                     })}
-                    type='search'
+                    defaultValue={q || ''}
                     onChange={(event) => {
                         setQ(event.target.value)
                     }}

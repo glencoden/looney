@@ -136,11 +136,11 @@ export default function SetlistEdit() {
                 >
                     <Input
                         id='song-search'
-                        aria-label='Song search input'
-                        defaultValue={q || ''}
-                        name='q'
-                        placeholder='Search'
                         type='search'
+                        name='q'
+                        aria-label='Song search input'
+                        placeholder='Search'
+                        defaultValue={q || ''}
                     />
                     {isSearching && (
                         <Spinner className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' />

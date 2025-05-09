@@ -104,25 +104,14 @@ export default function Create() {
             </H3>
 
             <Input
-                aria-label='Hidden session id'
+                type='hidden'
                 name='sessionId'
                 value={guest.sessionId as string}
-                type='hidden'
             />
 
-            <Input
-                aria-label='Hidden guest id'
-                name='guestId'
-                value={guestId}
-                type='hidden'
-            />
+            <Input type='hidden' name='guestId' value={guestId} />
 
-            <Input
-                aria-label='Hidden song id'
-                name='songId'
-                value={songId}
-                type='hidden'
-            />
+            <Input type='hidden' name='songId' value={songId} />
 
             <section>
                 <Subtitle2>
@@ -132,10 +121,10 @@ export default function Create() {
                     })}
                 </Subtitle2>
                 <Input
-                    aria-label='Singer name'
-                    name='singerName'
-                    placeholder='Name'
                     type='text'
+                    name='singerName'
+                    aria-label='Singer name'
+                    placeholder='Name'
                     disabled={isLoading}
                 />
             </section>

@@ -112,19 +112,18 @@ export default function Session() {
                         replace
                     >
                         <Input
-                            aria-label='Hidden timezone offset'
+                            type='hidden'
                             name='timezoneOffset'
                             value={new Date().getTimezoneOffset()}
-                            type='hidden'
                         />
 
                         <section>
                             <Subtitle2>Title</Subtitle2>
                             <Input
-                                aria-label='Session title'
-                                name='title'
-                                placeholder='Title'
                                 type='text'
+                                name='title'
+                                aria-label='Session title'
+                                placeholder='Title'
                                 disabled={isLoading}
                             />
                         </section>
@@ -150,10 +149,10 @@ export default function Session() {
                         <section>
                             <Subtitle2>Start Time</Subtitle2>
                             <Input
-                                aria-label='Start time'
-                                name='startsAt'
-                                placeholder='Start time'
                                 type='datetime-local'
+                                name='startsAt'
+                                aria-label='Start time'
+                                placeholder='Start time'
                                 defaultValue={new Date()
                                     .toLocaleString('sv-SE', {
                                         year: 'numeric',
@@ -180,18 +179,12 @@ export default function Session() {
                         className='flex w-full flex-col gap-3'
                         replace
                     >
-                        <Input
-                            aria-label='Hidden demo flag'
-                            name='isDemo'
-                            value='true'
-                            type='hidden'
-                        />
+                        <Input type='hidden' name='isDemo' value='true' />
 
                         <Input
-                            aria-label='Hidden setlist id'
+                            type='hidden'
                             name='setlistId'
                             value={setlists[0]?.id ?? ''}
-                            type='hidden'
                         />
 
                         <Subtitle2>Try out the Session in Demo Mode</Subtitle2>

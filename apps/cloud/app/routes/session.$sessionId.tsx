@@ -803,13 +803,13 @@ export default function ActiveSession() {
                                     />
 
                                     <Input
-                                        className='focus-visible:ring-blue-300'
                                         id='song-search'
-                                        aria-label='Song search input'
-                                        defaultValue={q || ''}
-                                        name='q'
-                                        placeholder='Search'
+                                        className='focus-visible:ring-blue-300'
                                         type='search'
+                                        name='q'
+                                        aria-label='Song search input'
+                                        placeholder='Search'
+                                        defaultValue={q || ''}
                                         onChange={(event) => {
                                             setQ(event.target.value)
                                         }}

@@ -100,11 +100,11 @@ export default function SongEdit() {
                     <section>
                         <Subtitle2>Artist</Subtitle2>
                         <Input
-                            aria-label='Artist name'
-                            defaultValue={song.artist}
-                            name='artist'
-                            placeholder='Artist'
                             type='text'
+                            name='artist'
+                            aria-label='Artist name'
+                            placeholder='Artist'
+                            defaultValue={song.artist}
                             disabled={isLoading}
                         />
                     </section>
@@ -112,11 +112,11 @@ export default function SongEdit() {
                     <section>
                         <Subtitle2>Title</Subtitle2>
                         <Input
-                            aria-label='Song title'
-                            defaultValue={song.title}
-                            name='title'
-                            placeholder='Title'
                             type='text'
+                            name='title'
+                            aria-label='Song title'
+                            placeholder='Title'
+                            defaultValue={song.title}
                             disabled={isLoading}
                         />
                     </section>
@@ -124,11 +124,11 @@ export default function SongEdit() {
                     <section>
                         <Subtitle2>Genre</Subtitle2>
                         <Input
-                            aria-label='Song genre'
-                            defaultValue={song.genre ?? ''}
-                            name='genre'
-                            placeholder='Genre'
                             type='text'
+                            name='genre'
+                            aria-label='Song genre'
+                            placeholder='Genre'
+                            defaultValue={song.genre ?? ''}
                             disabled={isLoading}
                         />
                     </section>

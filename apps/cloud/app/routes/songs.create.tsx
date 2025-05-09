@@ -71,10 +71,10 @@ export default function SongsCreate() {
                     <section>
                         <Subtitle2>Artist</Subtitle2>
                         <Input
-                            aria-label='Artist name'
-                            name='artist'
-                            placeholder='Artist'
                             type='text'
+                            name='artist'
+                            aria-label='Artist name'
+                            placeholder='Artist'
                             disabled={isLoading}
                         />
                     </section>
@@ -82,10 +82,10 @@ export default function SongsCreate() {
                     <section>
                         <Subtitle2>Title</Subtitle2>
                         <Input
-                            aria-label='Song title'
-                            name='title'
-                            placeholder='Title'
                             type='text'
+                            name='title'
+                            aria-label='Song title'
+                            placeholder='Title'
                             disabled={isLoading}
                         />
                     </section>
@@ -93,10 +93,10 @@ export default function SongsCreate() {
                     <section>
                         <Subtitle2>Genre</Subtitle2>
                         <Input
-                            aria-label='Song genre'
-                            name='genre'
-                            placeholder='Genre'
                             type='text'
+                            name='genre'
+                            aria-label='Song genre'
+                            placeholder='Genre'
                             disabled={isLoading}
                         />
                     </section>

@@ -81,10 +81,10 @@ export default function SetlistsCreate() {
                     <section>
                         <Subtitle2>Title</Subtitle2>
                         <Input
-                            aria-label='Setlist title'
-                            name='title'
-                            placeholder='Title'
                             type='text'
+                            name='title'
+                            aria-label='Setlist title'
+                            placeholder='Title'
                             disabled={isLoading}
                         />
                     </section>

@@ -33,9 +33,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData()
     const formValues = Object.fromEntries(formData)
 
-    const startDate = formValues.startsAt
+    const rawStartDate = formValues.startsAt
         ? new Date(z.string().parse(formValues.startsAt))
         : new Date()
+
+    const timezoneOffset = formValues.timezoneOffset
+        ? Number(z.string().parse(formValues.timezoneOffset))
+        : 0
+
+    const startDate = new Date(
+        rawStartDate.getTime() + 1000 * 60 * timezoneOffset,
+    )
 
     const payload =
         formValues.isDemo === 'true'
@@ -103,6 +111,13 @@ export default function Session() {
                         className='flex w-full flex-col gap-3'
                         replace
                     >
+                        <Input
+                            aria-label='Hidden timezone offset'
+                            name='timezoneOffset'
+                            value={new Date().getTimezoneOffset()}
+                            type='hidden'
+                        />
+
                         <section>
                             <Subtitle2>Title</Subtitle2>
                             <Input

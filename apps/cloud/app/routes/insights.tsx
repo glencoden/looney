@@ -20,12 +20,7 @@ export default function Insights() {
 
     return (
         <BoxMain>
-            <Button
-                asChild
-                className='float-start lg:hidden'
-                variant='ghost'
-                size='icon'
-            >
+            <Button asChild className='float-start' variant='ghost' size='icon'>
                 <Link to='/'>
                     <ArrowLeft className='h-6 w-6 text-white' />
                 </Link>

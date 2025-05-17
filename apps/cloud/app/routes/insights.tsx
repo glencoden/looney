@@ -1,6 +1,13 @@
-import { useLoaderData } from '@remix-run/react'
+import { Link, useLoaderData } from '@remix-run/react'
 import { getSongsCount } from '@repo/db/queries'
+import BoxMain from '@repo/ui/components/BoxMain'
+import Button from '@repo/ui/components/Button'
+import Body1 from '@repo/ui/typography/Body1'
+import Body2 from '@repo/ui/typography/Body2'
+import H3 from '@repo/ui/typography/H3'
 import { json } from '@vercel/remix'
+import { ArrowLeft } from 'lucide-react'
+import { toNonBreaking } from 'node_modules/@repo/utils/dist/text/to-non-breaking'
 
 export const loader = async () => {
     const songsCount = await getSongsCount()
@@ -11,7 +18,62 @@ export const loader = async () => {
 export default function Insights() {
     const { songsCount } = useLoaderData<typeof loader>()
 
-    console.log(songsCount)
+    return (
+        <BoxMain>
+            <Button
+                asChild
+                className='float-start lg:hidden'
+                variant='ghost'
+                size='icon'
+            >
+                <Link to='/'>
+                    <ArrowLeft className='h-6 w-6 text-white' />
+                </Link>
+            </Button>
 
-    return <div>Insights</div>
+            <H3 className='min-h-9 px-10'>Insights</H3>
+
+            <ul className='mt-8 space-y-2'>
+                <div className='flex justify-between gap-4'>
+                    <div />
+                    <div className='flex w-64 justify-between gap-2'>
+                        <Body2>Called to stage</Body2>
+                        <Body2>Total</Body2>
+                    </div>
+                </div>
+
+                {songsCount.map(
+                    ({ id, artist, title, count, countStageCalls }, index) => (
+                        <li key={id} className='flex justify-between gap-4'>
+                            <div>
+                                <Body2 className='inline'>
+                                    {toNonBreaking(artist)}
+                                </Body2>
+                                &nbsp;&bull;&#32;
+                                <Body1 className='inline'>
+                                    {toNonBreaking(title)}
+                                </Body1>
+                            </div>
+                            <div className='flex w-64 items-center justify-between gap-2'>
+                                <Body1 className='w-6 text-center'>
+                                    {countStageCalls}
+                                </Body1>
+                                <div className='relative h-4 flex-grow overflow-hidden rounded-sm bg-white'>
+                                    <div
+                                        style={{
+                                            width: `${(countStageCalls / count) * 100}%`,
+                                        }}
+                                        className='absolute left-0 top-0 h-full bg-blue-300'
+                                    />
+                                </div>
+                                <Body1 className='w-6 text-center'>
+                                    {count}
+                                </Body1>
+                            </div>
+                        </li>
+                    ),
+                )}
+            </ul>
+        </BoxMain>
+    )
 }

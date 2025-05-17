@@ -68,7 +68,7 @@ export default function Index() {
                             </li>
                         )}
 
-                        {/* <li className='w-full'>
+                        <li className='w-full'>
                             <Button
                                 variant='secondary'
                                 asChild
@@ -77,9 +77,9 @@ export default function Index() {
                                     navigation.location.pathname === '/insights'
                                 }
                             >
-                                <Link to='/'>Insights</Link>
+                                <Link to='/insights'>Insights</Link>
                             </Button>
-                        </li> */}
+                        </li>
 
                         <hr className='w-full border-2 border-transparent' />
 

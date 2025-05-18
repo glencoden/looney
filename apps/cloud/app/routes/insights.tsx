@@ -1,7 +1,8 @@
-import { Link, useLoaderData } from '@remix-run/react'
+import { Form, Link, useLoaderData, useSearchParams } from '@remix-run/react'
 import { getSongInsights } from '@repo/db/queries'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
+import Input from '@repo/ui/components/Input'
 import { cn } from '@repo/ui/helpers'
 import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
@@ -13,14 +14,23 @@ import { ArrowDown, ArrowLeft, ArrowUp } from 'lucide-react'
 import { toNonBreaking } from 'node_modules/@repo/utils/dist/text/to-non-breaking'
 import { useState } from 'react'
 
-export const loader = async () => {
-    const songInsights = await getSongInsights()
+export const loader = async ({ request }: { request: Request }) => {
+    const url = new URL(request.url)
+    const startDate = url.searchParams.get('startDate')
+    const endDate = url.searchParams.get('endDate')
+
+    const songInsights = await getSongInsights({
+        startDate: startDate ? new Date(startDate) : undefined,
+        endDate: endDate ? new Date(endDate) : undefined,
+    })
 
     return json({ songInsights })
 }
 
 export default function Insights() {
     const { songInsights } = useLoaderData<typeof loader>()
+
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const totalSessions = new Set(
         songInsights.flatMap(({ sessionIds }) => sessionIds),
@@ -47,10 +57,46 @@ export default function Insights() {
 
             <H3 className='min-h-9 px-10'>Insights</H3>
 
-            <div className='mt-10 flex flex-col gap-2'>
-                <Subtitle2>Filter</Subtitle2>
-                <Button>Sessions</Button>
-            </div>
+            <Form method='get' className='mt-10 space-y-2'>
+                <div className='flex flex-wrap gap-2'>
+                    <div className='space-y-2'>
+                        <Subtitle2>Start</Subtitle2>
+                        <Input
+                            type='date'
+                            name='startDate'
+                            aria-label='Start date'
+                            placeholder='Start date'
+                            defaultValue={searchParams.get('startDate') || ''}
+                        />
+                    </div>
+                    <div className='space-y-2'>
+                        <Subtitle2>End</Subtitle2>
+                        <Input
+                            type='date'
+                            name='endDate'
+                            aria-label='End date'
+                            placeholder='End date'
+                            defaultValue={searchParams.get('endDate') || ''}
+                        />
+                    </div>
+                </div>
+                <div className='space-x-2 pt-2'>
+                    <Button className='inline-flex' size='sm' type='submit'>
+                        Apply
+                    </Button>
+                    <Button
+                        className='inline-flex'
+                        size='sm'
+                        variant='secondary'
+                        type='reset'
+                        onClick={() => {
+                            setSearchParams({})
+                        }}
+                    >
+                        Clear
+                    </Button>
+                </div>
+            </Form>
 
             <ul className='mt-8 space-y-2'>
                 <div className='flex flex-wrap items-center justify-between gap-2 py-2'>
@@ -120,6 +166,11 @@ export default function Insights() {
                 </div>
 
                 {songInsights
+                    .sort((a, b) => {
+                        const artistCompare = a.artist.localeCompare(b.artist)
+                        if (artistCompare !== 0) return artistCompare
+                        return a.title.localeCompare(b.title)
+                    })
                     .sort((a, b) => {
                         if (sortBy === 'calls') {
                             return sortOrder === 'asc'

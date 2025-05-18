@@ -1,7 +1,7 @@
 import { and, count, eq, gte, inArray, lte, SQL, sql } from 'drizzle-orm'
 import { db, lipsTable, songsTable, type Session } from '../index.js'
 
-export const getSongsCount = (
+export const getSongInsights = (
     params?:
         | {
               sessionIds: Session['id'][]

@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from '@remix-run/react'
-import { getSongsCount } from '@repo/db/queries'
+import { getSongInsights } from '@repo/db/queries'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import { cn } from '@repo/ui/helpers'
@@ -14,7 +14,7 @@ import { toNonBreaking } from 'node_modules/@repo/utils/dist/text/to-non-breakin
 import { useState } from 'react'
 
 export const loader = async () => {
-    const songsCount = await getSongsCount()
+    const songsCount = await getSongInsights()
 
     return json({ songsCount })
 }

@@ -1,9 +1,9 @@
 export { createSong } from './createSong.js'
 export { deleteSong } from './deleteSong.js'
 export { getSong } from './getSong.js'
+export { getSongInsights } from './getSongInsights.js'
 export { getSongs } from './getSongs.js'
 export { getSongsBySetlistId } from './getSongsBySetlistId.js'
-export { getSongsCount } from './getSongsCount.js'
 export { updateSong } from './updateSong.js'
 
 export { addSongToSetlist } from './addSongToSetlist.js'

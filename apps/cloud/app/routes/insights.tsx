@@ -14,20 +14,23 @@ import { toNonBreaking } from 'node_modules/@repo/utils/dist/text/to-non-breakin
 import { useState } from 'react'
 
 export const loader = async () => {
-    const songsCount = await getSongInsights()
+    const songInsights = await getSongInsights()
 
-    return json({ songsCount })
+    return json({ songInsights })
 }
 
 export default function Insights() {
-    const { songsCount } = useLoaderData<typeof loader>()
+    const { songInsights } = useLoaderData<typeof loader>()
 
-    const totalCount = songsCount.reduce((acc, { count }) => acc + count, 0)
-    const totalCallsToStage = songsCount.reduce(
+    const totalSessions = new Set(
+        songInsights.flatMap(({ sessionIds }) => sessionIds),
+    ).size
+    const totalCount = songInsights.reduce((acc, { count }) => acc + count, 0)
+    const totalCallsToStage = songInsights.reduce(
         (acc, { countStageCalls }) => acc + countStageCalls,
         0,
     )
-    const maxCount = Math.max(...songsCount.map(({ count }) => count))
+    const maxCount = Math.max(...songInsights.map(({ count }) => count))
 
     const [showRelative, setShowRelative] = useState(true)
 
@@ -52,7 +55,8 @@ export default function Insights() {
             <ul className='mt-8 space-y-2'>
                 <div className='flex flex-wrap items-center justify-between gap-2 py-2'>
                     <Subtitle2>
-                        42 Sessions | {songsCount.length} Songs
+                        {totalSessions} Sessions &nbsp;&bull;&nbsp;
+                        {songInsights.length} Songs
                     </Subtitle2>
                     <div className='grid w-full grid-cols-3 justify-items-center gap-2 sm:w-80 lg:w-96'>
                         <Button
@@ -115,7 +119,7 @@ export default function Insights() {
                     </div>
                 </div>
 
-                {songsCount
+                {songInsights
                     .sort((a, b) => {
                         if (sortBy === 'calls') {
                             return sortOrder === 'asc'

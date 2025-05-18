@@ -10,8 +10,8 @@ export const getSongInsights = (
           }
         | {
               sessionIds: never
-              startDate: Date
-              endDate: Date
+              startDate?: Date
+              endDate?: Date
           },
 ) => {
     const filterCallbacks: SQL[] = []
@@ -20,8 +20,11 @@ export const getSongInsights = (
         filterCallbacks.push(inArray(lipsTable.sessionId, params.sessionIds))
     }
 
-    if (params?.startDate && params?.endDate) {
+    if (params?.startDate) {
         filterCallbacks.push(gte(lipsTable.createdAt, params.startDate))
+    }
+
+    if (params?.endDate) {
         filterCallbacks.push(lte(lipsTable.createdAt, params.endDate))
     }
 
@@ -34,6 +37,9 @@ export const getSongInsights = (
             countStageCalls: count(
                 sql`CASE WHEN ${lipsTable.status} IN ('live', 'no-show', 'done') THEN 1 END`,
             ),
+            sessionIds: sql<
+                Session['id'][]
+            >`ARRAY_AGG(DISTINCT ${lipsTable.sessionId})`,
         })
         .from(lipsTable)
         .innerJoin(songsTable, eq(lipsTable.songId, songsTable.id))

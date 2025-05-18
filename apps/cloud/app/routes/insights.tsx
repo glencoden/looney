@@ -10,6 +10,7 @@ import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { json } from '@vercel/remix'
 import { ArrowLeft } from 'lucide-react'
 import { toNonBreaking } from 'node_modules/@repo/utils/dist/text/to-non-breaking'
+import { useState } from 'react'
 
 export const loader = async () => {
     const songsCount = await getSongsCount()
@@ -25,6 +26,9 @@ export default function Insights() {
         (acc, { countStageCalls }) => acc + countStageCalls,
         0,
     )
+    const maxCount = Math.max(...songsCount.map(({ count }) => count))
+
+    const [showRelative, setShowRelative] = useState(false)
 
     return (
         <BoxMain>
@@ -47,14 +51,16 @@ export default function Insights() {
                 </div>
                 <div className='flex flex-col gap-2'>
                     <Subtitle2>View</Subtitle2>
-                    <Button>Absolute</Button>
+                    <Button onClick={() => setShowRelative(!showRelative)}>
+                        {showRelative ? 'Relative' : 'Absolute'}
+                    </Button>
                 </div>
             </div>
 
             <ul className='mt-8 space-y-2'>
                 <div className='flex justify-between'>
                     <div />
-                    <div className='flex w-80 justify-between gap-2 max-sm:w-full'>
+                    <div className='flex w-full justify-between gap-2 sm:w-80 lg:w-96'>
                         <Body2>Called to stage ({totalCallsToStage})</Body2>
                         <Body2>Total ({totalCount})</Body2>
                     </div>
@@ -80,17 +86,26 @@ export default function Insights() {
                                     {toNonBreaking(title)}
                                 </Body1>
                             </div>
-                            <div className='flex w-80 shrink-0 items-center justify-between gap-2 max-sm:w-full'>
+                            <div className='flex w-full shrink-0 items-center justify-between gap-2 sm:w-80 lg:w-96'>
                                 <Body1 className='w-6 text-center'>
                                     {countStageCalls}
                                 </Body1>
-                                <div className='relative h-4 flex-grow overflow-hidden rounded-sm bg-white'>
+                                <div className='h-4 flex-grow'>
                                     <div
                                         style={{
-                                            width: `${Math.round((countStageCalls / count) * 100)}%`,
+                                            width: showRelative
+                                                ? `${Math.round((count / maxCount) * 100)}%`
+                                                : '100%',
                                         }}
-                                        className='absolute left-0 top-0 h-full bg-blue-300'
-                                    />
+                                        className='relative h-full overflow-hidden rounded-sm bg-white'
+                                    >
+                                        <div
+                                            style={{
+                                                width: `${Math.round((countStageCalls / count) * 100)}%`,
+                                            }}
+                                            className='absolute left-0 top-0 h-full bg-blue-300'
+                                        />
+                                    </div>
                                 </div>
                                 <Body1 className='w-6 text-center'>
                                     {count}

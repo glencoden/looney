@@ -1,4 +1,4 @@
-import { and, count, desc, eq, gte, inArray, lte, SQL, sql } from 'drizzle-orm'
+import { and, count, eq, gte, inArray, lte, SQL, sql } from 'drizzle-orm'
 import { db, lipsTable, songsTable, type Session } from '../index.js'
 
 export const getSongsCount = (
@@ -39,5 +39,4 @@ export const getSongsCount = (
         .innerJoin(songsTable, eq(lipsTable.songId, songsTable.id))
         .where(and(...filterCallbacks))
         .groupBy(songsTable.id, songsTable.title, songsTable.artist)
-        .orderBy(desc(count()))
 }

@@ -10,7 +10,13 @@ import H3 from '@repo/ui/typography/H3'
 import Small from '@repo/ui/typography/Small'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { json } from '@vercel/remix'
-import { ArrowDown, ArrowLeft, ArrowUp } from 'lucide-react'
+import {
+    AlignJustify,
+    AlignLeft,
+    ArrowDown,
+    ArrowLeft,
+    ArrowUp,
+} from 'lucide-react'
 import { toNonBreaking } from 'node_modules/@repo/utils/dist/text/to-non-breaking'
 import { useState } from 'react'
 
@@ -42,7 +48,7 @@ export default function Insights() {
     )
     const maxCount = Math.max(...songInsights.map(({ count }) => count))
 
-    const [showRelative, setShowRelative] = useState(true)
+    const [showRelative, setShowRelative] = useState(false)
 
     const [sortBy, setSortBy] = useState<'count' | 'calls'>('count')
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
@@ -135,7 +141,7 @@ export default function Insights() {
                             size='icon'
                             onClick={() => setShowRelative(!showRelative)}
                         >
-                            {showRelative ? 'Relative' : 'Absolute'}
+                            {showRelative ? <AlignJustify /> : <AlignLeft />}
                         </Button>
                         <Button
                             variant='ghost'
@@ -166,11 +172,6 @@ export default function Insights() {
                 </div>
 
                 {songInsights
-                    .sort((a, b) => {
-                        const artistCompare = a.artist.localeCompare(b.artist)
-                        if (artistCompare !== 0) return artistCompare
-                        return a.title.localeCompare(b.title)
-                    })
                     .sort((a, b) => {
                         if (sortBy === 'calls') {
                             return sortOrder === 'asc'
@@ -212,8 +213,8 @@ export default function Insights() {
                                         <div
                                             style={{
                                                 width: showRelative
-                                                    ? `${Math.round((count / maxCount) * 100)}%`
-                                                    : '100%',
+                                                    ? '100%'
+                                                    : `${Math.round((count / maxCount) * 100)}%`,
                                             }}
                                             className='relative h-full overflow-hidden rounded-sm bg-white'
                                         >

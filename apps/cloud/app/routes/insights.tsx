@@ -50,7 +50,7 @@ export default function Insights() {
 
     const [showRelative, setShowRelative] = useState(false)
 
-    const [sortBy, setSortBy] = useState<'count' | 'calls'>('count')
+    const [sortBy, setSortBy] = useState<'count' | 'calls' | 'ratio'>('count')
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
 
     return (
@@ -63,46 +63,58 @@ export default function Insights() {
 
             <H3 className='min-h-9 px-10'>Insights</H3>
 
-            <Form method='get' className='mt-10 space-y-2'>
-                <div className='flex flex-wrap gap-2'>
-                    <div className='space-y-2'>
-                        <Subtitle2>Start</Subtitle2>
-                        <Input
-                            type='date'
-                            name='startDate'
-                            aria-label='Start date'
-                            placeholder='Start date'
-                            defaultValue={searchParams.get('startDate') || ''}
-                        />
+            <section className='mt-10 flex justify-between'>
+                <Form method='get' className='space-y-2'>
+                    <div className='flex flex-wrap gap-2'>
+                        <div className='space-y-2'>
+                            <Subtitle2>Start</Subtitle2>
+                            <Input
+                                type='date'
+                                name='startDate'
+                                aria-label='Start date'
+                                placeholder='Start date'
+                                defaultValue={
+                                    searchParams.get('startDate') || ''
+                                }
+                            />
+                        </div>
+                        <div className='space-y-2'>
+                            <Subtitle2>End</Subtitle2>
+                            <Input
+                                type='date'
+                                name='endDate'
+                                aria-label='End date'
+                                placeholder='End date'
+                                defaultValue={searchParams.get('endDate') || ''}
+                            />
+                        </div>
                     </div>
-                    <div className='space-y-2'>
-                        <Subtitle2>End</Subtitle2>
-                        <Input
-                            type='date'
-                            name='endDate'
-                            aria-label='End date'
-                            placeholder='End date'
-                            defaultValue={searchParams.get('endDate') || ''}
-                        />
+                    <div className='space-x-2 pt-2'>
+                        <Button className='inline-flex' size='sm' type='submit'>
+                            Apply
+                        </Button>
+                        <Button
+                            className='inline-flex'
+                            size='sm'
+                            variant='secondary'
+                            type='reset'
+                            onClick={() => {
+                                setSearchParams({})
+                            }}
+                        >
+                            Clear
+                        </Button>
                     </div>
-                </div>
-                <div className='space-x-2 pt-2'>
-                    <Button className='inline-flex' size='sm' type='submit'>
-                        Apply
-                    </Button>
-                    <Button
-                        className='inline-flex'
-                        size='sm'
-                        variant='secondary'
-                        type='reset'
-                        onClick={() => {
-                            setSearchParams({})
-                        }}
-                    >
-                        Clear
-                    </Button>
-                </div>
-            </Form>
+                </Form>
+
+                <Button
+                    variant='ghost'
+                    size='auto'
+                    onClick={() => setShowRelative(!showRelative)}
+                >
+                    {showRelative ? <AlignJustify /> : <AlignLeft />}
+                </Button>
+            </section>
 
             <ul className='mt-8 space-y-2'>
                 <div className='flex flex-wrap items-center justify-between gap-2 py-2'>
@@ -110,10 +122,10 @@ export default function Insights() {
                         {totalSessions} Sessions &nbsp;&bull;&nbsp;
                         {songInsights.length} Songs
                     </Subtitle2>
-                    <div className='grid w-full grid-cols-3 justify-items-center gap-2 sm:w-80 lg:w-96'>
+                    <div className='flex w-full justify-between gap-2 sm:w-80 lg:w-96'>
                         <Button
                             variant='ghost'
-                            size='icon'
+                            size='auto'
                             onClick={() => {
                                 if (sortBy === 'calls') {
                                     setSortOrder(
@@ -138,14 +150,29 @@ export default function Insights() {
                         </Button>
                         <Button
                             variant='ghost'
-                            size='icon'
-                            onClick={() => setShowRelative(!showRelative)}
+                            size='auto'
+                            onClick={() => {
+                                if (sortBy === 'ratio') {
+                                    setSortOrder(
+                                        sortOrder === 'asc' ? 'desc' : 'asc',
+                                    )
+                                    return
+                                }
+                                setSortBy('ratio')
+                                setSortOrder('desc')
+                            }}
                         >
-                            {showRelative ? <AlignJustify /> : <AlignLeft />}
+                            {sortBy === 'ratio' && sortOrder === 'asc' && (
+                                <ArrowDown className='h-4 w-4 shrink-0' />
+                            )}
+                            {sortBy === 'ratio' && sortOrder === 'desc' && (
+                                <ArrowUp className='h-4 w-4 shrink-0' />
+                            )}
+                            Ratio
                         </Button>
                         <Button
                             variant='ghost'
-                            size='icon'
+                            size='auto'
                             onClick={() => {
                                 if (sortBy === 'count') {
                                     setSortOrder(
@@ -178,6 +205,13 @@ export default function Insights() {
                                 ? a.countStageCalls - b.countStageCalls
                                 : b.countStageCalls - a.countStageCalls
                         }
+                        if (sortBy === 'ratio') {
+                            const ratioA = a.countStageCalls / a.count
+                            const ratioB = b.countStageCalls / b.count
+                            return sortOrder === 'asc'
+                                ? ratioA - ratioB
+                                : ratioB - ratioA
+                        }
                         return sortOrder === 'asc'
                             ? a.count - b.count
                             : b.count - a.count
@@ -197,6 +231,9 @@ export default function Insights() {
                                 )}
                             >
                                 <div>
+                                    <Body1 className='inline-block w-10 text-blue-300'>
+                                        {index + 1}
+                                    </Body1>
                                     <Body2 className='inline'>
                                         {toNonBreaking(artist)}
                                     </Body2>

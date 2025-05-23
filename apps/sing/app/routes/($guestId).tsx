@@ -39,8 +39,7 @@ type LoaderResponse = {
 export const loader = async ({ params }: LoaderFunctionArgs) => {
     const guestId = params.guestId
 
-    // If guestId is undefined, create demo guest and let FE handle redirect
-
+    // Make this work to try the tool without session
     if (!guestId) {
         const songs = await getSongs()
 
@@ -57,20 +56,6 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 export default function Index() {
     const { guest, session, songs } = useLoaderData<typeof loader>()
-
-    // We are in demo mode!
-    //
-    // 1. Redirect to /guestId
-    // 2. Create fake session and disable lips server state
-    // 3. If there is an active demo session, business as usual between demo guest and demo session
-    // 4. As soon as there is an upcoming or ongoing non-demo session > show "scan the QR code to join <session title>"
-
-    // We are live!
-    //
-    // 1. There is no session in the record yet > show "session coming soon"
-    // 2. The session in the record is in the future > show "session start in <time>"
-    // 3. The session is ongoing or in the past AND there is no other upcoming or ongoing session > load session and songs for its setlist
-    // 4. The session is in the past and there is an upcoming or ongoing non-demo session > show "scan the QR code to join <session title>"
 
     const intl = useIntl()
 

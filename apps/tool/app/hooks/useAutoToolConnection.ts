@@ -89,13 +89,16 @@ export const useAutoToolConnection = (
                 if (possibleIPs.length === 0) {
                     return null
                 }
-                const IPs = possibleIPs
-                    .sort(
-                        (a, b) =>
-                            Number(b.connectionSuccess) -
-                            Number(a.connectionSuccess),
-                    )
-                    .map((possibleIP) => possibleIP.value)
+                const IPs = [
+                    'localhost',
+                    ...possibleIPs
+                        .sort(
+                            (a, b) =>
+                                Number(b.connectionSuccess) -
+                                Number(a.connectionSuccess),
+                        )
+                        .map((possibleIP) => possibleIP.value),
+                ]
 
                 let ws: WebSocket | null = null
                 let index = 0

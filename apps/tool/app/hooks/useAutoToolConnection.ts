@@ -59,7 +59,7 @@ export const useAutoToolConnection = (
     })
 
     if (error) {
-        console.error('Error on useAutoToolConnection', error)
+        console.error('Error querying auto tool server IP', error)
     }
 
     useEffect(() => {
@@ -101,6 +101,8 @@ export const useAutoToolConnection = (
                 let index = 0
 
                 for (const IP of IPs) {
+                    console.log('Trying to connect to', IP)
+
                     ws = await new Promise((resolve) => {
                         const currentWebsocket = new WebSocket(
                             `ws://${IP}:5555`,
@@ -142,6 +144,8 @@ export const useAutoToolConnection = (
                             }
                         }),
                     )
+
+                    console.log('Connected to', IP)
                     break
                 }
 

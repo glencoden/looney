@@ -8,7 +8,7 @@ export default function H2({
     return (
         <h2
             className={cn(
-                'font-display text-center text-3xl font-bold text-white',
+                'font-display text-center text-3xl font-bold leading-relaxed text-white',
                 className,
             )}
         >

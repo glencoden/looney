@@ -97,10 +97,24 @@ export default function Index() {
     const [drawerBoxElement, setDrawerBoxElement] = useState<HTMLElement>()
 
     useEffect(() => {
-        if (!drawerBoxRef.current) {
-            throw new Error('Expect drawer box to be present.')
+        let retryCount = 0
+        let timeoutId: ReturnType<typeof setTimeout>
+        const assignDrawerBoxElement = () => {
+            if (retryCount >= 10) {
+                throw new Error('Expect drawer box to be present.')
+            }
+            if (!drawerBoxRef.current) {
+                timeoutId = setTimeout(assignDrawerBoxElement, 50)
+                retryCount++
+                return
+            }
+            clearTimeout(timeoutId)
+            setDrawerBoxElement(drawerBoxRef.current)
         }
-        setDrawerBoxElement(drawerBoxRef.current)
+        assignDrawerBoxElement()
+        return () => {
+            clearTimeout(timeoutId)
+        }
     }, [])
 
     /**
@@ -137,12 +151,14 @@ export default function Index() {
 
     if (!session) {
         return (
-            <H2>
-                {intl.formatMessage({
-                    id: 'root.waiting.headline',
-                    defaultMessage: 'The show will start soon!',
-                })}
-            </H2>
+            <div className='mobile-sim-height flex items-center justify-center'>
+                <H2>
+                    {intl.formatMessage({
+                        id: 'root.waiting.headline',
+                        defaultMessage: 'The show will start soon!',
+                    })}
+                </H2>
+            </div>
         )
     }
 

@@ -151,7 +151,8 @@ export default function Index() {
                 <H2>
                     {intl.formatMessage({
                         id: 'root.waiting.headline',
-                        defaultMessage: 'The show will start soon!',
+                        defaultMessage:
+                            'Please scan the QR code again when there is an active session.',
                     })}
                 </H2>
             </div>

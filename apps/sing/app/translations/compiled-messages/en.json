@@ -10,7 +10,7 @@
   "nav.button.feedback": "Feedback",
   "nav.button.songs": "Songs",
   "nav.button.tip": "Tip the band",
-  "root.waiting.headline": "The show will start soon!",
+  "root.waiting.headline": "Please scan the QR code again when there is an active session.",
   "search.placeholder": "Search",
   "songs.none.headline": "You have no Songs yet",
   "songs.some.headline": "My Songs"

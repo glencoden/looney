@@ -5,6 +5,7 @@ import type { LipDTO } from '@repo/api/types'
 import { Session } from '@repo/db'
 import { getSession } from '@repo/db/queries'
 import BoxMain from '@repo/ui/components/BoxMain'
+import Button from '@repo/ui/components/Button'
 import Input from '@repo/ui/components/Input'
 import { cn } from '@repo/ui/helpers'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
@@ -97,6 +98,9 @@ export default function ActiveSession() {
     const { data, isLoading: isLipsLoading } = useLips(session.id)
 
     const lips = data ?? ([] as LipDTO[])
+
+    const { mutateAsync: updateLipAsync, isPending: isLipUpdatePending } =
+        api.lip.update.useMutation()
 
     const { mutate: moveLip, isPending: isLipMovePending } =
         api.lip.move.useMutation({
@@ -769,7 +773,42 @@ export default function ActiveSession() {
                                                 hideFavorites
                                             />
                                             <div className='absolute right-2 top-1/2 flex h-20 w-28 -translate-y-1/2 items-center justify-center'>
-                                                <Radio className='h-14 w-14 fill-pink-700 text-black' />
+                                                <Button
+                                                    variant='ghost'
+                                                    onClick={async () => {
+                                                        await updateLipAsync({
+                                                            id: actionLip.id,
+                                                            status: 'done',
+                                                        })
+                                                        void utils.lip.getBySessionId.setData(
+                                                            {
+                                                                id: session.id,
+                                                            },
+                                                            (lips) => {
+                                                                if (!lips) {
+                                                                    return
+                                                                }
+                                                                return lips.map(
+                                                                    (lip) => {
+                                                                        if (
+                                                                            lip.id ===
+                                                                            actionLip.id
+                                                                        ) {
+                                                                            return {
+                                                                                ...lip,
+                                                                                status: 'done',
+                                                                            }
+                                                                        }
+                                                                        return lip
+                                                                    },
+                                                                )
+                                                            },
+                                                        )
+                                                    }}
+                                                    loading={isLipUpdatePending}
+                                                >
+                                                    <Radio className='h-14 w-14 fill-pink-700 text-black' />
+                                                </Button>
                                             </div>
                                         </div>
                                     )}

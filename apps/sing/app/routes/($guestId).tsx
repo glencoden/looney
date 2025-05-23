@@ -49,11 +49,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
     const guest = await getGuest(guestId)
 
-    if (!guest) {
-        throw new Error(`Couldn't find this guest.`)
-    }
-
-    const session = guest.sessionId ? await getSession(guest.sessionId) : null
+    const session = guest?.sessionId ? await getSession(guest.sessionId) : null
     const songs = session ? await getSongsBySetlistId(session.setlistId) : null
 
     return json<LoaderResponse>({ guest, session, songs })

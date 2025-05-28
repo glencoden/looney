@@ -51,16 +51,21 @@ export const lipRouter = {
 
     move: protectedProcedure
         .input(
-            z.array(
-                LipSchema.pick({
+            z.object({
+                lips: z.array(
+                    LipSchema.pick({
+                        id: true,
+                        sortNumber: true,
+                    }),
+                ),
+                movedLip: LipSchema.pick({
                     id: true,
                     status: true,
-                    sortNumber: true,
                 }),
-            ),
+            }),
         )
         .mutation(({ input }) => {
-            return moveLip(input)
+            return moveLip(input.lips, input.movedLip)
         }),
 
     createDemo: protectedProcedure

@@ -245,10 +245,9 @@ export default function ActiveSession() {
 
     const handleLipMove = ({
         id,
-        sessionId,
         status,
         sortNumber,
-    }: Pick<LipDTO, 'id' | 'sessionId' | 'status' | 'sortNumber'>) => {
+    }: Pick<LipDTO, 'id' | 'status' | 'sortNumber'>) => {
         if (sortNumber === null) {
             throw new Error('Can not move a lip without a target sort number.')
         }
@@ -345,13 +344,16 @@ export default function ActiveSession() {
                             (b.sortNumber ?? Infinity),
                     )
                 // Database update
-                moveLip(
-                    update.map((lip) => ({
+                moveLip({
+                    lips: update.map((lip) => ({
                         id: lip.id,
-                        status: lip.status,
                         sortNumber: lip.sortNumber,
                     })),
-                )
+                    movedLip: {
+                        id,
+                        status,
+                    },
+                })
                 // Optimistic update
                 return update
             },
@@ -688,7 +690,6 @@ export default function ActiveSession() {
                 setTimeout(() => {
                     handleLipMove({
                         id: lipId,
-                        sessionId: session.id,
                         status,
                         sortNumber: targetIndex + 1,
                     })

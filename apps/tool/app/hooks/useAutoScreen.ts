@@ -11,7 +11,6 @@ type Response =
     | {
           type: 'home'
           sessionTitle: Session['title']
-          isDemo: boolean
       }
     | {
           type: 'lyrics'
@@ -21,9 +20,7 @@ type Response =
 export const useAutoScreen = (): Response => {
     const utils = api.useUtils()
 
-    const { data: session } = api.session.getCurrent.useQuery({
-        includeDemo: true,
-    })
+    const { data: session } = api.session.getCurrent.useQuery()
 
     const { data: liveLip } = api.lip.getLiveBySessionId.useQuery(
         session ? { id: session.id } : skipToken,
@@ -98,7 +95,6 @@ export const useAutoScreen = (): Response => {
         return {
             type: 'home',
             sessionTitle: session!.title,
-            isDemo: session!.isDemo ?? false,
         }
-    }, [isSessionActive, session?.isDemo, liveLip?.id])
+    }, [isSessionActive, liveLip?.id])
 }

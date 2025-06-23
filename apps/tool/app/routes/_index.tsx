@@ -1,6 +1,5 @@
 import { api } from '@repo/api/client'
 import Logo from '@repo/ui/components/Logo'
-import QRDemo from '@repo/ui/components/QRDemo'
 import QRLive from '@repo/ui/components/QRLive'
 import { cn } from '@repo/ui/helpers'
 import H1 from '@repo/ui/typography/H1'
@@ -439,11 +438,7 @@ export default function Index() {
                                 <h1 className='text-center text-yellow-400'>
                                     {screen.sessionTitle}
                                 </h1>
-                                {screen.isDemo ? (
-                                    <QRDemo className='w-80' />
-                                ) : (
-                                    <QRLive className='w-80' />
-                                )}
+                                <QRLive className='w-80' />
                                 <H1>Scan me to sing!</H1>
                             </div>
                         )

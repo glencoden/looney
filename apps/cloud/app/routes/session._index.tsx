@@ -20,7 +20,6 @@ import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 import { z } from 'zod'
 
-const DEMO_SESSION_LENGTH = 1000 * 60 * 60
 const LIVE_SESSION_LENGTH = 1000 * 60 * 60 * 18
 
 export const loader = async () => {
@@ -45,23 +44,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         rawStartDate.getTime() + 1000 * 60 * timezoneOffset,
     )
 
-    const payload =
-        formValues.isDemo === 'true'
-            ? {
-                  title: 'Demo',
-                  setlistId: formValues.setlistId,
-                  isDemo: true,
-                  startsAt: startDate,
-                  endsAt: new Date(startDate.getTime() + DEMO_SESSION_LENGTH),
-              }
-            : {
-                  title: formValues.title,
-                  setlistId: formValues.setlistId,
-                  startsAt: startDate,
-                  endsAt: new Date(startDate.getTime() + LIVE_SESSION_LENGTH),
-              }
-
-    const id = await createSession(SessionInsertSchema.parse(payload))
+    const id = await createSession(
+        SessionInsertSchema.parse({
+            title: formValues.title,
+            setlistId: formValues.setlistId,
+            startsAt: startDate,
+            endsAt: new Date(startDate.getTime() + LIVE_SESSION_LENGTH),
+        }),
+    )
 
     if (id === null) {
         throw new Response('Failed to create session', { status: 500 })
@@ -105,98 +95,73 @@ export default function Session() {
             </header>
 
             <BoxContentSlot>
-                <div className='max-w-96 gap-14'>
-                    <Form
-                        method='post'
-                        className='flex w-full flex-col gap-3'
-                        replace
-                    >
+                <Form
+                    method='post'
+                    className='flex w-full max-w-96 flex-col items-stretch gap-3'
+                    replace
+                >
+                    <Input
+                        type='hidden'
+                        name='timezoneOffset'
+                        value={new Date().getTimezoneOffset()}
+                    />
+
+                    <section>
+                        <Subtitle2>Title</Subtitle2>
                         <Input
-                            type='hidden'
-                            name='timezoneOffset'
-                            value={new Date().getTimezoneOffset()}
+                            type='text'
+                            name='title'
+                            aria-label='Session title'
+                            placeholder='Title'
+                            disabled={isLoading}
                         />
+                    </section>
 
-                        <section>
-                            <Subtitle2>Title</Subtitle2>
-                            <Input
-                                type='text'
-                                name='title'
-                                aria-label='Session title'
-                                placeholder='Title'
-                                disabled={isLoading}
-                            />
-                        </section>
-
-                        <section>
-                            <Subtitle2>Setlist</Subtitle2>
-                            <Select
-                                name='setlistId'
-                                value={selectedSetlistId}
-                                onChange={(e) =>
-                                    setSelectedSetlistId(e.target.value)
-                                }
-                            >
-                                <option value=''>-</option>
-                                {setlists.map((setlist) => (
-                                    <option key={setlist.id} value={setlist.id}>
-                                        {setlist.title}
-                                    </option>
-                                ))}
-                            </Select>
-                        </section>
-
-                        <section>
-                            <Subtitle2>Start Time</Subtitle2>
-                            <Input
-                                type='datetime-local'
-                                name='startsAt'
-                                aria-label='Start time'
-                                placeholder='Start time'
-                                defaultValue={new Date()
-                                    .toLocaleString('sv-SE', {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        hour12: false,
-                                    })
-                                    .replace(' ', 'T')}
-                                disabled={isLoading}
-                            />
-                        </section>
-
-                        <hr className='w-full border-2 border-transparent' />
-
-                        <Button type={isLoading ? 'button' : 'submit'}>
-                            Start
-                        </Button>
-                    </Form>
-
-                    <Form
-                        method='post'
-                        className='flex w-full flex-col gap-3'
-                        replace
-                    >
-                        <Input type='hidden' name='isDemo' value='true' />
-
-                        <Input
-                            type='hidden'
+                    <section>
+                        <Subtitle2>Setlist</Subtitle2>
+                        <Select
                             name='setlistId'
-                            value={setlists[0]?.id ?? ''}
-                        />
-
-                        <Subtitle2>Try out the Session in Demo Mode</Subtitle2>
-
-                        <Button
-                            variant='secondary'
-                            type={isLoading ? 'button' : 'submit'}
+                            value={selectedSetlistId}
+                            onChange={(e) =>
+                                setSelectedSetlistId(e.target.value)
+                            }
                         >
-                            Start Demo
-                        </Button>
-                    </Form>
-                </div>
+                            <option value=''>-</option>
+                            {setlists.map((setlist) => (
+                                <option key={setlist.id} value={setlist.id}>
+                                    {setlist.title}
+                                </option>
+                            ))}
+                        </Select>
+                    </section>
+
+                    <section>
+                        <Subtitle2>Start Time</Subtitle2>
+                        <Input
+                            type='datetime-local'
+                            name='startsAt'
+                            aria-label='Start time'
+                            placeholder='Start time'
+                            defaultValue={new Date()
+                                .toLocaleString('sv-SE', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: false,
+                                })
+                                .replace(' ', 'T')}
+                            disabled={isLoading}
+                        />
+                    </section>
+
+                    <hr className='w-full border-2 border-transparent' />
+
+                    <Button type={isLoading ? 'button' : 'submit'}>
+                        Start
+                    </Button>
+                </Form>
             </BoxContentSlot>
         </BoxMain>
     )

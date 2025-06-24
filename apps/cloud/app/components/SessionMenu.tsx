@@ -1,11 +1,9 @@
-import { Link } from '@remix-run/react'
+import { Form, Link } from '@remix-run/react'
 import { api } from '@repo/api/client'
 import { Session } from '@repo/db'
 import Button from '@repo/ui/components/Button'
 import Spinner from '@repo/ui/components/Spinner'
-import { cn } from '@repo/ui/helpers'
-import Subtitle2 from '@repo/ui/typography/Subtitle2'
-import { CircleDollarSign, House, Lock, LockOpen, Star } from 'lucide-react'
+import { House, Lock, LockOpen, Power } from 'lucide-react'
 
 export default function SessionMenu({
     session,
@@ -80,7 +78,7 @@ export default function SessionMenu({
                     )}
                 </Button>
 
-                <Button
+                {/* <Button
                     variant='ghost'
                     size='icon'
                     title={
@@ -96,9 +94,9 @@ export default function SessionMenu({
                             'opacity-100': !session.hideFavorites,
                         })}
                     />
-                </Button>
+                </Button> */}
 
-                <Button
+                {/* <Button
                     variant='ghost'
                     size='icon'
                     title={
@@ -114,14 +112,33 @@ export default function SessionMenu({
                             'opacity-100': !session.hideTipCollection,
                         })}
                     />
-                </Button>
+                </Button> */}
             </section>
 
-            <section className='flex items-center gap-7'>
+            <section className='flex items-center gap-4'>
                 {isPending && <Spinner light />}
-                {session.isDemo && !isPending && (
-                    <Subtitle2 className='text-pink-700'>Demo</Subtitle2>
-                )}
+
+                <Form
+                    action='close'
+                    method='post'
+                    className='flex items-center'
+                    onSubmit={(event) => {
+                        const response = confirm(
+                            `Please confirm you want to close "${session.title}".`,
+                        )
+                        if (!response) {
+                            event.preventDefault()
+                        }
+                    }}
+                >
+                    <Button
+                        variant='ghost'
+                        size='icon'
+                        type={isSessionPending ? 'button' : 'submit'}
+                    >
+                        <Power className='h-6 w-6 text-white' />
+                    </Button>
+                </Form>
 
                 <Button asChild variant='ghost' size='icon'>
                     <Link to='/'>

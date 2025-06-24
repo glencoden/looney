@@ -22,6 +22,7 @@ export { updateGuest } from './updateGuest.js'
 
 export { closeSession } from './closeSession.js'
 export { createSession } from './createSession.js'
+export { deleteSession } from './deleteSession.js'
 export { getCurrentSession } from './getCurrentSession.js'
 export { getSession } from './getSession.js'
 export { getUpcomingSession } from './getUpcomingSession.js'

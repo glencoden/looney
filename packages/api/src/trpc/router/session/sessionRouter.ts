@@ -1,5 +1,10 @@
 import { SessionSchema } from '@repo/db'
-import { getCurrentSession, getSession, updateSession } from '@repo/db/queries'
+import {
+    getCurrentSession,
+    getSession,
+    getUpcomingSession,
+    updateSession,
+} from '@repo/db/queries'
 import { protectedProcedure, publicProcedure } from '../../index.js'
 
 export const sessionRouter = {
@@ -11,6 +16,10 @@ export const sessionRouter = {
 
     getCurrent: publicProcedure.query(() => {
         return getCurrentSession()
+    }),
+
+    getUpcoming: publicProcedure.query(() => {
+        return getUpcomingSession()
     }),
 
     update: protectedProcedure

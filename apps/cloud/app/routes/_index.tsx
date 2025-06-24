@@ -14,7 +14,10 @@ export default function Index() {
     const { userSession } = useUserSession()
     const accessRole = userSession?.user.accessRole
 
-    const { data: session } = api.session.getCurrent.useQuery()
+    const { data: currentSession } = api.session.getCurrent.useQuery()
+    const { data: upcomingSession } = api.session.getUpcoming.useQuery()
+
+    const session = currentSession ?? upcomingSession
 
     return (
         <BoxMain className='flex flex-col items-center'>

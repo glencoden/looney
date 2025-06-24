@@ -24,6 +24,7 @@ export { closeSession } from './closeSession.js'
 export { createSession } from './createSession.js'
 export { getCurrentSession } from './getCurrentSession.js'
 export { getSession } from './getSession.js'
+export { getUpcomingSession } from './getUpcomingSession.js'
 export { updateSession } from './updateSession.js'
 
 export { createDemoLip } from './createDemoLip.js'

@@ -4,6 +4,7 @@ import { Session } from '@repo/db'
 import Button from '@repo/ui/components/Button'
 import Spinner from '@repo/ui/components/Spinner'
 import { House, Lock, LockOpen, Power } from 'lucide-react'
+import SessionCountdown from '~/components/SessionCountdown'
 
 export default function SessionMenu({
     session,
@@ -113,6 +114,8 @@ export default function SessionMenu({
                         })}
                     />
                 </Button> */}
+
+                <SessionCountdown startsAt={session.startsAt} />
             </section>
 
             <section className='flex items-center gap-4'>

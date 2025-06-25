@@ -55,6 +55,7 @@ export const lipRouter = {
                 lips: z.array(
                     LipSchema.pick({
                         id: true,
+                        status: true,
                         sortNumber: true,
                     }),
                 ),

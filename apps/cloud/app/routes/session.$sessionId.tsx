@@ -346,6 +346,7 @@ export default function ActiveSession() {
                 moveLip({
                     lips: update.map((lip) => ({
                         id: lip.id,
+                        status: lip.status,
                         sortNumber: lip.sortNumber,
                     })),
                     movedLip: {

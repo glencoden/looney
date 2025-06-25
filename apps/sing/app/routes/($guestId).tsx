@@ -5,6 +5,7 @@ import {
     useLocation,
     useNavigate,
 } from '@remix-run/react'
+import { api } from '@repo/api/client'
 import { Guest, Session } from '@repo/db'
 import {
     getGuest,
@@ -39,7 +40,7 @@ type LoaderResponse = {
 export const loader = async ({ params }: LoaderFunctionArgs) => {
     const guestId = params.guestId
 
-    // Make this work to try the tool without session
+    // TODO: Make this work to try the tool without session
     if (!guestId) {
         const songs = await getSongs()
 
@@ -55,7 +56,22 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 }
 
 export default function Index() {
-    const { guest, session, songs } = useLoaderData<typeof loader>()
+    const {
+        guest,
+        session: sessionFromLoader,
+        songs,
+    } = useLoaderData<typeof loader>()
+
+    const { data: session } = api.session.get.useQuery(
+        {
+            id: sessionFromLoader?.id!,
+        },
+        {
+            initialData: sessionFromLoader as unknown as Session,
+            enabled: Boolean(sessionFromLoader?.id),
+            refetchInterval: 1000 * 60,
+        },
+    )
 
     const intl = useIntl()
 
@@ -130,7 +146,9 @@ export default function Index() {
         })
     }, [songs, q])
 
-    if (!session) {
+    // TODO: Return countdown for upcoming session here
+
+    if (!session || session.endsAt < new Date()) {
         return (
             <div className='mobile-sim-height flex items-center justify-center'>
                 <H2>

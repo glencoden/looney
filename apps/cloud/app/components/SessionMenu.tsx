@@ -5,6 +5,7 @@ import Button from '@repo/ui/components/Button'
 import Spinner from '@repo/ui/components/Spinner'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { House, Lock, LockOpen, Power, Trash } from 'lucide-react'
+import AddDemoLipButton from '~/components/AddDemoLipButton'
 import { useSessionCountdown } from '~/hooks/useSessionCountdown'
 
 export default function SessionMenu({
@@ -87,6 +88,8 @@ export default function SessionMenu({
                         )}
                     </Button>
 
+                    <AddDemoLipButton session={session} />
+
                     {/* <Button
                             variant='ghost'
                             size='icon'
@@ -126,7 +129,11 @@ export default function SessionMenu({
             )}
 
             <section className='flex items-center gap-4'>
-                {isPending && <Spinner light />}
+                {isPending && (
+                    <div className='pr-2'>
+                        <Spinner light />
+                    </div>
+                )}
 
                 <Form
                     action={countdown ? 'destroy' : 'close'}

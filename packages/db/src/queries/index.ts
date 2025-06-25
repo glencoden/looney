@@ -28,7 +28,7 @@ export { getSession } from './getSession.js'
 export { getUpcomingSession } from './getUpcomingSession.js'
 export { updateSession } from './updateSession.js'
 
-export { createDemoLip } from './createDemoLip.js'
+export { createDemoLips } from './createDemoLips.js'
 export { createLip } from './createLip.js'
 export { getLipsByGuestId } from './getLipsByGuestId.js'
 export { getLipsBySessionId } from './getLipsBySessionId.js'

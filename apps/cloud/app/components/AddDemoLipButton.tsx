@@ -39,12 +39,13 @@ export default function AddDemoLipButton({
     return (
         <Button
             variant='ghost'
+            size='icon'
             title='Add demo lip'
             disabled={isPending}
             onClick={handleAddButtonClick}
         >
             <CirclePlus
-                className={cn('h-12 w-12 fill-pink-600 text-black', {
+                className={cn('h-6 w-6 text-white', {
                     'animate-spin': isPending,
                 })}
             />

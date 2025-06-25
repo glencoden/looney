@@ -14,7 +14,6 @@ import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { Radio } from 'lucide-react'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { z } from 'zod'
-import AddDemoLipButton from '~/components/AddDemoLipButton'
 import DragDropList from '~/components/DragDropList'
 import DragDropListItem from '~/components/DragDropListItem'
 import SessionMenu from '~/components/SessionMenu'
@@ -865,12 +864,6 @@ export default function ActiveSession() {
                     />
                 </div>
             </div>
-
-            {session.isDemo && (
-                <div className='absolute bottom-6 right-6 select-none'>
-                    <AddDemoLipButton session={session} />
-                </div>
-            )}
         </BoxMain>
     )
 }

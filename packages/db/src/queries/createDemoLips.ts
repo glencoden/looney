@@ -24,9 +24,9 @@ const DEMO_GUEST_NAMES = [
     'Lola Bunny',
 ]
 
-const NUM_DEMO_LIPS_PER_REQUEST = 4
+const NUM_DEMO_LIPS_PER_REQUEST = 3
 
-export const createDemoLip = (sessionId: Session['id']) => {
+export const createDemoLips = (sessionId: Session['id']) => {
     return db.transaction(async (tx) => {
         const numDemos = NUM_DEMO_LIPS_PER_REQUEST
 

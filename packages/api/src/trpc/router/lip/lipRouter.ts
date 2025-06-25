@@ -5,7 +5,7 @@ import {
     SessionSchema,
 } from '@repo/db'
 import {
-    createDemoLip,
+    createDemoLips,
     createLip,
     getLipsByGuestId,
     getLipsBySessionId,
@@ -71,6 +71,6 @@ export const lipRouter = {
     createDemo: protectedProcedure
         .input(SessionSchema.pick({ id: true }))
         .mutation(({ input }) => {
-            return createDemoLip(input.id)
+            return createDemoLips(input.id)
         }),
 }

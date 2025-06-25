@@ -18,7 +18,6 @@ import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { ActionFunctionArgs, json } from '@vercel/remix'
 import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
-import { z } from 'zod'
 
 const LIVE_SESSION_LENGTH = 1000 * 60 * 60 * 18
 
@@ -32,12 +31,19 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData()
     const formValues = Object.fromEntries(formData)
 
-    const rawStartDate = formValues.startsAt
-        ? new Date(z.string().parse(formValues.startsAt))
-        : new Date()
+    if (
+        typeof formValues.title !== 'string' ||
+        typeof formValues.setlistId !== 'string' ||
+        typeof formValues.startsAt !== 'string'
+    ) {
+        return json({ error: 'Missing required fields' }, { status: 400 })
+    }
+
+    // We create a date using the datetime-local value as UTC, so that we can correct by the input client's timezone offset, rather than the server JS runtime's
+    const rawStartDate = new Date(`${formValues.startsAt}Z`)
 
     const timezoneOffset = formValues.timezoneOffset
-        ? Number(z.string().parse(formValues.timezoneOffset))
+        ? Number(formValues.timezoneOffset)
         : 0
 
     const startDate = new Date(

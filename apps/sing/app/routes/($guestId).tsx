@@ -21,6 +21,7 @@ import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
 import H2 from '@repo/ui/typography/H2'
 import H4 from '@repo/ui/typography/H4'
+import { useSessionCountdown } from '@repo/utils/hooks'
 import { toNonBreaking } from '@repo/utils/text'
 import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { Star } from 'lucide-react'
@@ -67,7 +68,12 @@ export default function Index() {
             id: sessionFromLoader?.id!,
         },
         {
-            initialData: sessionFromLoader as unknown as Session,
+            initialData: {
+                ...sessionFromLoader,
+                startsAt: new Date(sessionFromLoader?.startsAt!),
+                endsAt: new Date(sessionFromLoader?.endsAt!),
+                createdAt: new Date(sessionFromLoader?.createdAt!),
+            } as unknown as Session,
             enabled: Boolean(sessionFromLoader?.id),
             refetchInterval: 1000 * 60,
         },
@@ -146,7 +152,21 @@ export default function Index() {
         })
     }, [songs, q])
 
-    // TODO: Return countdown for upcoming session here
+    const countdown = useSessionCountdown(session?.startsAt)
+
+    if (countdown) {
+        return (
+            <div className='mobile-sim-height flex flex-col items-center justify-center'>
+                <H2 className='px-6'>
+                    {intl.formatMessage({
+                        id: 'root.countdown.headline',
+                        defaultMessage: 'The Karaoke sign-up starts in:',
+                    })}
+                </H2>
+                <H2>{countdown}</H2>
+            </div>
+        )
+    }
 
     if (!session || session.endsAt < new Date()) {
         return (

@@ -4,9 +4,9 @@ import { Session } from '@repo/db'
 import Button from '@repo/ui/components/Button'
 import Spinner from '@repo/ui/components/Spinner'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
+import { useSessionCountdown } from '@repo/utils/hooks'
 import { House, Lock, LockOpen, Power, Trash } from 'lucide-react'
 import AddDemoLipButton from '~/components/AddDemoLipButton'
-import { useSessionCountdown } from '~/hooks/useSessionCountdown'
 
 export default function SessionMenu({
     session,

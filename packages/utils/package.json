@@ -26,6 +26,7 @@
         "react": "catalog:"
     },
     "devDependencies": {
+        "@repo/db": "workspace:*",
         "@repo/config-eslint": "workspace:*",
         "@repo/config-typescript": "workspace:*",
         "@types/node": "catalog:",

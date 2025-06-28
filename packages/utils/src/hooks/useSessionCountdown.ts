@@ -1,4 +1,4 @@
-import { Session } from '@repo/db'
+import type { Session } from '@repo/db'
 import { useEffect, useState } from 'react'
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24
@@ -6,7 +6,13 @@ const HOUR_IN_MS = 1000 * 60 * 60
 const MINUTE_IN_MS = 1000 * 60
 const SECOND_IN_MS = 1000
 
-const getCountdown = (startsAt: Session['startsAt']): string | null => {
+const getCountdown = (
+    startsAt: Session['startsAt'] | undefined,
+): string | null => {
+    if (!startsAt) {
+        return null
+    }
+
     const now = new Date()
     const diff = startsAt.getTime() - now.getTime()
     const days = Math.floor(diff / DAY_IN_MS)
@@ -21,7 +27,9 @@ const getCountdown = (startsAt: Session['startsAt']): string | null => {
     return `${days > 0 ? `${days} days and ` : ''}${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 }
 
-export const useSessionCountdown = (startsAt: Session['startsAt']) => {
+export const useSessionCountdown = (
+    startsAt: Session['startsAt'] | undefined,
+) => {
     const [countdown, setCountdown] = useState<string | null>(
         getCountdown(startsAt),
     )

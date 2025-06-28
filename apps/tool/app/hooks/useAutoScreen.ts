@@ -43,9 +43,7 @@ export const useAutoScreen = (): Response => {
                     table: 'session',
                 },
                 () => {
-                    void utils.session.getCurrent.invalidate({
-                        includeDemo: true,
-                    })
+                    void utils.session.getCurrent.invalidate()
                 },
             )
             .subscribe()

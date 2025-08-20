@@ -22,7 +22,7 @@ export default function DragDropListItem({
         y: SpringValue<number>
         scale: SpringValue<number>
     }
-    bind: (...args: any[]) => ReactDOMAttributes
+    bind: (...args: unknown[]) => ReactDOMAttributes
     isLocked: boolean
     hideTime?: boolean
     hideFavorites?: boolean
@@ -39,25 +39,22 @@ export default function DragDropListItem({
                 y,
                 scale,
             }}
-            children={
-                <>
-                    <SongLip
-                        lip={lip}
-                        q={q}
-                        hideTime={hideTime}
-                        hideFavorites={hideFavorites}
-                    />
-                    <div
-                        {...bind(lip.id)}
-                        className={cn(
-                            'absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none select-none active:cursor-grabbing',
-                            {
-                                hidden: isLocked,
-                            },
-                        )}
-                    />
-                </>
-            }
-        />
+        >
+            <SongLip
+                lip={lip}
+                q={q}
+                hideTime={hideTime}
+                hideFavorites={hideFavorites}
+            />
+            <div
+                {...bind(lip.id)}
+                className={cn(
+                    'absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none select-none active:cursor-grabbing',
+                    {
+                        hidden: isLocked,
+                    },
+                )}
+            />
+        </animated.div>
     )
 }

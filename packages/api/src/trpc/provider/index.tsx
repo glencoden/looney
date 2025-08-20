@@ -21,11 +21,10 @@ export const api = createTRPCReact<TRPCRouter>()
 export const TRPCQueryClientProvider: FC<
     PropsWithChildren<
         Readonly<{
-            baseUrl?: string
             supabaseClient?: SupabaseClient
         }>
     >
-> = ({ children, baseUrl, supabaseClient }) => {
+> = ({ children, supabaseClient }) => {
     const [queryClient] = useState(() => new QueryClient())
 
     const [trpcClient] = useState(() =>
@@ -68,7 +67,7 @@ export const TRPCQueryClientProvider: FC<
                         return fetch(url, {
                             ...options,
                             credentials: 'include',
-                        })
+                        } as RequestInit)
                     },
                 }),
             ],

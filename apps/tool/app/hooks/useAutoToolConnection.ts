@@ -101,7 +101,6 @@ export const useAutoToolConnection = (
                 ]
 
                 let ws: WebSocket | null = null
-                let index = 0
 
                 for (const IP of IPs) {
                     console.log('Trying to connect to', IP)
@@ -129,7 +128,6 @@ export const useAutoToolConnection = (
                     })
 
                     if (ws == null) {
-                        index++
                         continue
                     }
 
@@ -208,7 +206,7 @@ export const useAutoToolConnection = (
             websocket.removeEventListener('close', onConnectionLost)
             websocket.removeEventListener('message', handleMessage)
         }
-    }, [next, isDisabled, websocket])
+    }, [next, isDisabled, websocket, refetchWebsocket])
 
     return isConnected
 }

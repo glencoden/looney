@@ -69,10 +69,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 <Links />
             </head>
             <body className='bg-blue-800 text-white'>
-                <TRPCQueryClientProvider
-                    baseUrl={import.meta.env.VITE_API_URL}
-                    supabaseClient={supabase}
-                >
+                <TRPCQueryClientProvider supabaseClient={supabase}>
                     {children}
                 </TRPCQueryClientProvider>
                 <ScrollRestoration />
@@ -105,7 +102,7 @@ export default function App() {
         ) {
             navigate('/signin')
         }
-    }, [userSession, isUserSessionLoading])
+    }, [userSession, isUserSessionLoading, navigate])
 
     const location = useLocation()
 

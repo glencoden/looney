@@ -1,6 +1,4 @@
-import { Form, Link } from '@remix-run/react'
-
-import { useLoaderData, useNavigation } from '@remix-run/react'
+import { Form, Link, useLoaderData, useNavigation } from '@remix-run/react'
 import { getSetlist, getSongsBySetlistId } from '@repo/db/queries'
 import Button from '@repo/ui/components/Button'
 import { cn } from '@repo/ui/helpers'
@@ -14,7 +12,7 @@ import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { ArrowLeft, AudioLines } from 'lucide-react'
 import { z } from 'zod'
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
     const setlistId = z.string().parse(params.setlistId)
 
     const setlist = await getSetlist(setlistId)

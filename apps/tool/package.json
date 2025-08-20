@@ -4,13 +4,13 @@
     "sideEffects": false,
     "type": "module",
     "scripts": {
-        "build": "remix vite:build",
-        "dev": "remix vite:dev",
+        "build": "react-router build",
+        "dev": "react-router dev",
         "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-        "typecheck": "tsc"
+        "typecheck": "react-router typegen && tsc"
     },
     "dependencies": {
-        "@remix-run/react": "catalog:",
+        "react-router": "catalog:",
         "@repo/api": "workspace:*",
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
@@ -18,13 +18,14 @@
         "@supabase/supabase-js": "catalog:",
         "@tanstack/react-query": "catalog:",
         "@trpc/server": "catalog:",
-        "@vercel/remix": "catalog:",
+        "@vercel/react-router": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:"
     },
     "devDependencies": {
-        "@remix-run/dev": "catalog:",
-        "@remix-run/node": "catalog:",
+        "@react-router/dev": "catalog:",
+        "@react-router/node": "catalog:",
+        "@react-router/fs-routes": "catalog:",
         "@repo/config-eslint": "workspace:*",
         "@repo/config-tailwind": "workspace:*",
         "@repo/config-typescript": "workspace:*",

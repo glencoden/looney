@@ -1,4 +1,4 @@
-import { Link, useNavigation } from '@remix-run/react'
+import { Link, useNavigation } from 'react-router'
 import { api } from '@repo/api/client'
 import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'

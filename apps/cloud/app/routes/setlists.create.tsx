@@ -4,7 +4,8 @@ import {
     redirect,
     useLoaderData,
     useNavigation,
-} from '@remix-run/react'
+    ActionFunctionArgs,
+} from 'react-router'
 import { SetlistInsertSchema } from '@repo/db'
 import {
     copySongsToSetlist,
@@ -18,7 +19,6 @@ import Select from '@repo/ui/components/Select'
 import { cn } from '@repo/ui/helpers'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
-import { ActionFunctionArgs, json } from '@vercel/remix'
 import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 import { z } from 'zod'
@@ -26,7 +26,7 @@ import { z } from 'zod'
 export const loader = async () => {
     const setlists = await getSetlists()
 
-    return json({ setlists })
+    return { setlists }
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {

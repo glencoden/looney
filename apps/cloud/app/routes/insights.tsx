@@ -1,4 +1,4 @@
-import { Form, Link, useLoaderData, useSearchParams } from '@remix-run/react'
+import { Form, Link, useLoaderData, useSearchParams } from 'react-router'
 import { getSongInsights } from '@repo/db/queries'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
@@ -9,7 +9,6 @@ import Body2 from '@repo/ui/typography/Body2'
 import H3 from '@repo/ui/typography/H3'
 import Small from '@repo/ui/typography/Small'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
-import { json } from '@vercel/remix'
 import {
     AlignJustify,
     AlignLeft,
@@ -30,7 +29,7 @@ export const loader = async ({ request }: { request: Request }) => {
         endDate: endDate ? new Date(endDate) : undefined,
     })
 
-    return json({ songInsights })
+    return { songInsights }
 }
 
 export default function Insights() {

@@ -1,5 +1,5 @@
-import { vitePlugin as remix } from '@remix-run/dev'
-import { vercelPreset } from '@vercel/remix/vite'
+import { reactRouter } from '@react-router/dev/vite'
+import { vercelPreset } from '@vercel/react-router/vite'
 import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
@@ -8,12 +8,7 @@ export default defineConfig({
         port: 3002,
     },
     plugins: [
-        remix({
-            future: {
-                v3_fetcherPersist: true,
-                v3_relativeSplatPath: true,
-                v3_throwAbortReason: true,
-            },
+        reactRouter({
             presets: [vercelPreset()],
         }),
         tsconfigPaths(),

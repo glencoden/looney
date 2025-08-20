@@ -1,16 +1,15 @@
-import { useLoaderData } from '@remix-run/react'
+import { useLoaderData, LoaderFunctionArgs } from 'react-router'
 import { api } from '@repo/api/client'
 import SongLip from '@repo/ui/components/SongLip'
 import Spinner from '@repo/ui/components/Spinner'
 import H2 from '@repo/ui/typography/H2'
-import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { useIntl } from 'react-intl'
 import { z } from 'zod'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
     const guestId = z.string().parse(params.guestId)
 
-    return json({ guestId })
+    return { guestId }
 }
 
 export default function Songs() {

@@ -6,14 +6,14 @@ import {
     ScrollRestoration,
     useLocation,
     useNavigate,
-} from '@remix-run/react'
+} from 'react-router'
 import { TRPCQueryClientProvider } from '@repo/api/client'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Spinner from '@repo/ui/components/Spinner'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
 import H1 from '@repo/ui/typography/H1'
-import type { LinksFunction, MetaFunction } from '@vercel/remix'
+import type { LinksFunction, MetaFunction } from 'react-router'
 import { ReactNode, useEffect } from 'react'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
 import { hasAccess } from '~/helpers/has-access'

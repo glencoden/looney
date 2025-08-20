@@ -1,5 +1,5 @@
 {
-    "extends": "@repo/config-typescript/remix.json",
+    "extends": "@repo/config-typescript/react-router.json",
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {

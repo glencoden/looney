@@ -1,5 +1,5 @@
 import { useSpring, useSprings } from '@react-spring/web'
-import { useLoaderData, useNavigate } from '@remix-run/react'
+import { useLoaderData, useNavigate, LoaderFunctionArgs } from 'react-router'
 import { api } from '@repo/api/client'
 import type { LipDTO } from '@repo/api/types'
 import { Session } from '@repo/db'
@@ -10,7 +10,6 @@ import Input from '@repo/ui/components/Input'
 import { cn } from '@repo/ui/helpers'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { useDrag } from '@use-gesture/react'
-import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { Radio } from 'lucide-react'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { z } from 'zod'
@@ -44,7 +43,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         throw new Response('Not Found', { status: 404 })
     }
 
-    return json({ session })
+    return { session }
 }
 
 const parseLoaderSession = (

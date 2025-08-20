@@ -8,7 +8,9 @@ import {
     useLocation,
     useNavigation,
     useSubmit,
-} from '@remix-run/react'
+    ActionFunctionArgs,
+    LoaderFunctionArgs,
+} from 'react-router'
 import { SongSchema } from '@repo/db'
 import { getSongs, updateSong } from '@repo/db/queries'
 import BoxHorizontalPagination from '@repo/ui/components/BoxHorizontalPagination'
@@ -23,7 +25,6 @@ import Body2 from '@repo/ui/typography/Body2'
 import H2 from '@repo/ui/typography/H2'
 import H4 from '@repo/ui/typography/H4'
 import { toNonBreaking } from '@repo/utils/text'
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@vercel/remix'
 import { ArrowLeft, Star } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 
@@ -33,7 +34,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     const songs = await getSongs(q)
 
-    return json({ songs, q })
+    return { songs, q }
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {

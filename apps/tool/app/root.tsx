@@ -5,8 +5,8 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
-} from '@remix-run/react'
-import type { LinksFunction } from '@vercel/remix'
+} from 'react-router'
+import type { LinksFunction } from 'react-router'
 
 import { TRPCQueryClientProvider } from '@repo/api/client'
 import { FONT_SERIF_URL } from '@repo/ui/constants'

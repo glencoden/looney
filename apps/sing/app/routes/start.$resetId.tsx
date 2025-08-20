@@ -1,7 +1,6 @@
-import { useLoaderData, useNavigate } from '@remix-run/react'
+import { useLoaderData, useNavigate, LoaderFunctionArgs } from 'react-router'
 import { createGuest } from '@repo/db/queries'
 import H2 from '@repo/ui/typography/H2'
-import { LoaderFunctionArgs } from '@vercel/remix'
 import { useEffect } from 'react'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {

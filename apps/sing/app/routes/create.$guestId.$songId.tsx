@@ -1,4 +1,11 @@
-import { Form, redirect, useLoaderData, useNavigation } from '@remix-run/react'
+import {
+    Form,
+    redirect,
+    useLoaderData,
+    useNavigation,
+    ActionFunctionArgs,
+    LoaderFunctionArgs,
+} from 'react-router'
 import { api } from '@repo/api/client'
 import { LipInsertSchema } from '@repo/db'
 import { createLip } from '@repo/db/queries'
@@ -9,7 +16,6 @@ import H2 from '@repo/ui/typography/H2'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { toNonBreaking } from '@repo/utils/text'
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@vercel/remix'
 import { useIntl } from 'react-intl'
 import { z } from 'zod'
 
@@ -17,7 +23,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     const guestId = z.string().parse(params.guestId)
     const songId = z.string().parse(params.songId)
 
-    return json({ guestId, songId })
+    return { guestId, songId }
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {

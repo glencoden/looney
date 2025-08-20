@@ -1,10 +1,4 @@
-import {
-    Link,
-    NavLink,
-    Outlet,
-    useLoaderData,
-    useLocation,
-} from '@remix-run/react'
+import { Link, NavLink, Outlet, useLoaderData, useLocation } from 'react-router'
 import { getSetlists } from '@repo/db/queries'
 import BoxHorizontalPagination from '@repo/ui/components/BoxHorizontalPagination'
 import BoxMain from '@repo/ui/components/BoxMain'
@@ -13,14 +7,13 @@ import { cn } from '@repo/ui/helpers'
 import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
 import H2 from '@repo/ui/typography/H2'
-import { json } from '@vercel/remix'
 import { format } from 'date-fns'
 import { ArrowLeft } from 'lucide-react'
 
 export const loader = async () => {
     const setlists = await getSetlists()
 
-    return json({ setlists })
+    return { setlists }
 }
 
 export default function Setlists() {

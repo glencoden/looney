@@ -1,18 +1,38 @@
-import { RemixServer } from '@remix-run/react'
-import { handleRequest, type EntryContext } from '@vercel/remix'
+import { PassThrough } from 'node:stream'
+import type { EntryContext } from 'react-router'
+import { createReadableStreamFromReadable } from '@react-router/node'
+import { ServerRouter } from 'react-router'
+import { renderToPipeableStream } from 'react-dom/server'
 
-export default async function (
+export default function handleRequest(
     request: Request,
     responseStatusCode: number,
     responseHeaders: Headers,
-    remixContext: EntryContext,
+    routerContext: EntryContext,
 ) {
-    const remixServer = <RemixServer context={remixContext} url={request.url} />
+    return new Promise((resolve, reject) => {
+        const { pipe } = renderToPipeableStream(
+            <ServerRouter context={routerContext} url={request.url} />,
+            {
+                onShellReady() {
+                    responseHeaders.set('Content-Type', 'text/html')
 
-    return handleRequest(
-        request,
-        responseStatusCode,
-        responseHeaders,
-        remixServer,
-    )
+                    const body = new PassThrough()
+                    const stream = createReadableStreamFromReadable(body)
+
+                    resolve(
+                        new Response(stream, {
+                            headers: responseHeaders,
+                            status: responseStatusCode,
+                        }),
+                    )
+
+                    pipe(body)
+                },
+                onShellError(error: unknown) {
+                    reject(error)
+                },
+            },
+        )
+    })
 }

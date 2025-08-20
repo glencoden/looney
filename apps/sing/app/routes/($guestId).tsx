@@ -4,9 +4,10 @@ import {
     useLoaderData,
     useLocation,
     useNavigate,
-} from '@remix-run/react'
+    LoaderFunctionArgs,
+} from 'react-router'
 import { api } from '@repo/api/client'
-import { Guest, Session } from '@repo/db'
+import { Session } from '@repo/db'
 import {
     getGuest,
     getSession,
@@ -23,20 +24,10 @@ import H2 from '@repo/ui/typography/H2'
 import H4 from '@repo/ui/typography/H4'
 import { useSessionCountdown } from '@repo/utils/hooks'
 import { toNonBreaking } from '@repo/utils/text'
-import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { Star } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useIntl } from 'react-intl'
 import { Drawer } from 'vaul'
-
-type LoaderResponse = {
-    guest: Guest | null
-    session: Session | null
-    songs:
-        | Awaited<ReturnType<typeof getSongs>>
-        | Awaited<ReturnType<typeof getSongsBySetlistId>>
-        | null
-}
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
     const guestId = params.guestId
@@ -45,7 +36,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     if (!guestId) {
         const songs = await getSongs()
 
-        return json<LoaderResponse>({ guest: null, session: null, songs })
+        return { guest: null, session: null, songs }
     }
 
     const guest = await getGuest(guestId)
@@ -53,7 +44,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     const session = guest?.sessionId ? await getSession(guest.sessionId) : null
     const songs = session ? await getSongsBySetlistId(session.setlistId) : null
 
-    return json<LoaderResponse>({ guest, session, songs })
+    return { guest, session, songs }
 }
 
 export default function Index() {

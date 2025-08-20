@@ -1,11 +1,16 @@
-import { Form, Link, useLoaderData, useNavigation } from '@remix-run/react'
+import {
+    Form,
+    Link,
+    useLoaderData,
+    useNavigation,
+    LoaderFunctionArgs,
+} from 'react-router'
 import { getSong } from '@repo/db/queries'
 import Button from '@repo/ui/components/Button'
 import { cn } from '@repo/ui/helpers'
 import Body1 from '@repo/ui/typography/Body1'
 import H3 from '@repo/ui/typography/H3'
 import { toNonBreaking } from '@repo/utils/text'
-import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { ArrowLeft, Star } from 'lucide-react'
 import { z } from 'zod'
 
@@ -17,7 +22,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         throw new Response('Not Found', { status: 404 })
     }
 
-    return json({ song })
+    return { song }
 }
 
 export default function Song() {

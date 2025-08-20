@@ -1,4 +1,10 @@
-import { Form, Link, useLoaderData, useNavigation } from '@remix-run/react'
+import {
+    Form,
+    Link,
+    useLoaderData,
+    useNavigation,
+    LoaderFunctionArgs,
+} from 'react-router'
 import { getSetlist, getSongsBySetlistId } from '@repo/db/queries'
 import Button from '@repo/ui/components/Button'
 import { cn } from '@repo/ui/helpers'
@@ -8,7 +14,6 @@ import H3 from '@repo/ui/typography/H3'
 import H4 from '@repo/ui/typography/H4'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { toNonBreaking } from '@repo/utils/text'
-import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { ArrowLeft, AudioLines } from 'lucide-react'
 import { z } from 'zod'
 
@@ -23,7 +28,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
     const songs = await getSongsBySetlistId(setlistId)
 
-    return json({ setlist, songs })
+    return { setlist, songs }
 }
 
 export default function Setlist() {

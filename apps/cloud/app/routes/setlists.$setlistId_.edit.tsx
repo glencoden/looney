@@ -5,7 +5,9 @@ import {
     useLoaderData,
     useNavigation,
     useSubmit,
-} from '@remix-run/react'
+    ActionFunctionArgs,
+    LoaderFunctionArgs,
+} from 'react-router'
 import { SetlistToSongInsertSchema, SetlistToSongSchema } from '@repo/db'
 import {
     addSongToSetlist,
@@ -24,7 +26,6 @@ import Body2 from '@repo/ui/typography/Body2'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { toNonBreaking } from '@repo/utils/text'
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@vercel/remix'
 import { AudioLines, Circle } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { z } from 'zod'
@@ -44,7 +45,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const songs = await getSongs(q, false, true)
     const selectedSongs = await getSongsBySetlistId(setlistId)
 
-    return json({ setlist, songs, selectedSongs, q })
+    return { setlist, songs, selectedSongs, q }
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {

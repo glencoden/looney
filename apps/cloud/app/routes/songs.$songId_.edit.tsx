@@ -1,4 +1,12 @@
-import { Form, Link, useLoaderData, useNavigation } from '@remix-run/react'
+import {
+    Form,
+    Link,
+    useLoaderData,
+    useNavigation,
+    ActionFunctionArgs,
+    LoaderFunctionArgs,
+    redirect,
+} from 'react-router'
 import { api } from '@repo/api/client'
 import { SongSchema } from '@repo/db'
 import { getSong, updateSong } from '@repo/db/queries'
@@ -9,12 +17,6 @@ import { Textarea } from '@repo/ui/components/Textarea'
 import { cn } from '@repo/ui/helpers'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
-import {
-    ActionFunctionArgs,
-    json,
-    LoaderFunctionArgs,
-    redirect,
-} from '@vercel/remix'
 import { z } from 'zod'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -25,7 +27,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         throw new Response('Not Found', { status: 404 })
     }
 
-    return json({ song })
+    return { song }
 }
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {

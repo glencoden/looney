@@ -6,16 +6,13 @@ import {
     Scripts,
     ScrollRestoration,
     useLoaderData,
-} from '@remix-run/react'
+    type LinksFunction,
+    type LoaderFunctionArgs,
+} from 'react-router'
 import { TRPCQueryClientProvider } from '@repo/api/client'
 import BoxMain from '@repo/ui/components/BoxMain'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
-import {
-    json,
-    type LinksFunction,
-    type LoaderFunctionArgs,
-} from '@vercel/remix'
 import parser from 'accept-language-parser'
 import { ReactNode } from 'react'
 import { IntlProvider } from 'react-intl'
@@ -115,7 +112,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     const translations = await getTranslations(locale)
 
-    return json({ locale, translations })
+    return { locale, translations }
 }
 
 export default function App() {

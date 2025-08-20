@@ -1,5 +1,5 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-    extends: ['../../packages/config-eslint/remix.js'],
+    extends: ['../../packages/config-eslint/react-router.js'],
     ignorePatterns: ['public/vendor/**/*'],
 }

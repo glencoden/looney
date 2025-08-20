@@ -1,5 +1,5 @@
 import { deleteSession } from '@repo/db/queries'
-import { ActionFunctionArgs, redirect } from '@vercel/remix'
+import { ActionFunctionArgs, redirect } from 'react-router'
 import { z } from 'zod'
 
 export const action = async ({ params }: ActionFunctionArgs) => {

@@ -4,7 +4,8 @@ import {
     redirect,
     useLoaderData,
     useNavigation,
-} from '@remix-run/react'
+    ActionFunctionArgs,
+} from 'react-router'
 import { SessionInsertSchema } from '@repo/db'
 import { createSession, getSetlists } from '@repo/db/queries'
 import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
@@ -15,7 +16,6 @@ import Select from '@repo/ui/components/Select'
 import { cn } from '@repo/ui/helpers'
 import H2 from '@repo/ui/typography/H2'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
-import { ActionFunctionArgs, json } from '@vercel/remix'
 import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 
@@ -24,7 +24,7 @@ const LIVE_SESSION_LENGTH = 1000 * 60 * 60 * 18
 export const loader = async () => {
     const setlists = await getSetlists()
 
-    return json({ setlists })
+    return { setlists }
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -36,7 +36,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         typeof formValues.setlistId !== 'string' ||
         typeof formValues.startsAt !== 'string'
     ) {
-        return json({ error: 'Missing required fields' }, { status: 400 })
+        return Response.json(
+            { error: 'Missing required fields' },
+            { status: 400 },
+        )
     }
 
     // We create a date using the datetime-local value as UTC, so that we can correct by the input client's timezone offset, rather than the server JS runtime's

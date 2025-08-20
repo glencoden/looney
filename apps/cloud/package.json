@@ -4,14 +4,14 @@
     "sideEffects": false,
     "type": "module",
     "scripts": {
-        "build": "remix vite:build",
-        "dev": "remix vite:dev",
+        "build": "react-router build",
+        "dev": "react-router dev",
         "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-        "typecheck": "tsc"
+        "typecheck": "react-router typegen && tsc"
     },
     "dependencies": {
         "@react-spring/web": "^10.0.1",
-        "@remix-run/react": "catalog:",
+        "react-router": "catalog:",
         "@repo/api": "workspace:*",
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
@@ -20,7 +20,7 @@
         "@tanstack/react-query": "catalog:",
         "@trpc/server": "catalog:",
         "@use-gesture/react": "^10.3.1",
-        "@vercel/remix": "catalog:",
+        "@vercel/react-router": "catalog:",
         "date-fns": "^4.1.0",
         "lucide-react": "^0.540.0",
         "react": "catalog:",
@@ -28,8 +28,9 @@
         "zod": "catalog:"
     },
     "devDependencies": {
-        "@remix-run/dev": "catalog:",
-        "@remix-run/node": "catalog:",
+        "@react-router/dev": "catalog:",
+        "@react-router/node": "catalog:",
+        "@react-router/fs-routes": "catalog:",
         "@repo/config-eslint": "workspace:*",
         "@repo/config-tailwind": "workspace:*",
         "@repo/config-typescript": "workspace:*",

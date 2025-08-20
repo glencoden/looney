@@ -1,7 +1,7 @@
 {
     "extends": "./base.json",
     "compilerOptions": {
-        "types": ["@remix-run/node", "vite/client"],
+        "types": ["@react-router/node", "vite/client"],
         "jsx": "react-jsx",
         "module": "ESNext",
         "moduleResolution": "Bundler",

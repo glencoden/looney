@@ -1,4 +1,4 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
+import type { ActionFunctionArgs, LoaderFunctionArgs } from '@react-router/node'
 import { createContext, trpcRouter } from '@repo/api/server'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 

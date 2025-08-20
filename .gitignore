@@ -17,3 +17,6 @@ calendar-credentials.json
 
 # next
 .next
+
+# react router
+.react-router

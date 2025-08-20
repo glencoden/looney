@@ -16,7 +16,9 @@ const getBaseUrl = () => {
     return `http://localhost:${process.env.PORT ?? 3000}`
 }
 
-export const api = createTRPCReact<TRPCRouter>()
+export const api = createTRPCReact<TRPCRouter>() as ReturnType<
+    typeof createTRPCReact<TRPCRouter>
+>
 
 export const TRPCQueryClientProvider: FC<
     PropsWithChildren<

@@ -28,13 +28,13 @@
     "dependencies": {
         "@repo/db": "workspace:*",
         "@tanstack/react-query": "catalog:",
-        "@trpc/client": "11.0.0-rc.498",
-        "@trpc/react-query": "11.0.0-rc.498",
+        "@trpc/client": "11.4.4",
+        "@trpc/react-query": "11.4.4",
         "@trpc/server": "catalog:",
         "node-telegram-bot-api": "^0.66.0",
-        "openai": "^4.77.0",
+        "openai": "^5.13.1",
         "react": "catalog:",
-        "stripe": "^17.5.0",
+        "stripe": "^18.4.0",
         "superjson": "^2.2.1",
         "zod": "catalog:"
     },

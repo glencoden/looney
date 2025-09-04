@@ -94,5 +94,5 @@ export const useAutoScreen = (): Response => {
             type: 'home',
             sessionTitle: session!.title,
         }
-    }, [isSessionActive, liveLip?.id])
+    }, [isSessionActive, liveLip, session])
 }

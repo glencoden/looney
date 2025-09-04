@@ -34,27 +34,27 @@ export default function SessionMenu({
         )
     }
 
-    const handleFavoriteButtonClick = () => {
-        void updateSession({
-            id: session.id,
-            hideFavorites: !session.hideFavorites,
-        })
-        void utils.session.get.setData(
-            { id: session.id },
-            { ...session, hideFavorites: !session.hideFavorites },
-        )
-    }
+    // const handleFavoriteButtonClick = () => {
+    //     void updateSession({
+    //         id: session.id,
+    //         hideFavorites: !session.hideFavorites,
+    //     })
+    //     void utils.session.get.setData(
+    //         { id: session.id },
+    //         { ...session, hideFavorites: !session.hideFavorites },
+    //     )
+    // }
 
-    const handleTipCollectionButtonClick = () => {
-        void updateSession({
-            id: session.id,
-            hideTipCollection: !session.hideTipCollection,
-        })
-        void utils.session.get.setData(
-            { id: session.id },
-            { ...session, hideTipCollection: !session.hideTipCollection },
-        )
-    }
+    // const handleTipCollectionButtonClick = () => {
+    //     void updateSession({
+    //         id: session.id,
+    //         hideTipCollection: !session.hideTipCollection,
+    //     })
+    //     void utils.session.get.setData(
+    //         { id: session.id },
+    //         { ...session, hideTipCollection: !session.hideTipCollection },
+    //     )
+    // }
 
     if (!session) {
         return (

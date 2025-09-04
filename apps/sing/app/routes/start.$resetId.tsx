@@ -43,7 +43,7 @@ export default function Start() {
     if (loaderData.guest === null) {
         return (
             <div className='flex h-full items-center justify-center'>
-                <H2>Couldn't create guest entry</H2>
+                <H2>Couldn&apos;t create guest entry</H2>
             </div>
         )
     }

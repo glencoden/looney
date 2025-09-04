@@ -65,15 +65,17 @@ export default function Index() {
 
     const { data: session } = api.session.get.useQuery(
         {
-            id: sessionFromLoader?.id!,
+            id: sessionFromLoader?.id ?? '',
         },
         {
-            initialData: {
-                ...sessionFromLoader,
-                startsAt: new Date(sessionFromLoader?.startsAt!),
-                endsAt: new Date(sessionFromLoader?.endsAt!),
-                createdAt: new Date(sessionFromLoader?.createdAt!),
-            } as unknown as Session,
+            initialData: sessionFromLoader
+                ? ({
+                      ...sessionFromLoader,
+                      startsAt: new Date(sessionFromLoader.startsAt),
+                      endsAt: new Date(sessionFromLoader.endsAt),
+                      createdAt: new Date(sessionFromLoader.createdAt),
+                  } as unknown as Session)
+                : undefined,
             enabled: Boolean(sessionFromLoader?.id),
             refetchInterval: 1000 * 60,
         },
@@ -94,7 +96,7 @@ export default function Index() {
         //     return navigationPages.filter((page) => page !== 'tip')
         // }
         // return navigationPages
-    }, [session])
+    }, [])
 
     const drawerBoxRef = useRef<HTMLElement>(null)
     const [drawerBoxElement, setDrawerBoxElement] = useState<HTMLElement>()

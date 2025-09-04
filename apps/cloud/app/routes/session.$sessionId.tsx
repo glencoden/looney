@@ -76,7 +76,7 @@ export default function ActiveSession() {
             { id: sessionFromLoader.id },
             parseLoaderSession(sessionFromLoader),
         )
-    }, [utils])
+    }, [utils, sessionFromLoader])
 
     const { data: sessionFromCache } = api.session.get.useQuery({
         id: sessionFromLoader.id,
@@ -96,7 +96,7 @@ export default function ActiveSession() {
 
     const { data, isLoading: isLipsLoading } = useLips(session.id)
 
-    const lips = data ?? ([] as LipDTO[])
+    const lips = useMemo(() => data ?? ([] as LipDTO[]), [data])
 
     const { mutateAsync: updateLipAsync, isPending: isLipUpdatePending } =
         api.lip.update.useMutation()
@@ -132,7 +132,7 @@ export default function ActiveSession() {
         return () => {
             clearTimeout(timeoutId)
         }
-    }, [session.endsAt.toISOString()])
+    }, [session.endsAt, navigate])
 
     /**
      *

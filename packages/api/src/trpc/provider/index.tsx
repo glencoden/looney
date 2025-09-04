@@ -16,16 +16,17 @@ const getBaseUrl = () => {
     return `http://localhost:${process.env.PORT ?? 3000}`
 }
 
-export const api = createTRPCReact<TRPCRouter>()
+export const api = createTRPCReact<TRPCRouter>() as ReturnType<
+    typeof createTRPCReact<TRPCRouter>
+>
 
 export const TRPCQueryClientProvider: FC<
     PropsWithChildren<
         Readonly<{
-            baseUrl?: string
             supabaseClient?: SupabaseClient
         }>
     >
-> = ({ children, baseUrl, supabaseClient }) => {
+> = ({ children, supabaseClient }) => {
     const [queryClient] = useState(() => new QueryClient())
 
     const [trpcClient] = useState(() =>
@@ -68,7 +69,7 @@ export const TRPCQueryClientProvider: FC<
                         return fetch(url, {
                             ...options,
                             credentials: 'include',
-                        })
+                        } as RequestInit)
                     },
                 }),
             ],

@@ -17,7 +17,7 @@ const DragDropList = forwardRef<
             y: SpringValue<number>
             scale: SpringValue<number>
         }[]
-        bind: (...args: any[]) => ReactDOMAttributes
+        bind: (...args: unknown[]) => ReactDOMAttributes
         isLocked: boolean
         hideFavorites?: boolean
         fixTop: number | null
@@ -79,5 +79,7 @@ const DragDropList = forwardRef<
         )
     },
 )
+
+DragDropList.displayName = 'DragDropList'
 
 export default DragDropList

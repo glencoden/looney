@@ -53,7 +53,7 @@ export default function Songs() {
                                 lip.status !== 'deleted',
                         )
                         .map((lip) => (
-                            <SongLip lip={lip} hideTime />
+                            <SongLip key={lip.id} lip={lip} hideTime />
                         ))}
                 </>
             )}

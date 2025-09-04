@@ -3,25 +3,25 @@ packages:
     - 'packages/*'
 
 catalog:
-    '@types/node': ^20.14.9
-    '@types/react': ^18.3.7
-    '@types/react-dom': ^18.3.0
-    typescript: ^5.1.6
-    eslint: ^8
-    zod: ^3.23.8
+    '@types/node': ^24.3.0
+    '@types/react': ^18.3.23
+    '@types/react-dom': ^18.3.7
+    typescript: ^5.7.3
+    eslint: ^8.57.1
+    zod: ^4.0.17
     react: ^18.3.1
     react-dom: ^18.3.1
-    autoprefixer: ^10.4.19
-    postcss: ^8.4.38
-    tailwindcss: ^3.4.4
-    '@supabase/supabase-js': ^2.45.4
-    dotenv: ^16.4.5
-    dotenv-cli: ^7.4.2
+    autoprefixer: ^10.4.20
+    postcss: ^8.5.6
+    tailwindcss: ^3.4.17
+    '@supabase/supabase-js': ^2.48.1
+    dotenv: ^17.2.1
+    dotenv-cli: ^10.0.0
     '@remix-run/node': ^2
     '@remix-run/react': ^2
     '@remix-run/dev': ^2
-    '@vercel/remix': ^2
-    vite: ^5.1.0
-    vite-tsconfig-paths: ^4.2.1
-    '@trpc/server': 11.0.0-rc.498
+    '@vercel/remix': ^2.16.7
+    vite: ^5.4.19
+    vite-tsconfig-paths: ^4.3.2
+    '@trpc/server': ^11.4.4
     '@tanstack/react-query': ^5

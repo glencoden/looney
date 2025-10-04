@@ -1,9 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '@repo/config-tailwind/base';
 
-@layer components {
-    .mobile-sim-height {
-        @apply h-dvh sm:h-[932px];
+@utility mobile-sim-height {
+    height: 100dvh;
+
+    @media (min-width: 640px) {
+        height: 932px;
     }
 }

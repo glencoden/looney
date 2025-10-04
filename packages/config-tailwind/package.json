@@ -2,12 +2,11 @@
     "name": "@repo/config-tailwind",
     "version": "1.0.0",
     "private": true,
+    "type": "module",
     "exports": {
-        "./base": "./base.ts"
+        "./base": "./base.css"
     },
     "devDependencies": {
-        "@repo/config-typescript": "workspace:*",
-        "@types/node": "catalog:",
         "tailwindcss": "catalog:"
     }
 }

@@ -1,0 +1,119 @@
+@import 'tailwindcss';
+
+@theme {
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+
+    --font-sans:
+        'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Pacifico', cursive;
+
+    --drop-shadow: 4px 4px 0 #000;
+
+    --text-shadow: 1px 2px 2px var(--tw-shadow-color);
+
+    @keyframes spinner {
+        0% {
+            opacity: 1;
+        }
+        to {
+            opacity: 0.25;
+        }
+    }
+
+    @keyframes flicker-primary {
+        0%,
+        18%,
+        22%,
+        25%,
+        53%,
+        57%,
+        100% {
+            text-shadow:
+                0 0 4px #fff,
+                0 0 11px #fff,
+                0 0 19px #fff,
+                0 0 40px #1e40af,
+                0 0 80px #1e40af,
+                0 0 90px #1e40af,
+                0 0 100px #1e40af,
+                0 0 150px #1e40af;
+        }
+        20%,
+        24%,
+        55% {
+            text-shadow: none;
+        }
+    }
+
+    @keyframes flicker-secondary {
+        0%,
+        18%,
+        22%,
+        25%,
+        53%,
+        57%,
+        100% {
+            text-shadow:
+                0 0 4px #fff,
+                0 0 11px #fff,
+                0 0 19px #fff,
+                0 0 40px #db2777,
+                0 0 80px #db2777,
+                0 0 90px #db2777,
+                0 0 100px #db2777,
+                0 0 150px #db2777;
+        }
+        20%,
+        24%,
+        55% {
+            text-shadow: none;
+        }
+    }
+
+    @keyframes flicker-light {
+        0%,
+        18%,
+        22%,
+        25%,
+        53%,
+        57%,
+        100% {
+            text-shadow:
+                0 0 4px #fff,
+                0 0 11px #fff,
+                0 0 19px #fff,
+                0 0 40px #facc15,
+                0 0 80px #facc15,
+                0 0 90px #facc15,
+                0 0 100px #facc15,
+                0 0 150px #facc15;
+        }
+        20%,
+        24%,
+        55% {
+            text-shadow: none;
+        }
+    }
+
+    --animate-spinner1: 0.8s infinite spinner linear -0.7s;
+    --animate-spinner2: 0.8s infinite spinner linear -0.6s;
+    --animate-spinner3: 0.8s infinite spinner linear -0.5s;
+    --animate-spinner4: 0.8s infinite spinner linear -0.4s;
+    --animate-spinner5: 0.8s infinite spinner linear -0.3s;
+    --animate-spinner6: 0.8s infinite spinner linear -0.2s;
+    --animate-spinner7: 0.8s infinite spinner linear -0.1s;
+    --animate-spinner8: 0.8s infinite spinner linear;
+    --animate-flicker-primary: flicker-primary 1.5s infinite alternate;
+    --animate-flicker-secondary: flicker-secondary 1.5s infinite alternate;
+    --animate-flicker-light: flicker-light 1.5s infinite alternate;
+}
+
+.container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}

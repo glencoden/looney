@@ -1,3 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '@repo/config-tailwind/base';
+
+@theme {
+    --font-sans: 'Avant Garde Gothic EF', sans-serif;
+}

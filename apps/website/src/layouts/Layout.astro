@@ -1,0 +1,125 @@
+---
+import { Navigation } from '../components/Navigation'
+import '../styles/global.css'
+
+interface Props {
+  title?: string
+}
+
+const { title = 'Live Rock Karaoke' } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&family=Noto+Sans+JP:wght@900&family=Pacifico&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="viewport">
+      <h1 class="hidden-headline">Live Rock Karaoke</h1>
+
+      <video class="hidden-video-element" src="/teaser-1v5.m4v"></video>
+
+      <img class="city" src="/city.svg" alt="city" />
+
+      <h2 class="japanese">
+        <span class="japanese-partial">ライブ❤</span>
+        <span class="japanese-partial">カラオケ!</span>
+      </h2>
+
+      <Navigation client:load />
+
+      <div class="main-content">
+        <slot />
+      </div>
+    </div>
+  </body>
+</html>
+
+<style>
+  .hidden-headline {
+    position: fixed;
+    opacity: 0;
+    user-select: none;
+  }
+
+  .hidden-video-element {
+    position: fixed;
+    opacity: 0;
+    user-select: none;
+    width: 100px;
+  }
+
+  .viewport {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .main-content {
+    position: relative;
+    width: var(--main-content-width);
+  }
+
+  .japanese {
+    display: none;
+  }
+
+  .japanese-partial {
+    white-space: nowrap;
+  }
+
+  .city {
+    position: fixed;
+    left: var(--screen-side);
+    bottom: var(--nav-height);
+    right: auto;
+    top: auto;
+    height: 60vmin;
+    filter: var(--bg-item-filter);
+    opacity: 0.8;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .japanese {
+      display: block;
+      position: fixed;
+      right: var(--screen-side);
+      bottom: 0;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 900;
+      font-size: 172px;
+      margin: 0;
+      color: var(--white);
+      filter: var(--bg-item-filter);
+      opacity: 0.8;
+    }
+
+    .city {
+      left: auto;
+      bottom: auto;
+      right: var(--screen-side);
+      top: var(--nav-height);
+      height: 60vmin;
+    }
+  }
+</style>
+
+<script>
+  console.log(
+    '%cglencoden ❤️ version 1.4.0',
+    `font-size: 1rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    color: white;
+    background:linear-gradient(#E66465, #9198E5);`,
+  )
+</script>

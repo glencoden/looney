@@ -1,1 +1,562 @@
-@import '@repo/config-tailwind/base';
+:root {
+    --black: #000;
+    --white: #fff;
+    --blue: #0C5EF0;
+    --blue-dark: #1045A3;
+    --yellow: #F0EC00;
+    --pink: #DD137B;
+    --pink-dark: #8C2744;
+
+    --bg-color: var(--yellow);
+    --font-color: var(--black);
+
+    --font-size-m: 16px;
+    --font-size-xm: 20px;
+    --font-size-l: 30px;
+
+    --padding: 20;
+    --border-width: 4px;
+    --boder-radius: 10px;
+    --box-shadow: calc(0.3 * var(--padding) * 1px) calc(0.3 * var(--padding) * 1px) 0 0 var(--black);
+
+    --nav-height: 120px;
+    --nav-bg-height: calc(var(--nav-height) / 2);
+    --nav-left: 50%;
+    --nav-top: none;
+    --nav-bottom: 0;
+    --nav-gap: calc(0.4 * var(--padding) * 1px);
+
+    --logo-width: 56vw;
+    --logo-left: calc((100vw - var(--logo-width)) / 2);
+
+    --button-font-size: var(--font-size-m);
+    --button-padding: calc(var(--padding) * 1px) calc(0.2 * var(--padding) * 1px);
+
+    --level-1: 10;
+    --level-2: 100;
+    --level-3: 1000;
+
+    --main-content-width: 95vw;
+    --max-content-with: 1960px;
+    --screen-side: max(calc((100vw - var(--max-content-with)) / 2), 0px);
+    --vertical-spacer-height: calc(var(--nav-height) + calc(4 * var(--padding) * 1px));
+
+    --video-top: calc((100vh - (100vw * 720 / 1280)) / 2);
+    --video-width: min(1280px, calc(100vw - calc(var(--padding) * 1px)));
+
+    --list-whitespace: wrap;
+    --bg-item-filter: blur(2px);
+
+    --reference-tile-size: calc(4 * var(--padding) * 1px);
+    --reference-tile-margin: calc(0.2 * var(--padding) * 1px);
+}
+
+@media only screen and (min-width: 600px) {
+    :root {
+        --font-size-m: 18px;
+        --font-size-xm: 24px;
+
+        --box-shadow: calc(0.4 * var(--padding) * 1px) calc(0.4 * var(--padding) * 1px) 0 0 var(--black);
+
+        --nav-height: min(160px, 21vh);
+        --nav-bg-height: var(--nav-height);
+        --nav-left: 60%;
+        --nav-top: 0;
+        --nav-bottom: none;
+        --nav-gap: calc(1 * var(--padding) * 1px);
+
+        --logo-width: min(380px, 21vw);
+        --logo-left: var(--screen-side);
+
+        --button-padding: calc(var(--padding) * 1px);
+
+        --main-content-width: 640px;
+        --video-top: calc(var(--nav-height) + max(0px, calc((100vh - var(--nav-height) - 720px) / 2)));
+        --video-width: min(1280px, calc(100vw - calc(2 * var(--padding) * 1px)));
+
+        --list-whitespace: nowrap;
+        --bg-item-filter: blur(5px);
+
+        --reference-tile-size: calc(7 * var(--padding) * 1px);
+        --reference-tile-margin: calc(0.5 * var(--padding) * 1px);
+    }
+}
+
+@media only screen and (min-width: 1040px) {
+    :root {
+        --nav-left: 55%;
+        --nav-gap: calc(2 * var(--padding) * 1px);
+
+        --button-font-size: var(--font-size-xm);
+    }
+}
+
+@media only screen and (min-width: 1400px) {
+    :root {
+        --nav-left: 50%;
+
+        --button-font-size: var(--font-size-l);
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Poppins, sans-serif;
+    color: var(--font-color);
+    background-color: var(--bg-color);
+}
+
+button {
+    cursor: pointer;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+    border: none;
+    color: var(--font-color);
+    background-color: transparent;
+}
+
+@keyframes flicker-primary {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        text-shadow:
+            0 0 4px #fff,
+            0 0 11px #fff,
+            0 0 19px #fff,
+            0 0 40px var(--blue),
+            0 0 80px var(--blue),
+            0 0 90px var(--blue),
+            0 0 100px var(--blue),
+            0 0 150px var(--blue);
+    }
+    20%, 24%, 55% {
+        text-shadow: none;
+    }
+}
+
+@keyframes flicker-secondary {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        text-shadow:
+            0 0 4px #fff,
+            0 0 11px #fff,
+            0 0 19px #fff,
+            0 0 40px var(--pink),
+            0 0 80px var(--pink),
+            0 0 90px var(--pink),
+            0 0 100px var(--pink),
+            0 0 150px var(--pink);
+    }
+    20%, 24%, 55% {
+        text-shadow: none;
+    }
+}
+
+@keyframes lds-hourglass {
+    0% {
+        transform: rotate(0);
+        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    50% {
+        transform: rotate(900deg);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    100% {
+        transform: rotate(1800deg);
+    }
+}
+
+@keyframes flicker-logo {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        opacity: 0.5;
+    }
+    20%, 24%, 55% {
+        opacity: 0;
+    }
+}
+
+@keyframes slide-in {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slide-top {
+    0% {
+        transform: translateY(-200vh);
+    }
+    25% {
+        transform: translateY(-200vh);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-bottom {
+    0% {
+        transform: translateY(200vh);
+    }
+    25% {
+        transform: translateY(200vh);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-left {
+    0% {
+        transform: translateX(-100vw);
+    }
+    25% {
+        transform: translateX(-100vw);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-right {
+    0% {
+        transform: translateX(100vw);
+    }
+    25% {
+        transform: translateX(100vw);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.slide-top {
+    animation: slide-top 0.7s ease;
+}
+
+.slide-bottom {
+    animation: slide-bottom 0.7s ease;
+}
+
+.slide-left {
+    animation: slide-left 0.7s ease;
+}
+
+.slide-right {
+    animation: slide-right 0.7s ease;
+}
+
+.button {
+    user-select: none;
+    font-family: Poppins, sans-serif;
+    font-size: var(--button-font-size);
+    font-weight: 600;
+    padding: var(--button-padding);
+    border: var(--border-width) solid var(--black);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    transition: transform 0.1s ease;
+}
+
+.button:hover {
+    transform: scale(1.05);
+}
+
+.button:active {
+    transform: scale(1);
+}
+
+.primary-color {
+    color: var(--blue);
+    background-color: var(--blue-dark);
+}
+
+.secondary-color {
+    color: var(--pink);
+    background-color: var(--pink-dark);
+}
+
+.primary-color:hover, .primary-color:active, .button-active.primary-color {
+    color: var(--white);
+    animation: flicker-primary 1.5s infinite alternate;
+}
+
+.secondary-color:hover, .secondary-color:active, .button-active.secondary-color {
+    color: var(--white);
+    animation: flicker-secondary 1.5s infinite alternate;
+}
+
+.lds-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.lds-hourglass {
+    display: inline-block;
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.lds-hourglass:after {
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    width: 0;
+    height: 0;
+    margin: 8px;
+    box-sizing: border-box;
+    border: 32px solid var(--pink);
+    border-color: var(--pink) transparent var(--pink) transparent;
+    animation: lds-hourglass 1.2s infinite;
+}
+
+.navigation-background {
+    z-index: var(--level-2);
+    position: fixed;
+    left: var(--nav-left);
+    top: var(--nav-top);
+    bottom: var(--nav-bottom);
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120vw;
+    height: var(--nav-bg-height);
+    background-color: var(--bg-color);
+}
+
+.logo {
+    z-index: var(--level-3);
+    position: fixed;
+    left: var(--logo-left);
+    top: calc(var(--padding) * 1px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-10deg);
+}
+
+.logo-image {
+    position: relative;
+    width: var(--logo-width);
+}
+
+.logo-shadow {
+    position: absolute;
+    left: 51%;
+    top: 51%;
+    transform: translate(-50%, -50%);
+    filter: blur(1px);
+    opacity: 0.9;
+    width: var(--logo-width);
+}
+
+.logo-glow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(10px);
+    opacity: 0;
+    width: var(--logo-width);
+}
+
+.logo-glow:hover, .logo-glow:active, .logo-glow-active {
+    animation: flicker-logo 1.5s infinite alternate;
+}
+
+.navigation {
+    z-index: var(--level-3);
+    position: fixed;
+    left: var(--nav-left);
+    top: var(--nav-top);
+    bottom: var(--nav-bottom);
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--nav-gap);
+    height: var(--nav-height);
+    max-width: 100vw;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-item-0 {
+    top: -1%;
+}
+
+.nav-item-1 {
+    top: 1%;
+}
+
+.nav-item-2 {
+    top: -2%;
+}
+
+.nav-item-3 {
+    top: 1%;
+}
+
+.vertical-spacer {
+    height: var(--vertical-spacer-height);
+}
+
+.video-box {
+    z-index: var(--level-2);
+    position: relative;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--video-width);
+    margin-top: var(--video-top);
+    opacity: 0;
+}
+
+.video-box.show-video {
+    animation: slide-in 0.7s ease;
+    opacity: 1;
+}
+
+.video-element {
+    width: 100%;
+    border: var(--border-width) solid var(--black);
+    border-radius: var(--boder-radius);
+    background-color: var(--black);
+}
+
+.event-box {
+    display: grid;
+    grid-gap: calc(0.5 * var(--padding) * 1px);
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "date"
+        "venue"
+        "description";
+    width: 100%;
+    margin-bottom: calc(2 * var(--padding) * 1px);
+}
+
+.date {
+    grid-area: date;
+    white-space: var(--list-whitespace);
+    font-family: 'Pacifico', serif;
+    font-size: var(--font-size-xm);
+    margin: 0;
+}
+
+.venue {
+    grid-area: venue;
+    font-size: var(--font-size-m);
+    margin: calc(0.5 * var(--padding) * 1px) 0;
+}
+
+.description {
+    grid-area: description;
+    white-space: var(--list-whitespace);
+    font-size: var(--font-size-m);
+    margin: 0 0 calc(var(--padding) * 1px);
+    color: var(--pink);
+}
+
+@media only screen and (min-width: 600px) {
+    .event-box {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+        "date venue"
+        "description description";
+    }
+}
+
+.song-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+}
+
+.song-box p {
+    white-space: var(--list-whitespace);
+    align-self: center;
+    margin: calc(0.25 * var(--padding) * 1px) 0;
+}
+
+.artist-name {
+    font-family: "Pacifico", serif;
+    font-size: var(--font-size-xm);
+    color: var(--pink);
+    animation: slide-left 0.6s ease;
+}
+
+.song-title {
+    font-size: var(--font-size-m);
+    animation: slide-right 0.6s ease;
+}
+
+.logos {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 100%;
+    margin: calc(-1 * var(--reference-tile-margin));
+}
+
+.logo-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--reference-tile-size);
+    height: var(--reference-tile-size);
+    background-color: var(--black);
+    margin: var(--reference-tile-margin);
+    overflow: hidden;
+}
+
+.logo-box-salt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--reference-tile-size);
+    height: var(--reference-tile-size);
+    background-color: var(--pink);
+    margin: var(--reference-tile-margin);
+    overflow: hidden;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: var(--font-size-l);
+    color: var(--pink-dark);
+    border: var(--border-width) solid var(--pink-dark);
+}
+
+.logo-box img {
+    width: calc(var(--reference-tile-size) * 5 / 7);
+    filter: brightness(150%) saturate(0);
+}
+
+.info {
+    white-space: pre-line;
+    font-family: 'Pacifico', serif;
+    font-size: var(--font-size-l);
+    padding: calc(2 * var(--padding) * 1px);
+    animation: slide-top 0.7s ease;
+}
+
+.info a {
+    font-family: Poppins, sans-serif;
+    font-size: var(--font-size-m);
+}

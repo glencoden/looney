@@ -19,7 +19,7 @@ import { ActionFunctionArgs, json } from '@vercel/remix'
 import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 
-const LIVE_SESSION_LENGTH = 1000 * 60 * 60 * 18
+const LIVE_SESSION_LENGTH = 1000 * 60 * 60 * 12
 
 export const loader = async () => {
     const setlists = await getSetlists()

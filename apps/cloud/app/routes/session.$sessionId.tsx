@@ -685,11 +685,14 @@ export default function ActiveSession() {
                     status = 'live'
                 }
 
-                handleLipMove({
-                    id: lipId,
-                    status,
-                    sortNumber: targetIndex + 1,
-                })
+                // TODO: Is this timeout necessary?
+                setTimeout(() => {
+                    handleLipMove({
+                        id: lipId,
+                        status,
+                        sortNumber: targetIndex + 1,
+                    })
+                }, 0)
 
                 setIsActionTarget(false)
                 unlockScroll()

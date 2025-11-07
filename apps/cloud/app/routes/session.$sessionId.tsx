@@ -5,13 +5,11 @@ import type { LipDTO } from '@repo/api/types'
 import { Session } from '@repo/db'
 import { getSession } from '@repo/db/queries'
 import BoxMain from '@repo/ui/components/BoxMain'
-import Button from '@repo/ui/components/Button'
 import Input from '@repo/ui/components/Input'
 import { cn } from '@repo/ui/helpers'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { useDrag } from '@use-gesture/react'
 import { json, LoaderFunctionArgs } from '@vercel/remix'
-import { Radio } from 'lucide-react'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { z } from 'zod'
 import DragDropList from '~/components/DragDropList'
@@ -762,56 +760,13 @@ export default function ActiveSession() {
                                     </Subtitle2>
 
                                     {actionLip && (
-                                        <div className='relative w-full max-w-96'>
-                                            <DragDropListItem
-                                                lip={actionLip}
-                                                spring={actionSpring}
-                                                bind={bindLipDrag}
-                                                isLocked={
-                                                    actionLip.status === 'live'
-                                                }
-                                                hideTime
-                                                hideFavorites
-                                            />
-                                            <div className='absolute right-2 top-1/2 flex h-20 w-28 -translate-y-1/2 items-center justify-center'>
-                                                <Button
-                                                    variant='ghost'
-                                                    onClick={async () => {
-                                                        await updateLipAsync({
-                                                            id: actionLip.id,
-                                                            status: 'done',
-                                                        })
-                                                        void utils.lip.getBySessionId.setData(
-                                                            {
-                                                                id: session.id,
-                                                            },
-                                                            (lips) => {
-                                                                if (!lips) {
-                                                                    return
-                                                                }
-                                                                return lips.map(
-                                                                    (lip) => {
-                                                                        if (
-                                                                            lip.id ===
-                                                                            actionLip.id
-                                                                        ) {
-                                                                            return {
-                                                                                ...lip,
-                                                                                status: 'done',
-                                                                            }
-                                                                        }
-                                                                        return lip
-                                                                    },
-                                                                )
-                                                            },
-                                                        )
-                                                    }}
-                                                    loading={isLipUpdatePending}
-                                                >
-                                                    <Radio className='h-14 w-14 fill-pink-700 text-black' />
-                                                </Button>
-                                            </div>
-                                        </div>
+                                        <DragDropListItem
+                                            lip={actionLip}
+                                            spring={actionSpring}
+                                            bind={bindLipDrag}
+                                            isLocked={false}
+                                            hideFavorites
+                                        />
                                     )}
                                 </div>
                             }

@@ -3,6 +3,7 @@ import type { LipDTO } from '@repo/api/types'
 import SongLip from '@repo/ui/components/SongLip'
 import { cn } from '@repo/ui/helpers'
 import { ReactDOMAttributes } from '@use-gesture/react/dist/declarations/src/types'
+import { Radio } from 'lucide-react'
 
 export default function DragDropListItem({
     lip,
@@ -10,7 +11,6 @@ export default function DragDropListItem({
     spring: { zIndex, shadow, x, y, scale },
     bind,
     isLocked,
-    hideTime,
     hideFavorites,
 }: {
     lip: LipDTO
@@ -24,7 +24,6 @@ export default function DragDropListItem({
     }
     bind: (...args: unknown[]) => ReactDOMAttributes
     isLocked: boolean
-    hideTime?: boolean
     hideFavorites?: boolean
 }) {
     return (
@@ -43,7 +42,7 @@ export default function DragDropListItem({
             <SongLip
                 lip={lip}
                 q={q}
-                hideTime={hideTime}
+                hideTime={lip.status === 'live'}
                 hideFavorites={hideFavorites}
             />
             <div
@@ -55,6 +54,11 @@ export default function DragDropListItem({
                     },
                 )}
             />
+            {lip.status === 'live' && (
+                <div className='absolute right-2 top-1/2 flex h-20 w-28 -translate-y-1/2 items-center justify-center'>
+                    <Radio className='h-14 w-14 fill-pink-700 text-black' />
+                </div>
+            )}
         </animated.div>
     )
 }

@@ -73,7 +73,7 @@ export default function Index() {
                       ...sessionFromLoader,
                       startsAt: new Date(sessionFromLoader.startsAt),
                       endsAt: new Date(sessionFromLoader.endsAt),
-                      createdAt: new Date(sessionFromLoader.createdAt),
+                      createdAt: new Date(sessionFromLoader.createdAt ?? ''),
                   } as unknown as Session)
                 : undefined,
             enabled: Boolean(sessionFromLoader?.id),

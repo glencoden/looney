@@ -122,7 +122,7 @@ export default function App() {
     const { locale, translations } = useLoaderData<typeof loader>()
 
     return (
-        <TRPCQueryClientProvider baseUrl={import.meta.env.VITE_API_URL}>
+        <TRPCQueryClientProvider>
             <IntlProvider locale={locale} messages={translations}>
                 <BoxMain className='flex items-center justify-center p-0'>
                     <div className='mobile-sim-height relative w-full overflow-hidden sm:max-w-md sm:rounded-[32px] sm:border-4 sm:border-black'>

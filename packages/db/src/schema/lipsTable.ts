@@ -26,8 +26,8 @@ export const lipsTable = pgTable('lip', {
         enum: [
             'idle',
             'selected',
-            'staged',
-            'no-show',
+            'staged', // deprecated: this was imported from an old data set
+            'no-show', // deprecated: this has the same display outcome as 'done' > we will track a no-show by timestamp
             'live',
             'done',
             'deleted',
@@ -36,6 +36,13 @@ export const lipsTable = pgTable('lip', {
         .notNull()
         .default('idle'),
     sortNumber: integer('sort_number'),
+
+    selectedAt: timestamp('selected_at', { withTimezone: true }),
+    noShowAt: timestamp('no_show_at', { withTimezone: true }),
+    liveAt: timestamp('live_at', { withTimezone: true }),
+    doneAt: timestamp('done_at', { withTimezone: true }),
+    deletedAt: timestamp('deleted_at', { withTimezone: true }),
+
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 })

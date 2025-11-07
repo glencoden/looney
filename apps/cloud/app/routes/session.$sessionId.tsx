@@ -25,6 +25,7 @@ const MAX_CONTAINER_WIDTH = 1280 // px
 const HORIZONTAL_DRAG_ACTION_THRESHOLD = 96 // px
 const DRAG_DROP_LIST_HEADER_HEIGHT_MOBILE = 144 // px
 const DRAG_DROP_LIST_HEADER_HEIGHT_DESKTOP = 160 // px
+const NO_SHOW_THRESHOLD = 1000 * 60 * 3
 
 enum BoxType {
     LEFT = 'left',
@@ -281,7 +282,7 @@ export default function ActiveSession() {
                                 lip.updatedAt &&
                                 (Date.now() % hour) -
                                     (lip.updatedAt.getTime() % hour) <
-                                    1000 * 60 * 3
+                                    NO_SHOW_THRESHOLD
                             return {
                                 ...lip,
                                 status: (isNoShow

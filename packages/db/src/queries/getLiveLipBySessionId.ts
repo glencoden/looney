@@ -28,5 +28,5 @@ export const getLiveLipBySessionId = async (sessionId: Session['id']) => {
         )
         .limit(1)
 
-    return liveLip
+    return liveLip ?? null
 }

@@ -1,11 +1,10 @@
 import { Form, Link } from '@remix-run/react'
-import { api } from '@repo/api/client'
 import { Session } from '@repo/db'
 import Button from '@repo/ui/components/Button'
 import Spinner from '@repo/ui/components/Spinner'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
 import { useSessionCountdown } from '@repo/utils/hooks'
-import { House, Lock, LockOpen, Power, Trash } from 'lucide-react'
+import { House, Power, Trash } from 'lucide-react'
 import AddDemoLipButton from '~/components/AddDemoLipButton'
 
 export default function SessionMenu({
@@ -15,24 +14,24 @@ export default function SessionMenu({
     session: Session
     isSessionPending: boolean
 }>) {
-    const utils = api.useUtils()
+    // const utils = api.useUtils()
 
     const countdown = useSessionCountdown(session.startsAt)
 
-    const { mutate: updateSession, isPending: isUpdatePending } =
-        api.session.update.useMutation({
-            onSettled: () => {
-                void utils.session.get.invalidate({ id: session.id })
-            },
-        })
+    // const { mutate: updateSession, isPending: isUpdatePending } =
+    //     api.session.update.useMutation({
+    //         onSettled: () => {
+    //             void utils.session.get.invalidate({ id: session.id })
+    //         },
+    //     })
 
-    const handleLockButtonClick = () => {
-        void updateSession({ id: session.id, isLocked: !session.isLocked })
-        void utils.session.get.setData(
-            { id: session.id },
-            { ...session, isLocked: !session.isLocked },
-        )
-    }
+    // const handleLockButtonClick = () => {
+    //     void updateSession({ id: session.id, isLocked: !session.isLocked })
+    //     void utils.session.get.setData(
+    //         { id: session.id },
+    //         { ...session, isLocked: !session.isLocked },
+    //     )
+    // }
 
     // const handleFavoriteButtonClick = () => {
     //     void updateSession({
@@ -64,7 +63,7 @@ export default function SessionMenu({
         )
     }
 
-    const isPending = isSessionPending || isUpdatePending
+    const isPending = isSessionPending // || isUpdatePending
 
     return (
         <div className='flex justify-between'>
@@ -72,7 +71,7 @@ export default function SessionMenu({
                 <Subtitle2>Start in {countdown}</Subtitle2>
             ) : (
                 <section className='flex items-center gap-4'>
-                    <Button
+                    {/* <Button
                         variant='ghost'
                         size='icon'
                         title={
@@ -86,7 +85,7 @@ export default function SessionMenu({
                         ) : (
                             <LockOpen className='h-6 w-6 text-white opacity-30' />
                         )}
-                    </Button>
+                    </Button> */}
 
                     <AddDemoLipButton session={session} />
 

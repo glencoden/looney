@@ -344,10 +344,11 @@ export default function Index() {
 
     const [isAutoLyricsDisabled, setIsAutoLyricsDisabled] = useState(false)
 
-    const isConnected = useAutoToolConnection(
-        nextHighlight,
-        isAutoLyricsDisabled,
-    )
+    const isConnected = useAutoToolConnection({
+        onNext: nextHighlight,
+        isWebsocketDisabled: isAutoLyricsDisabled,
+        isLocalNetworkConnectionEnabled: false,
+    })
 
     /**
      *

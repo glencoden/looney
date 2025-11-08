@@ -3,10 +3,15 @@ import { useEffect, useState } from 'react'
 
 const POSSIBLE_IPS_STORAGE_KEY = 'POSSIBLE_AUTO_TOOL_SERVER_IPS'
 
-export const useAutoToolConnection = (
-    next: () => void,
-    isDisabled?: boolean,
-) => {
+export const useAutoToolConnection = ({
+    onNext,
+    isWebsocketDisabled,
+    isLocalNetworkConnectionEnabled,
+}: {
+    onNext: () => void
+    isWebsocketDisabled?: boolean
+    isLocalNetworkConnectionEnabled?: boolean
+}) => {
     const [isConnected, setIsConnected] = useState(false)
 
     const [possibleIPs, setPossibleIPs] = useState<
@@ -14,6 +19,9 @@ export const useAutoToolConnection = (
     >([])
 
     useEffect(() => {
+        if (!isLocalNetworkConnectionEnabled) {
+            return
+        }
         if (possibleIPs.length === 0) {
             const storage = localStorage.getItem(POSSIBLE_IPS_STORAGE_KEY)
             if (storage === null) {
@@ -30,7 +38,7 @@ export const useAutoToolConnection = (
             POSSIBLE_IPS_STORAGE_KEY,
             JSON.stringify(possibleIPs),
         )
-    }, [possibleIPs])
+    }, [isLocalNetworkConnectionEnabled, possibleIPs])
 
     /**
      *
@@ -56,6 +64,7 @@ export const useAutoToolConnection = (
             }
             return result.data
         },
+        enabled: isLocalNetworkConnectionEnabled,
     })
 
     if (error) {
@@ -86,9 +95,6 @@ export const useAutoToolConnection = (
         useQuery<WebSocket | null>({
             queryKey: ['auto-tool-websocket'],
             queryFn: async () => {
-                if (possibleIPs.length === 0) {
-                    return null
-                }
                 const IPs = [
                     'localhost',
                     ...possibleIPs
@@ -127,24 +133,26 @@ export const useAutoToolConnection = (
                         })
                     })
 
-                    if (ws == null) {
+                    if (ws === null) {
                         continue
                     }
 
-                    setPossibleIPs((prev) =>
-                        prev.map((entry) => {
-                            if (entry.value !== IP) {
+                    if (isLocalNetworkConnectionEnabled) {
+                        setPossibleIPs((prev) =>
+                            prev.map((entry) => {
+                                if (entry.value !== IP) {
+                                    return {
+                                        ...entry,
+                                        connectionSuccess: false,
+                                    }
+                                }
                                 return {
                                     ...entry,
-                                    connectionSuccess: false,
+                                    connectionSuccess: true,
                                 }
-                            }
-                            return {
-                                ...entry,
-                                connectionSuccess: true,
-                            }
-                        }),
-                    )
+                            }),
+                        )
+                    }
 
                     console.log('Connected to', IP)
                     break
@@ -152,12 +160,12 @@ export const useAutoToolConnection = (
 
                 return ws
             },
-            enabled: !isDisabled && possibleIPs.length > 0,
+            enabled: !isWebsocketDisabled && possibleIPs.length > 0,
             refetchInterval: isConnected ? Infinity : 1000 * 10,
         })
 
     useEffect(() => {
-        if (isDisabled || websocket?.readyState !== 1) {
+        if (isWebsocketDisabled || websocket?.readyState !== 1) {
             websocket?.close()
             setIsConnected(false)
             return
@@ -186,9 +194,9 @@ export const useAutoToolConnection = (
             }
 
             switch (messageCode) {
-                // next syllable
+                // onNext syllable
                 case 0: {
-                    next()
+                    onNext()
                     break
                 }
                 // send back the received number (presumed timestamp) to test network latency
@@ -206,7 +214,7 @@ export const useAutoToolConnection = (
             websocket.removeEventListener('close', onConnectionLost)
             websocket.removeEventListener('message', handleMessage)
         }
-    }, [next, isDisabled, websocket, refetchWebsocket])
+    }, [onNext, isWebsocketDisabled, websocket, refetchWebsocket])
 
     return isConnected
 }

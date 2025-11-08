@@ -686,6 +686,7 @@ export default function ActiveSession() {
                 }
 
                 // TODO: Is this timeout necessary?
+                // L.E.: Without the timeout, when moving the live lip to index 0 of the selected list, the index 1 place is empty. We should investigate.
                 setTimeout(() => {
                     handleLipMove({
                         id: lipId,

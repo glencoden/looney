@@ -17,7 +17,13 @@ type Response =
           songId: Song['id']
       }
 
-export const useAutoScreen = (): Response => {
+export const useAutoScreen = ({
+    isDisabled,
+    forceHomeScreen,
+}: {
+    isDisabled?: boolean
+    forceHomeScreen?: boolean
+}): Response => {
     const utils = api.useUtils()
 
     const { data: session } = api.session.getCurrent.useQuery()
@@ -79,20 +85,20 @@ export const useAutoScreen = (): Response => {
     }, [utils, session?.id])
 
     return useMemo(() => {
-        if (!isSessionActive) {
+        if (!isSessionActive || isDisabled) {
             return {
                 type: 'idle',
             }
         }
-        if (liveLip) {
+        if (!liveLip || forceHomeScreen) {
             return {
-                type: 'lyrics',
-                songId: liveLip.songId,
+                type: 'home',
+                sessionTitle: session!.title,
             }
         }
         return {
-            type: 'home',
-            sessionTitle: session!.title,
+            type: 'lyrics',
+            songId: liveLip.songId,
         }
-    }, [isSessionActive, liveLip, session])
+    }, [isDisabled, forceHomeScreen, isSessionActive, liveLip, session])
 }

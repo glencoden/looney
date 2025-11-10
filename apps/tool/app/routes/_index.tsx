@@ -356,7 +356,10 @@ export default function Index() {
      *
      */
 
-    const screen = useAutoScreen()
+    const screen = useAutoScreen({
+        isDisabled: isAutoLyricsDisabled,
+        forceHomeScreen: false,
+    })
 
     useEffect(() => {
         if (screen.type === 'lyrics') {

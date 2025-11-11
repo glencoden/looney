@@ -20,10 +20,8 @@ type Response =
 
 export const useAutoScreen = ({
     isDisabled,
-    forceHomeScreen,
 }: {
     isDisabled?: boolean
-    forceHomeScreen?: boolean
 }): Response => {
     const utils = api.useUtils()
 
@@ -91,7 +89,7 @@ export const useAutoScreen = ({
                 type: 'idle',
             }
         }
-        if (!liveLip || forceHomeScreen) {
+        if (!liveLip) {
             return {
                 type: 'home',
                 sessionTitle: session!.title,
@@ -102,5 +100,5 @@ export const useAutoScreen = ({
             sessionTitle: session!.title,
             songId: liveLip.songId,
         }
-    }, [isDisabled, forceHomeScreen, isSessionActive, liveLip, session])
+    }, [isDisabled, isSessionActive, liveLip, session])
 }

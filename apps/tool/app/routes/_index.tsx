@@ -364,10 +364,7 @@ export default function Index() {
      *
      */
 
-    const screen = useAutoScreen({
-        isDisabled: isAutoLyricsDisabled,
-        forceHomeScreen: false,
-    })
+    const screen = useAutoScreen({ isDisabled: isAutoLyricsDisabled })
 
     const forceHomeScreen = screen.type !== 'idle' && showHomeScreenByTimer
 

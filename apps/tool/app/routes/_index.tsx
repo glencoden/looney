@@ -11,6 +11,7 @@ import JoinedLine from '~/components/JoinedLine'
 import { parseLyrics } from '~/helpers/parse-lyrics'
 import { useAutoScreen } from '~/hooks/useAutoScreen'
 import { useAutoToolConnection } from '~/hooks/useAutoToolConnection'
+import { useHomeScreenTimer } from '~/hooks/useHomeScreenTimer'
 import type { Index } from '~/types/Index'
 import type { Position } from '~/types/Position'
 
@@ -304,7 +305,12 @@ export default function Index() {
         return true
     }
 
+    const { callHomeScreenTimer, showHomeScreenByTimer } =
+        useHomeScreenTimer(selectedSongId)
+
     const nextHighlight = useEffectEvent(() => {
+        callHomeScreenTimer()
+
         if (isLast('syllable')) {
             if (isLast('word')) {
                 if (isLast('line')) {
@@ -321,6 +327,8 @@ export default function Index() {
     })
 
     const prevHighlight = useEffectEvent(() => {
+        callHomeScreenTimer()
+
         if (isFirst('syllable')) {
             if (isFirst('word')) {
                 if (isFirst('line')) {
@@ -360,6 +368,8 @@ export default function Index() {
         isDisabled: isAutoLyricsDisabled,
         forceHomeScreen: false,
     })
+
+    const forceHomeScreen = screen.type !== 'idle' && showHomeScreenByTimer
 
     useEffect(() => {
         if (screen.type === 'lyrics') {
@@ -434,58 +444,45 @@ export default function Index() {
                 {isConnected ? 'Connected' : 'Waiting...'}
             </Subtitle2>
 
-            {(() => {
-                switch (screen.type) {
-                    case 'home':
-                        return (
-                            <div className='space-y-10'>
-                                <h1 className='text-center text-yellow-400'>
-                                    {screen.sessionTitle}
-                                </h1>
-                                <QRLive className='w-80' />
-                                <H1>Scan me to sing!</H1>
-                            </div>
-                        )
-                }
-                return (
-                    <>
-                        <h1
-                            className={cn(
-                                'duration-[1.5s]e absolute left-1/2 top-20 w-full -translate-x-1/2 px-72 text-center text-yellow-400 opacity-0 transition-opacity',
-                                {
-                                    'opacity-100':
-                                        isFirst('line') &&
-                                        !isThirdOrHigher('word'),
-                                },
-                            )}
-                        >
-                            {selectedText?.title ?? 'Looney tool'}
-                        </h1>
+            {screen.type === 'home' || forceHomeScreen ? (
+                <div className='flex flex-col items-center gap-10'>
+                    <h1 className='text-center text-yellow-400'>
+                        {screen.sessionTitle}
+                    </h1>
+                    <QRLive className='w-80' />
+                    <H1>Scan me to sing!</H1>
+                </div>
+            ) : (
+                <>
+                    <h1
+                        className={cn(
+                            'duration-[1.5s]e absolute left-1/2 top-20 w-full -translate-x-1/2 px-72 text-center text-yellow-400 opacity-0 transition-opacity',
+                            {
+                                'opacity-100':
+                                    isFirst('line') && !isThirdOrHigher('word'),
+                            },
+                        )}
+                    >
+                        {selectedText?.title ?? 'Looney tool'}
+                    </h1>
 
-                        <section className='absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden px-12'>
-                            <div
-                                className={cn({
-                                    'transition-transform duration-300':
-                                        transformY > 0,
-                                })}
-                                style={{
-                                    transform: `translateY(-${transformY / 3}%)`,
-                                }}
-                            >
-                                <JoinedLine
-                                    line={prev}
-                                    className='opacity-10'
-                                />
-                                <JoinedLine line={current} index={index} />
-                                <JoinedLine
-                                    line={next}
-                                    className='opacity-60'
-                                />
-                            </div>
-                        </section>
-                    </>
-                )
-            })()}
+                    <section className='absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden px-12'>
+                        <div
+                            className={cn({
+                                'transition-transform duration-300':
+                                    transformY > 0,
+                            })}
+                            style={{
+                                transform: `translateY(-${transformY / 3}%)`,
+                            }}
+                        >
+                            <JoinedLine line={prev} className='opacity-10' />
+                            <JoinedLine line={current} index={index} />
+                            <JoinedLine line={next} className='opacity-60' />
+                        </div>
+                    </section>
+                </>
+            )}
         </main>
     )
 }

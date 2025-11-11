@@ -14,6 +14,7 @@ type Response =
       }
     | {
           type: 'lyrics'
+          sessionTitle: Session['title']
           songId: Song['id']
       }
 
@@ -98,6 +99,7 @@ export const useAutoScreen = ({
         }
         return {
             type: 'lyrics',
+            sessionTitle: session!.title,
             songId: liveLip.songId,
         }
     }, [isDisabled, forceHomeScreen, isSessionActive, liveLip, session])

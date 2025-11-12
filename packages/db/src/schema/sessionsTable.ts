@@ -4,7 +4,6 @@ export const sessionsTable = pgTable('session', {
     id: uuid('id').primaryKey().defaultRandom(),
     title: varchar('title', { length: 255 }).notNull(),
     setlistId: uuid('setlist_id').notNull(),
-    isDemo: boolean('is_demo').default(false),
     isLocked: boolean('is_locked').default(false),
     hideFavorites: boolean('hide_favorites').default(false),
     hideTipCollection: boolean('hide_tip_collection').default(false),

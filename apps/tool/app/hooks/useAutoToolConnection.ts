@@ -2,6 +2,14 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
 const POSSIBLE_IPS_STORAGE_KEY = 'POSSIBLE_AUTO_TOOL_SERVER_IPS'
+const MAX_NUM_POSSIBLE_IPS = 4
+const WEBSOCKET_CONNECTION_TRY_TIME = 1000 * 2
+
+type PossibleIP = { value: string; connectionSuccess: boolean }
+
+const byConnectionSuccess = <T extends PossibleIP>(a: T, b: T) => {
+    return Number(b.connectionSuccess) - Number(a.connectionSuccess)
+}
 
 export const useAutoToolConnection = ({
     onNext,
@@ -14,9 +22,7 @@ export const useAutoToolConnection = ({
 }) => {
     const [isConnected, setIsConnected] = useState(false)
 
-    const [possibleIPs, setPossibleIPs] = useState<
-        { value: string; connectionSuccess: boolean }[]
-    >([])
+    const [possibleIPs, setPossibleIPs] = useState<PossibleIP[]>([])
 
     useEffect(() => {
         if (!isLocalNetworkConnectionEnabled) {
@@ -80,9 +86,9 @@ export const useAutoToolConnection = ({
                 return prev
             }
             return [
-                ...prev,
                 { value: autoToolServerIP, connectionSuccess: false },
-            ]
+                ...prev,
+            ].slice(0, MAX_NUM_POSSIBLE_IPS)
         })
     }, [autoToolServerIP])
 
@@ -98,11 +104,7 @@ export const useAutoToolConnection = ({
                 const IPs = [
                     'localhost',
                     ...possibleIPs
-                        .sort(
-                            (a, b) =>
-                                Number(b.connectionSuccess) -
-                                Number(a.connectionSuccess),
-                        )
+                        .sort(byConnectionSuccess)
                         .map((possibleIP) => possibleIP.value),
                 ]
 
@@ -119,7 +121,7 @@ export const useAutoToolConnection = ({
                         const timeoutId = setTimeout(() => {
                             currentWebsocket.close()
                             resolve(null)
-                        }, 1000 * 2)
+                        }, WEBSOCKET_CONNECTION_TRY_TIME)
 
                         currentWebsocket.addEventListener('open', () => {
                             clearTimeout(timeoutId)
@@ -139,18 +141,20 @@ export const useAutoToolConnection = ({
 
                     if (isLocalNetworkConnectionEnabled) {
                         setPossibleIPs((prev) =>
-                            prev.map((entry) => {
-                                if (entry.value !== IP) {
+                            prev
+                                .map((entry) => {
+                                    if (entry.value !== IP) {
+                                        return {
+                                            ...entry,
+                                            connectionSuccess: false,
+                                        }
+                                    }
                                     return {
                                         ...entry,
-                                        connectionSuccess: false,
+                                        connectionSuccess: true,
                                     }
-                                }
-                                return {
-                                    ...entry,
-                                    connectionSuccess: true,
-                                }
-                            }),
+                                })
+                                .sort(byConnectionSuccess),
                         )
                     }
 
@@ -160,8 +164,10 @@ export const useAutoToolConnection = ({
 
                 return ws
             },
-            enabled: !isWebsocketDisabled && possibleIPs.length > 0,
-            refetchInterval: isConnected ? Infinity : 1000 * 10,
+            enabled: !isWebsocketDisabled,
+            refetchInterval: isConnected
+                ? Infinity
+                : MAX_NUM_POSSIBLE_IPS * WEBSOCKET_CONNECTION_TRY_TIME + 1000,
         })
 
     useEffect(() => {

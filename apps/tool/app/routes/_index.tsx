@@ -438,7 +438,11 @@ export default function Index() {
             <Logo className='absolute left-12 top-12' />
 
             <Subtitle2 className='absolute right-12 top-12 text-blue-700'>
-                {isConnected ? 'Connected' : 'Waiting...'}
+                {isAutoLyricsDisabled
+                    ? 'Disabled'
+                    : isConnected
+                      ? 'Connected'
+                      : 'Waiting...'}
             </Subtitle2>
 
             {screen.type === 'home' || forceHomeScreen ? (

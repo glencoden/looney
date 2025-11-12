@@ -683,6 +683,8 @@ export default function ActiveSession() {
                     status = 'selected'
                 } else if (targetBox === 'action') {
                     status = 'live'
+                } else if (dragBox === 'action') {
+                    status = 'selected' // make sure live lips can only be dragged into selected
                 }
 
                 // TODO: Is this timeout necessary?

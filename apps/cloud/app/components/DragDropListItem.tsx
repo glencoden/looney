@@ -34,7 +34,7 @@ export default function DragDropListItem({
                 boxShadow: shadow.to(
                     (s) => `rgba(0, 0, 0, 0.15) 0px ${s}px ${2 * s}px 0px`,
                 ),
-                x,
+                x: lip.status === 'live' ? 0 : x,
                 y,
                 scale,
             }}

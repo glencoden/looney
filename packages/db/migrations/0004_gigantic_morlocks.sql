@@ -1,0 +1,2 @@
+ALTER TABLE "guest" ADD COLUMN "internal_id" uuid;--> statement-breakpoint
+ALTER TABLE "guest" ADD CONSTRAINT "guest_internal_id_permission_id_fk" FOREIGN KEY ("internal_id") REFERENCES "public"."permission"("id") ON DELETE no action ON UPDATE no action;

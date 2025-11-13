@@ -97,9 +97,6 @@ export default function ActiveSession() {
 
     const lips = useMemo(() => data ?? ([] as LipDTO[]), [data])
 
-    const { mutateAsync: updateLipAsync, isPending: isLipUpdatePending } =
-        api.lip.update.useMutation()
-
     const { mutate: moveLip, isPending: isLipMovePending } =
         api.lip.move.useMutation({
             onSettled: () => {

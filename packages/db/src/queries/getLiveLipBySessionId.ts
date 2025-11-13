@@ -1,4 +1,4 @@
-import { and, eq } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { db, lipsTable, Session, songsTable } from '../index.js'
 
 export const getLiveLipBySessionId = async (sessionId: Session['id']) => {
@@ -13,6 +13,9 @@ export const getLiveLipBySessionId = async (sessionId: Session['id']) => {
             sortNumber: lipsTable.sortNumber,
             createdAt: lipsTable.createdAt,
             updatedAt: lipsTable.updatedAt,
+
+            // Set to null to save a join with guestsTable (see `getLipsBySessionId`) because atm the tool checking the live lip is not interested in this value
+            isInternal: sql<boolean | null>`NULL`,
 
             artist: songsTable.artist,
             songTitle: songsTable.title,

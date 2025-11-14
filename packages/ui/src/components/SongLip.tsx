@@ -6,6 +6,7 @@ import Small from '../typography/Small'
 import Subtitle1 from '../typography/Subtitle1'
 import Subtitle2 from '../typography/Subtitle2'
 import SearchHighlight from './SearchHighlight'
+import { ShineBorder } from './ShineBorder'
 
 export default function SongLip({
     lip,
@@ -24,6 +25,13 @@ export default function SongLip({
         <div className='relative h-24 w-full max-w-96 select-none'>
             <div className='absolute left-1 top-1 h-full w-full bg-black' />
             <div className='relative h-full w-full border-2 border-black bg-white px-3 py-2'>
+                {lip.isInternal && (
+                    <ShineBorder
+                        borderWidth={6}
+                        shineColor={['#A07CFE', '#FE8FB5', '#FFBE7B']}
+                        duration={Math.floor(Math.random() * 2) + 10}
+                    />
+                )}
                 <Subtitle2 className='max-w-[70%] overflow-hidden text-ellipsis whitespace-nowrap text-black'>
                     <SearchHighlight
                         text={toNonBreaking(lip.singerName)}

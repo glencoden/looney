@@ -1,5 +1,21 @@
 @import '@repo/config-tailwind/base';
 
+@theme inline {
+    --animate-shine: shine var(--duration) infinite linear;
+
+    @keyframes shine {
+        0% {
+            background-position: 0% 0%;
+        }
+        50% {
+            background-position: 100% 100%;
+        }
+        to {
+            background-position: 0% 0%;
+        }
+    }
+}
+
 @utility px-main {
     padding-left: 1.5rem;
     padding-right: 1.5rem;

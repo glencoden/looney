@@ -26,6 +26,7 @@
         "./components/QRLive": "./src/components/QRLive.tsx",
         "./components/SearchHighlight": "./src/components/SearchHighlight.tsx",
         "./components/Select": "./src/components/Select.tsx",
+        "./components/ShineBorder": "./src/components/ShineBorder.tsx",
         "./components/SongLip": "./src/components/SongLip.tsx",
         "./components/Spinner": "./src/components/Spinner.tsx",
         "./components/Textarea": "./src/components/Textarea.tsx"

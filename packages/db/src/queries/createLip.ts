@@ -1,10 +1,10 @@
-import { and, eq } from 'drizzle-orm'
+import { and, count, eq } from 'drizzle-orm'
 import { db, LipInsert, lipsTable } from '../index.js'
 
 export const createLip = async (lip: LipInsert) => {
     return db.transaction(async (tx) => {
-        const prevLips = await tx
-            .select()
+        const [idleLips] = await tx
+            .select({ count: count() })
             .from(lipsTable)
             .where(
                 and(
@@ -13,14 +13,16 @@ export const createLip = async (lip: LipInsert) => {
                 ),
             )
 
-        const result = await tx
+        const idleLipsCount = idleLips?.count ?? 0
+
+        const [insertedLip] = await tx
             .insert(lipsTable)
             .values({
                 ...lip,
-                sortNumber: prevLips.length + 1,
+                sortNumber: idleLipsCount + 1,
             })
             .returning()
 
-        return result[0] ?? null
+        return insertedLip ?? null
     })
 }

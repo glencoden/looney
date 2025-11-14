@@ -22,7 +22,7 @@ export default function AddDemoLipButton({
         })
 
     const handleAddButtonClick = () => {
-        void createDemoLip({ id: session.id })
+        // void createDemoLip({ id: session.id })
     }
 
     const [isPending, setIsPending] = useState(false)

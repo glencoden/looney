@@ -5,7 +5,7 @@ import {
     SessionSchema,
 } from '@repo/db'
 import {
-    createDemoLips,
+    createDemoLip,
     createLip,
     getLipsByGuestId,
     getLipsBySessionId,
@@ -70,8 +70,17 @@ export const lipRouter = {
         }),
 
     createDemo: protectedProcedure
-        .input(SessionSchema.pick({ id: true }))
-        .mutation(({ input }) => {
-            return createDemoLips(input.id)
+        .input(LipInsertSchema.pick({ sessionId: true, songId: true }))
+        .mutation(({ input, ctx }) => {
+            const email = ctx.user.email
+            if (!email) {
+                throw new Error(
+                    'The user trying to create a demo lip has no email',
+                )
+            }
+            return createDemoLip({
+                email,
+                ...input,
+            })
         }),
 }

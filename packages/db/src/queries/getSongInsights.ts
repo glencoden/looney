@@ -1,5 +1,22 @@
-import { and, asc, count, eq, gte, inArray, lte, SQL, sql } from 'drizzle-orm'
-import { db, lipsTable, songsTable, type Session } from '../index.js'
+import {
+    and,
+    asc,
+    count,
+    eq,
+    gte,
+    inArray,
+    isNull,
+    lte,
+    SQL,
+    sql,
+} from 'drizzle-orm'
+import {
+    db,
+    guestsTable,
+    lipsTable,
+    songsTable,
+    type Session,
+} from '../index.js'
 
 export const getSongInsights = (params?: {
     sessionIds?: Session['id'][]
@@ -34,8 +51,9 @@ export const getSongInsights = (params?: {
             >`ARRAY_AGG(DISTINCT ${lipsTable.sessionId})`,
         })
         .from(lipsTable)
+        .innerJoin(guestsTable, eq(lipsTable.guestId, guestsTable.id))
         .innerJoin(songsTable, eq(lipsTable.songId, songsTable.id))
-        .where(and(...filterCallbacks))
+        .where(and(...filterCallbacks, isNull(guestsTable.internalId)))
         .groupBy(songsTable.id, songsTable.title, songsTable.artist)
         .orderBy(asc(songsTable.artist), asc(songsTable.title))
 }

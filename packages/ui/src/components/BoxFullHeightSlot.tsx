@@ -10,7 +10,12 @@ export default function BoxFullHeightSlot({
     className?: string
 }) {
     return (
-        <Slot className={cn('full-height flex-grow max-lg:w-full', className)}>
+        <Slot
+            className={cn(
+                'flex-grow [height:calc(100dvh-theme(spacing.24))] max-lg:w-full md:[height:calc(100dvh-theme(spacing.32))]',
+                className,
+            )}
+        >
             {children}
         </Slot>
     )

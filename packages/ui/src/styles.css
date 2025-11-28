@@ -49,18 +49,6 @@
     }
 }
 
-@utility double-width {
-    width: calc(200vw - var(--spacing-12));
-
-    @media (min-width: 768px) {
-        width: calc(200vw - var(--spacing-16));
-    }
-
-    @media (min-width: 1024px) {
-        width: calc(200vw - var(--spacing-32));
-    }
-}
-
 @utility field-content {
     field-sizing: content;
 }

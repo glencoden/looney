@@ -13,7 +13,7 @@ export default function BoxHorizontalPagination({
     return (
         <div
             className={cn(
-                'max-lg:double-width relative gap-12 transition-transform duration-300 max-lg:grid max-lg:grid-cols-2 max-lg:justify-items-center md:gap-16 lg:flex',
+                'relative gap-12 transition-transform duration-300 max-lg:grid max-lg:grid-cols-2 max-lg:justify-items-center max-lg:[width:calc(200vw-theme(spacing.12))] md:gap-16 md:max-lg:[width:calc(200vw-theme(spacing.16))] lg:flex lg:max-lg:[width:calc(200vw-theme(spacing.32))]',
                 {
                     'max-lg:-translate-x-[100vw]': !isLeft,
                 },

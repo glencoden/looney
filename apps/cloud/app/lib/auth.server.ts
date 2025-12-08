@@ -1,11 +1,22 @@
-import { db } from '@repo/db'
+import {
+    authAccountTable,
+    authSessionTable,
+    authUserTable,
+    authVerificationTable,
+    db,
+} from '@repo/db'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-// TODO: Import server-only as soon as Vercel plugin supports api directory outside of vite's bundling root
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
         provider: 'pg',
+        schema: {
+            user: authUserTable,
+            session: authSessionTable,
+            account: authAccountTable,
+            verification: authVerificationTable,
+        },
     }),
     session: {
         modelName: 'user_session',

@@ -1,0 +1,35 @@
+{
+    "name": "@repo/auth",
+    "version": "1.0.0",
+    "type": "module",
+    "exports": {
+        "./server": {
+            "import": "./dist/auth.js",
+            "require": "./dist/auth.js",
+            "types": "./dist/auth.d.ts"
+        },
+        "./client": {
+            "import": "./dist/client.js",
+            "require": "./dist/client.js",
+            "types": "./dist/client.d.ts"
+        }
+    },
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "lint": "eslint . --max-warnings 0",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "@repo/db": "workspace:*",
+        "better-auth": "^1.4.5"
+    },
+    "devDependencies": {
+        "@repo/config-eslint": "workspace:*",
+        "@repo/config-typescript": "workspace:*",
+        "@types/node": "catalog:",
+        "eslint": "catalog:",
+        "tsx": "^4.19.1",
+        "typescript": "catalog:"
+    }
+}

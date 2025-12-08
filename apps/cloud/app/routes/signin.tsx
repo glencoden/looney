@@ -2,7 +2,7 @@ import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import Logo from '@repo/ui/components/Logo'
-import { supabase } from '~/lib/supabase.client'
+import { authClient } from '~/lib/auth.client'
 
 export default function Signin() {
     return (
@@ -15,12 +15,10 @@ export default function Signin() {
                 <nav>
                     <Button
                         onClick={() => {
-                            void supabase.auth.signInWithOAuth({
+                            void authClient.signIn.social({
                                 provider: 'google',
-                                options: {
-                                    redirectTo: import.meta.env
-                                        .VITE_SUPABASE_REDIRECT_URL,
-                                },
+                                callbackURL: import.meta.env
+                                    .VITE_SUPABASE_REDIRECT_URL,
                             })
                         }}
                     >

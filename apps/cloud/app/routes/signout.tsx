@@ -4,13 +4,13 @@ import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import Logo from '@repo/ui/components/Logo'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
-import { supabase } from '~/lib/supabase.client'
+import { authClient } from '~/lib/auth.client'
 
 export default function Signout() {
     const navigate = useNavigate()
 
-    const logout = async () => {
-        await supabase.auth.signOut()
+    const signOut = async () => {
+        await authClient.signOut()
         window.removeEventListener('beforeunload', handleBeforeUnload)
         navigate('/signin')
     }
@@ -26,7 +26,7 @@ export default function Signout() {
                     <Button
                         variant='secondary'
                         onClick={() => {
-                            void logout()
+                            void signOut()
                         }}
                     >
                         Logout

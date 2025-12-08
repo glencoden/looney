@@ -7,6 +7,9 @@ export const auth = betterAuth({
     database: drizzleAdapter(db, {
         provider: 'pg',
     }),
+    session: {
+        modelName: 'user_session',
+    },
     socialProviders: {
         google: {
             clientId: process.env.GOOGLE_CLIENT_ID!,

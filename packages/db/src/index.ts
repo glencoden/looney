@@ -3,6 +3,19 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { strict as assert } from 'node:assert'
 import postgres from 'postgres'
 import { z } from 'zod'
+import {
+    authAccountRelations,
+    authAccountTable as authAccountSchema,
+} from './schema/authAccountTable.js'
+import {
+    authSessionRelations,
+    authSessionTable as authSessionSchema,
+} from './schema/authSessionTable.js'
+import {
+    authUserRelations,
+    authUserTable as authUserSchema,
+} from './schema/authUserTable.js'
+import { authVerificationTable as authVerificationSchema } from './schema/authVerificationTable.js'
 import { guestsTable as guestsSchema } from './schema/guestsTable.js'
 import { lipsTable as lipsSchema } from './schema/lipsTable.js'
 import { permissionsTable as permissionsSchema } from './schema/permissionsTable.js'
@@ -23,6 +36,11 @@ export const guestsTable = guestsSchema
 export const lipsTable = lipsSchema
 
 export const permissionsTable = permissionsSchema
+
+export const authUserTable = authUserSchema
+export const authSessionTable = authSessionSchema
+export const authAccountTable = authAccountSchema
+export const authVerificationTable = authVerificationSchema
 
 /**
  * Zod schema
@@ -46,6 +64,17 @@ export const LipInsertSchema = createInsertSchema(lipsTable)
 export const PermissionSchema = createSelectSchema(permissionsTable)
 export const PermissionInsertSchema = createInsertSchema(permissionsTable)
 
+export const AuthUserSchema = createSelectSchema(authUserTable)
+export const AuthUserInsertSchema = createInsertSchema(authUserTable)
+export const AuthSessionSchema = createSelectSchema(authSessionTable)
+export const AuthSessionInsertSchema = createInsertSchema(authSessionTable)
+export const AuthAccountSchema = createSelectSchema(authAccountTable)
+export const AuthAccountInsertSchema = createInsertSchema(authAccountTable)
+export const AuthVerificationSchema = createSelectSchema(authVerificationTable)
+export const AuthVerificationInsertSchema = createInsertSchema(
+    authVerificationTable,
+)
+
 /**
  * Types
  */
@@ -67,6 +96,17 @@ export type LipInsert = z.infer<typeof LipInsertSchema>
 export type Permission = z.infer<typeof PermissionSchema>
 export type PermissionInsert = z.infer<typeof PermissionInsertSchema>
 
+export type AuthUser = z.infer<typeof AuthUserSchema>
+export type AuthUserInsert = z.infer<typeof AuthUserInsertSchema>
+export type AuthSession = z.infer<typeof AuthSessionSchema>
+export type AuthSessionInsert = z.infer<typeof AuthSessionInsertSchema>
+export type AuthAccount = z.infer<typeof AuthAccountSchema>
+export type AuthAccountInsert = z.infer<typeof AuthAccountInsertSchema>
+export type AuthVerification = z.infer<typeof AuthVerificationSchema>
+export type AuthVerificationInsert = z.infer<
+    typeof AuthVerificationInsertSchema
+>
+
 /**
  * Database client
  */
@@ -78,6 +118,13 @@ const schema = {
     sessionsSchema,
     guestsSchema,
     lipsSchema,
+    authUserSchema,
+    authSessionSchema,
+    authAccountSchema,
+    authVerificationSchema,
+    authUserRelations,
+    authSessionRelations,
+    authAccountRelations,
 }
 
 const databaseUrl = process.env.DATABASE_URL

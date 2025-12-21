@@ -359,6 +359,9 @@ importers:
       '@astrojs/react':
         specifier: ^4.4.0
         version: 4.4.0(@types/node@24.6.2)(@types/react-dom@18.3.7(@types/react@18.3.25))(@types/react@18.3.25)(jiti@2.6.1)(lightningcss@1.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tsx@4.20.6)(yaml@2.8.1)
+      '@repo/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       astro:
         specifier: ^5.14.1
         version: 5.14.1(@types/node@24.6.2)(jiti@2.6.1)(lightningcss@1.30.1)(rollup@4.52.4)(tsx@4.20.6)(typescript@5.9.3)(yaml@2.8.1)
@@ -390,6 +393,9 @@ importers:
       '@types/react-dom':
         specifier: 'catalog:'
         version: 18.3.7(@types/react@18.3.25)
+      dotenv-cli:
+        specifier: 'catalog:'
+        version: 10.0.0
       eslint:
         specifier: 'catalog:'
         version: 8.57.1

@@ -1,8 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import { SongsPage } from '../components/SongsPage'
+import { getSongs } from '@repo/db/queries'
+
+const songs = await getSongs()
 ---
 
 <Layout title="Looney - Songs">
-  <SongsPage client:load />
+  <SongsPage songs={songs} />
 </Layout>

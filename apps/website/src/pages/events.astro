@@ -1,8 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import { EventsPage } from '../components/EventsPage'
+import { getEvents } from '../utils/getEvents'
+
+const events = await getEvents()
 ---
 
 <Layout title="Looney - Events">
-  <EventsPage client:load />
+  <EventsPage events={events} />
 </Layout>

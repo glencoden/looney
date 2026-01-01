@@ -1,0 +1,13 @@
+name: Daily website deploy
+
+on:
+    schedule:
+        - cron: '0 6 * * *' # 6 AM UTC daily
+    workflow_dispatch: # Allow manual trigger
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Trigger website deploy to Vercel
+              run: curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"

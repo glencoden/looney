@@ -11,6 +11,7 @@
     },
     "dependencies": {
         "@astrojs/react": "^4.4.0",
+        "@astrojs/sitemap": "^3.7.1",
         "@repo/db": "workspace:*",
         "astro": "^5.14.1",
         "date-fns": "^4.1.0",
@@ -21,11 +22,11 @@
     },
     "devDependencies": {
         "@repo/config-eslint": "workspace:*",
-        "dotenv-cli": "catalog:",
         "@repo/config-tailwind": "workspace:*",
         "@tailwindcss/vite": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
+        "dotenv-cli": "catalog:",
         "eslint": "catalog:",
         "tailwindcss": "catalog:",
         "typescript": "catalog:"

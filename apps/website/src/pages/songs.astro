@@ -6,6 +6,6 @@ import { getSongs } from '@repo/db/queries'
 const songs = await getSongs()
 ---
 
-<Layout title="Looney - Songs">
+<Layout title="Looney - Songs" description="Die Looney Songliste — wähl deinen Rock-Karaoke-Song.">
   <SongsPage songs={songs} />
 </Layout>

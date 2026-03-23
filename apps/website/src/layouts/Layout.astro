@@ -4,21 +4,54 @@ import '../styles/global.css'
 
 interface Props {
   title?: string
+  description?: string
 }
 
-const { title = 'Live Rock Karaoke' } = Astro.props
+const { title = 'Looney - Live Rock Karaoke', description = 'Live-Rock-Karaoke-Band aus Berlin. Wähl deinen Song, schnapp dir das Mikro und rock die Bühne mit einer Live-Band.' } = Astro.props
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+const ogImageURL = new URL('/og-image.png', Astro.site)
+
+const musicGroupJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicGroup',
+  name: 'Looneytunez',
+  alternateName: 'Looney',
+  url: 'https://live-rock-karaoke.de',
+  genre: ['Rock', 'Karaoke'],
+  description: 'Live-Rock-Karaoke-Band aus Berlin.',
+  image: ogImageURL.href,
+  location: {
+    '@type': 'City',
+    name: 'Berlin',
+  },
+}
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL.href} />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&family=Noto+Sans+JP:wght@900&family=Pacifico&display=swap" rel="stylesheet" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL.href} />
+    <meta property="og:locale" content="de_DE" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL.href} />
     <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(musicGroupJsonLd)} />
   </head>
   <body>
     <div class="viewport">
@@ -35,9 +68,9 @@ const { title = 'Live Rock Karaoke' } = Astro.props
 
       <Navigation client:load />
 
-      <div class="main-content">
+      <main class="main-content">
         <slot />
-      </div>
+      </main>
     </div>
   </body>
 </html>
@@ -63,7 +96,7 @@ const { title = 'Live Rock Karaoke' } = Astro.props
     overflow: hidden;
   }
 
-  .main-content {
+  main.main-content {
     position: relative;
     width: var(--main-content-width);
   }

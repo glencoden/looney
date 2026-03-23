@@ -4,8 +4,43 @@ import { EventsPage } from '../components/EventsPage'
 import { getEvents } from '../utils/getEvents'
 
 const events = await getEvents()
+
+const now = new Date()
+const upcomingEvents = events.filter((e) => new Date(e.start) >= now)
+
+const eventsJsonLd = upcomingEvents.map((event) => {
+  const venueParts = event.venue.split('/')
+  const venueName = venueParts[0].trim()
+  const venueCity = venueParts[1]?.trim() || 'Berlin'
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'MusicEvent',
+    name: `Looneytunez live — ${venueName}`,
+    startDate: event.start,
+    description: event.description || 'Looneytunez live!',
+    performer: {
+      '@type': 'MusicGroup',
+      name: 'Looneytunez',
+      url: 'https://live-rock-karaoke.de',
+    },
+    location: {
+      '@type': 'MusicVenue',
+      name: venueName,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: venueCity,
+        addressCountry: 'DE',
+      },
+    },
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  }
+})
 ---
 
-<Layout title="Looney - Events">
+<Layout title="Looney - Events" description="Kommende Looney Live-Rock-Karaoke-Shows in Berlin.">
   <EventsPage events={events} />
+  {eventsJsonLd.length > 0 && (
+    <script type="application/ld+json" set:html={JSON.stringify(eventsJsonLd)} />
+  )}
 </Layout>

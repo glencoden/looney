@@ -55,6 +55,7 @@ export const useAutoToolConnection = ({
         queryKey: ['auto-tool-server-ip'],
         queryFn: async () => {
             const response = await fetch(
+                // THIS URL IS OUT OF USE
                 'https://api.looneytunez.de/live/auto_tool_server_ip',
             )
             if (!response.ok) {

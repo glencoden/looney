@@ -15,7 +15,7 @@
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
         "@repo/utils": "workspace:*",
-"@tanstack/react-query": "catalog:",
+        "@tanstack/react-query": "catalog:",
         "@trpc/server": "catalog:",
         "@vercel/remix": "catalog:",
         "react": "catalog:",

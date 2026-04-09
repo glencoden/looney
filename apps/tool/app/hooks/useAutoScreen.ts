@@ -1,8 +1,7 @@
 import { api } from '@repo/api/client'
 import { Session, Song } from '@repo/db'
 import { skipToken } from '@tanstack/react-query'
-import { useEffect, useMemo } from 'react'
-import { supabase } from '~/lib/supabase.client'
+import { useMemo } from 'react'
 
 type Response =
     | {
@@ -23,65 +22,19 @@ export const useAutoScreen = ({
 }: {
     isDisabled?: boolean
 }): Response => {
-    const utils = api.useUtils()
-
-    const { data: session } = api.session.getCurrent.useQuery()
+    const { data: session } = api.session.getCurrent.useQuery(undefined, {
+        refetchInterval: 1000,
+    })
 
     const { data: liveLip } = api.lip.getLiveBySessionId.useQuery(
         session ? { id: session.id } : skipToken,
         {
-            refetchInterval: 1000 * 5,
+            refetchInterval: 1000,
         },
     )
 
     const isSessionActive =
         Boolean(session) && !session!.isLocked && session!.endsAt > new Date()
-
-    useEffect(() => {
-        const channel = supabase
-            .channel('session')
-            .on(
-                'postgres_changes',
-                {
-                    event: '*',
-                    schema: 'public',
-                    table: 'session',
-                },
-                () => {
-                    void utils.session.getCurrent.invalidate()
-                },
-            )
-            .subscribe()
-
-        return () => {
-            void supabase.removeChannel(channel)
-        }
-    }, [utils])
-
-    useEffect(() => {
-        if (!session?.id) {
-            return
-        }
-        const channel = supabase
-            .channel('lip')
-            .on(
-                'postgres_changes',
-                {
-                    event: '*',
-                    schema: 'public',
-                    table: 'lip',
-                },
-                () => {
-                    void utils.lip.getLiveBySessionId.invalidate({
-                        id: session.id,
-                    })
-                },
-            )
-            .subscribe()
-        return () => {
-            void supabase.removeChannel(channel)
-        }
-    }, [utils, session?.id])
 
     return useMemo(() => {
         if (!isSessionActive || isDisabled) {

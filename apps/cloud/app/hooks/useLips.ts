@@ -1,32 +1,33 @@
 import { api } from '@repo/api/client'
 import { Session } from '@repo/db'
-import { useEffect } from 'react'
-import { supabase } from '~/lib/supabase.client'
+import { useEffect, useRef } from 'react'
 
 export const useLips = (sessionId: Session['id']) => {
     const utils = api.useUtils()
 
-    // Listen for lip insertions of the current session
+    const { data: digest } = api.lip.getSessionDigest.useQuery(
+        { id: sessionId },
+        { refetchInterval: 3000 },
+    )
+
+    const prevDigestRef = useRef(digest)
+
     useEffect(() => {
-        const channel = supabase
-            .channel('lip')
-            .on(
-                'postgres_changes',
-                {
-                    event: 'INSERT',
-                    schema: 'public',
-                    table: 'lip',
-                    filter: `session_id=eq.${sessionId}`,
-                },
-                () => {
-                    void utils.lip.getBySessionId.invalidate({ id: sessionId })
-                },
-            )
-            .subscribe()
-        return () => {
-            void supabase.removeChannel(channel)
+        const prev = prevDigestRef.current
+        prevDigestRef.current = digest
+
+        if (!prev || !digest) {
+            return
         }
-    }, [utils, sessionId])
+
+        const hasChanged =
+            prev.count !== digest.count ||
+            prev.lastUpdatedAt?.getTime() !== digest.lastUpdatedAt?.getTime()
+
+        if (hasChanged) {
+            void utils.lip.getBySessionId.invalidate({ id: sessionId })
+        }
+    }, [digest, utils, sessionId])
 
     return api.lip.getBySessionId.useQuery({ id: sessionId })
 }

@@ -301,9 +301,6 @@ importers:
       '@repo/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@supabase/supabase-js':
-        specifier: 'catalog:'
-        version: 2.102.1
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.96.2(react@18.3.1)

@@ -72,8 +72,9 @@ export default function AddDemoDialogContent({
                                         'fill-blue-300': isFavorite,
                                     })}
                                 />
-                                <div
-                                    className='cursor-pointer'
+                                <button
+                                    type='button'
+                                    className='cursor-pointer text-left'
                                     onClick={() => handleSongClick(id)}
                                 >
                                     <Body2 dark className='inline'>
@@ -89,7 +90,7 @@ export default function AddDemoDialogContent({
                                             searchString={q}
                                         />
                                     </Body1>
-                                </div>
+                                </button>
                             </div>
                         </li>
                     ),

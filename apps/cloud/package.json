@@ -10,7 +10,7 @@
         "typecheck": "tsc"
     },
     "dependencies": {
-        "@react-spring/web": "^10.0.1",
+        "@react-spring/web": "^10.0.3",
         "@remix-run/react": "catalog:",
         "@repo/api": "workspace:*",
         "@repo/db": "workspace:*",

@@ -41,16 +41,16 @@
     },
     "dependencies": {
         "@radix-ui/react-dialog": "^1.1.15",
-        "@radix-ui/react-slot": "^1.1.0",
+        "@radix-ui/react-slot": "^1.2.4",
         "@repo/api": "workspace:*",
         "@repo/utils": "workspace:*",
         "add": "^2.0.6",
-        "class-variance-authority": "^0.7.0",
+        "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "date-fns": "^4.1.0",
         "lucide-react": "^0.540.0",
-        "pnpm": "^10.22.0",
-        "tailwind-merge": "^3.3.1"
+        "pnpm": "^10.33.0",
+        "tailwind-merge": "^3.5.0"
     },
     "devDependencies": {
         "@repo/config-eslint": "workspace:*",

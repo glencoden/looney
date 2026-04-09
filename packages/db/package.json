@@ -23,9 +23,9 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "drizzle-orm": "^0.44.4",
+        "drizzle-orm": "^0.44.7",
         "drizzle-zod": "^0.8.3",
-        "postgres": "^3.4.4",
+        "postgres": "^3.4.9",
         "zod": "catalog:"
     },
     "devDependencies": {
@@ -34,10 +34,10 @@
         "@types/node": "catalog:",
         "dotenv": "catalog:",
         "dotenv-cli": "catalog:",
-        "drizzle-kit": "^0.31.4",
+        "drizzle-kit": "^0.31.10",
         "eslint": "catalog:",
         "eslint-plugin-drizzle": "^0.2.3",
-        "tsx": "^4.19.1",
+        "tsx": "^4.21.0",
         "typescript": "catalog:"
     }
 }

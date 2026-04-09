@@ -10,10 +10,10 @@
         "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint ."
     },
     "dependencies": {
-        "@astrojs/react": "^4.4.0",
-        "@astrojs/sitemap": "^3.7.1",
+        "@astrojs/react": "^4.4.2",
+        "@astrojs/sitemap": "^3.7.2",
         "@repo/db": "workspace:*",
-        "astro": "^5.14.1",
+        "astro": "^5.18.1",
         "date-fns": "^4.1.0",
         "googleapis": "^144.0.0",
         "react": "catalog:",

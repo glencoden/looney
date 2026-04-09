@@ -30,6 +30,7 @@ export { updateSession } from './updateSession.js'
 
 export { createDemoLip } from './createDemoLip.js'
 export { createLip } from './createLip.js'
+export { getLipDigestBySessionId } from './getLipDigestBySessionId.js'
 export { getLipsByGuestId } from './getLipsByGuestId.js'
 export { getLipsBySessionId } from './getLipsBySessionId.js'
 export { getLiveLipBySessionId } from './getLiveLipBySessionId.js'

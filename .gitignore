@@ -9,7 +9,7 @@ node_modules
 .DS_Store
 npm-debug.log*
 
-supabase
+supabase/seed.sql
 calendar-credentials.json
 
 # vercel

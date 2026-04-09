@@ -28,8 +28,8 @@
     "dependencies": {
         "@repo/db": "workspace:*",
         "@tanstack/react-query": "catalog:",
-        "@trpc/client": "11.4.4",
-        "@trpc/react-query": "11.4.4",
+        "@trpc/client": "catalog:",
+        "@trpc/react-query": "catalog:",
         "@trpc/server": "catalog:",
         "node-telegram-bot-api": "^0.66.0",
         "openai": "^5.23.2",

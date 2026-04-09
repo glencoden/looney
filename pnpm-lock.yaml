@@ -27,6 +27,12 @@ catalogs:
     '@tanstack/react-query':
       specifier: ^5.96.2
       version: 5.96.2
+    '@trpc/client':
+      specifier: ^11.16.0
+      version: 11.16.0
+    '@trpc/react-query':
+      specifier: ^11.16.0
+      version: 11.16.0
     '@trpc/server':
       specifier: ^11.16.0
       version: 11.16.0
@@ -418,11 +424,11 @@ importers:
         specifier: 'catalog:'
         version: 5.96.2(react@18.3.1)
       '@trpc/client':
-        specifier: 11.4.4
-        version: 11.4.4(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3)
+        specifier: 'catalog:'
+        version: 11.16.0(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3)
       '@trpc/react-query':
-        specifier: 11.4.4
-        version: 11.4.4(@tanstack/react-query@5.96.2(react@18.3.1))(@trpc/client@11.4.4(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3))(@trpc/server@11.16.0(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
+        specifier: 'catalog:'
+        version: 11.16.0(@tanstack/react-query@5.96.2(react@18.3.1))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3))(@trpc/server@11.16.0(typescript@5.9.3))(react@18.3.1)(typescript@5.9.3)
       '@trpc/server':
         specifier: 'catalog:'
         version: 11.16.0(typescript@5.9.3)
@@ -517,11 +523,11 @@ importers:
   packages/db:
     dependencies:
       drizzle-orm:
-        specifier: ^0.44.7
-        version: 0.44.7(postgres@3.4.9)
+        specifier: ^0.45.2
+        version: 0.45.2(postgres@3.4.9)
       drizzle-zod:
         specifier: ^0.8.3
-        version: 0.8.3(drizzle-orm@0.44.7(postgres@3.4.9))(zod@4.3.6)
+        version: 0.8.3(drizzle-orm@0.45.2(postgres@3.4.9))(zod@4.3.6)
       postgres:
         specifier: ^3.4.9
         version: 3.4.9
@@ -2583,20 +2589,20 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
-  '@trpc/client@11.4.4':
-    resolution: {integrity: sha512-86OZl+Y+Xlt9ITGlhCMImERcsWCOrVzpNuzg3XBlsDSmSs9NGsghKjeCpJQlE36XaG3aze+o9pRukiYYvBqxgQ==}
+  '@trpc/client@11.16.0':
+    resolution: {integrity: sha512-TxIzm7OoK3baKZ0XCbuMUbI3GhgjcbKHIc4nWVKaRpCRnbSh0T31BT6fTPYwtnA/Nur8pBCGqC2B4J5hEPiPFQ==}
+    hasBin: true
     peerDependencies:
-      '@trpc/server': 11.4.4
+      '@trpc/server': 11.16.0
       typescript: '>=5.7.2'
 
-  '@trpc/react-query@11.4.4':
-    resolution: {integrity: sha512-syXx1JLSERAHWh8BtBZsbv2PIt2nfvO1Sd6C6vHzNO8wAHxpcmq9HyEdrfi+5SfeRfPCJc/ZPCN2wVv98T+big==}
+  '@trpc/react-query@11.16.0':
+    resolution: {integrity: sha512-ah6ULOu4k7lCEFAEoEgqg14YPVu1lnCVVYcz8TP7avPPKwtcB0CbFKYve3ElRP+V5DoBT75Q+G66bRdR+rQ5fg==}
     peerDependencies:
       '@tanstack/react-query': ^5.80.3
-      '@trpc/client': 11.4.4
-      '@trpc/server': 11.4.4
+      '@trpc/client': 11.16.0
+      '@trpc/server': 11.16.0
       react: '>=18.2.0'
-      react-dom: '>=18.2.0'
       typescript: '>=5.7.2'
 
   '@trpc/server@11.16.0':
@@ -3600,8 +3606,8 @@ packages:
     resolution: {integrity: sha512-7OZcmQUrdGI+DUNNsKBn1aW8qSoKuTH7d0mYgSP8bAzdFzKoovxEFnoGQp2dVs82EOJeYycqRtciopszwUf8bw==}
     hasBin: true
 
-  drizzle-orm@0.44.7:
-    resolution: {integrity: sha512-quIpnYznjU9lHshEOAYLoZ9s3jweleHlZIAWR/jX9gAWNg/JhQ1wj0KGRf7/Zm+obRrYd9GjPVJg790QY9N5AQ==}
+  drizzle-orm@0.45.2:
+    resolution: {integrity: sha512-kY0BSaTNYWnoDMVoyY8uxmyHjpJW1geOmBMdSSicKo9CIIWkSxMIj2rkeSR51b8KAPB7m+qysjuHme5nKP+E5Q==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -8677,18 +8683,17 @@ snapshots:
       '@tanstack/query-core': 5.96.2
       react: 18.3.1
 
-  '@trpc/client@11.4.4(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3)':
+  '@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
       '@trpc/server': 11.16.0(typescript@5.9.3)
       typescript: 5.9.3
 
-  '@trpc/react-query@11.4.4(@tanstack/react-query@5.96.2(react@18.3.1))(@trpc/client@11.4.4(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3))(@trpc/server@11.16.0(typescript@5.9.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)':
+  '@trpc/react-query@11.16.0(@tanstack/react-query@5.96.2(react@18.3.1))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3))(@trpc/server@11.16.0(typescript@5.9.3))(react@18.3.1)(typescript@5.9.3)':
     dependencies:
       '@tanstack/react-query': 5.96.2(react@18.3.1)
-      '@trpc/client': 11.4.4(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3)
+      '@trpc/client': 11.16.0(@trpc/server@11.16.0(typescript@5.9.3))(typescript@5.9.3)
       '@trpc/server': 11.16.0(typescript@5.9.3)
       react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
       typescript: 5.9.3
 
   '@trpc/server@11.16.0(typescript@5.9.3)':
@@ -9017,7 +9022,7 @@ snapshots:
       '@babel/plugin-syntax-typescript': 7.28.6(@babel/core@7.29.0)
       '@vanilla-extract/babel-plugin-debug-ids': 1.2.2
       '@vanilla-extract/css': 1.20.1
-      esbuild: 0.17.6
+      esbuild: 0.18.20
       eval: 0.1.8
       find-up: 5.0.0
       javascript-stringify: 2.1.0
@@ -9815,13 +9820,13 @@ snapshots:
       esbuild: 0.25.12
       tsx: 4.21.0
 
-  drizzle-orm@0.44.7(postgres@3.4.9):
+  drizzle-orm@0.45.2(postgres@3.4.9):
     optionalDependencies:
       postgres: 3.4.9
 
-  drizzle-zod@0.8.3(drizzle-orm@0.44.7(postgres@3.4.9))(zod@4.3.6):
+  drizzle-zod@0.8.3(drizzle-orm@0.45.2(postgres@3.4.9))(zod@4.3.6):
     dependencies:
-      drizzle-orm: 0.44.7(postgres@3.4.9)
+      drizzle-orm: 0.45.2(postgres@3.4.9)
       zod: 4.3.6
 
   dset@3.1.4: {}

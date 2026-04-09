@@ -7,6 +7,7 @@ import {
 import {
     createDemoLip,
     createLip,
+    getLipDigestBySessionId,
     getLipsByGuestId,
     getLipsBySessionId,
     getLiveLipBySessionId,
@@ -33,6 +34,12 @@ export const lipRouter = {
         .input(SessionSchema.pick({ id: true }))
         .query(({ input }) => {
             return getLiveLipBySessionId(input.id)
+        }),
+
+    getSessionDigest: publicProcedure
+        .input(SessionSchema.pick({ id: true }))
+        .query(({ input }) => {
+            return getLipDigestBySessionId(input.id)
         }),
 
     create: publicProcedure.input(LipInsertSchema).mutation(({ input }) => {

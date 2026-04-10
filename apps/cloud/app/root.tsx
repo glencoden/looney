@@ -18,7 +18,6 @@ import { ReactNode, useEffect } from 'react'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
 import { hasAccess } from '~/helpers/has-access'
 import { useUserSession } from '~/hooks/useUserSession'
-import { supabase } from '~/lib/supabase.client'
 import './tailwind.css'
 
 export const links: LinksFunction = () => [
@@ -69,7 +68,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 <Links />
             </head>
             <body className='bg-blue-800 text-white'>
-                <TRPCQueryClientProvider supabaseClient={supabase}>
+                <TRPCQueryClientProvider>
                     {children}
                 </TRPCQueryClientProvider>
                 <ScrollRestoration />
@@ -97,8 +96,7 @@ export default function App() {
         }
         if (
             !userSession ||
-            (userSession.expires_at &&
-                new Date(userSession.expires_at * 1000) < new Date())
+            (userSession.expiresAt && userSession.expiresAt < new Date())
         ) {
             navigate('/signin')
         }

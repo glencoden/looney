@@ -7,6 +7,13 @@ import {
     authAccountTable,
     authVerificationTable,
 } from '@repo/db'
+import { strict as assert } from 'node:assert'
+
+const googleClientId = process.env.GOOGLE_CLIENT_ID
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET
+
+assert(googleClientId !== undefined, 'GOOGLE_CLIENT_ID is required')
+assert(googleClientSecret !== undefined, 'GOOGLE_CLIENT_SECRET is required')
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
@@ -18,13 +25,10 @@ export const auth = betterAuth({
             verification: authVerificationTable,
         },
     }),
-    session: {
-        modelName: 'user_session',
-    },
     socialProviders: {
         google: {
-            clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            clientId: googleClientId,
+            clientSecret: googleClientSecret,
         },
     },
 })

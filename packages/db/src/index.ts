@@ -10,6 +10,10 @@ import { sessionsTable as sessionsSchema } from './schema/sessionsTable.js'
 import { setlistsTable as setlistsSchema } from './schema/setlistsTable.js'
 import { setlistsToSongsTable as setlistsToSongsSchema } from './schema/setlistsToSongsTable.js'
 import { songsTable as songsSchema } from './schema/songsTable.js'
+import { authUserTable as authUserSchema } from './schema/authUserTable.js'
+import { authSessionTable as authSessionSchema } from './schema/authSessionTable.js'
+import { authAccountTable as authAccountSchema } from './schema/authAccountTable.js'
+import { authVerificationTable as authVerificationSchema } from './schema/authVerificationTable.js'
 /**
  * Table schema
  */
@@ -23,6 +27,11 @@ export const guestsTable = guestsSchema
 export const lipsTable = lipsSchema
 
 export const permissionsTable = permissionsSchema
+
+export const authUserTable = authUserSchema
+export const authSessionTable = authSessionSchema
+export const authAccountTable = authAccountSchema
+export const authVerificationTable = authVerificationSchema
 
 /**
  * Zod schema
@@ -67,6 +76,12 @@ export type LipInsert = z.infer<typeof LipInsertSchema>
 export type Permission = z.infer<typeof PermissionSchema>
 export type PermissionInsert = z.infer<typeof PermissionInsertSchema>
 
+export const AuthUserSchema = createSelectSchema(authUserTable)
+export type AuthUser = typeof authUserTable.$inferSelect
+
+export const AuthSessionSchema = createSelectSchema(authSessionTable)
+export type AuthSession = typeof authSessionTable.$inferSelect
+
 /**
  * Database client
  */
@@ -78,6 +93,10 @@ const schema = {
     sessionsSchema,
     guestsSchema,
     lipsSchema,
+    authUserSchema,
+    authSessionSchema,
+    authAccountSchema,
+    authVerificationSchema,
 }
 
 const databaseUrl = process.env.DATABASE_URL

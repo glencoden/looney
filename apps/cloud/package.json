@@ -16,7 +16,6 @@
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
         "@repo/utils": "workspace:*",
-        "@supabase/supabase-js": "catalog:",
         "@tanstack/react-query": "catalog:",
         "@trpc/server": "catalog:",
         "@use-gesture/react": "^10.3.1",

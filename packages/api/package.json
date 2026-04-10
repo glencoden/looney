@@ -41,7 +41,6 @@
     "devDependencies": {
         "@repo/config-eslint": "workspace:*",
         "@repo/config-typescript": "workspace:*",
-        "@supabase/supabase-js": "catalog:",
         "@types/react": "^18.3.28",
         "eslint": "catalog:",
         "typescript": "catalog:"

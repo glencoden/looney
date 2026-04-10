@@ -1,4 +1,3 @@
-import type { SupabaseClient } from '@supabase/supabase-js'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCReact } from '@trpc/react-query'
@@ -20,13 +19,9 @@ export const api = createTRPCReact<TRPCRouter>() as ReturnType<
     typeof createTRPCReact<TRPCRouter>
 >
 
-export const TRPCQueryClientProvider: FC<
-    PropsWithChildren<
-        Readonly<{
-            supabaseClient?: SupabaseClient
-        }>
-    >
-> = ({ children, supabaseClient }) => {
+export const TRPCQueryClientProvider: FC<PropsWithChildren> = ({
+    children,
+}) => {
     const [queryClient] = useState(() => new QueryClient())
 
     const [trpcClient] = useState(() =>
@@ -41,30 +36,6 @@ export const TRPCQueryClientProvider: FC<
                 httpBatchLink({
                     url: `${getBaseUrl()}/api/trpc`,
                     transformer: superjson,
-                    headers: async () => {
-                        let authHeaders: { Authorization?: string } = {}
-
-                        if (!supabaseClient) {
-                            return authHeaders
-                        }
-
-                        const { data, error } =
-                            await supabaseClient.auth.getSession()
-
-                        if (error !== null) {
-                            throw new Error(error.message)
-                        }
-
-                        const accessToken = data.session?.access_token
-
-                        if (accessToken) {
-                            authHeaders = {
-                                Authorization: `Bearer ${accessToken}`,
-                            }
-                        }
-
-                        return authHeaders
-                    },
                     fetch(url, options) {
                         return fetch(url, {
                             ...options,

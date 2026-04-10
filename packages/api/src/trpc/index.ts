@@ -2,24 +2,19 @@ import { db } from '@repo/db'
 import { initTRPC, TRPCError } from '@trpc/server'
 import superjson from 'superjson'
 import { ZodError } from 'zod'
-import { supabase } from '../lib/supabase.js'
 
-export const createContext = async (opts: { req: Request }) => {
-    const accessToken = opts.req.headers
-        .get('authorization')
-        ?.replace('Bearer ', '')
+type AuthUser = {
+    id: string
+    email: string
+    name: string
+    image: string | null
+}
 
-    if (!accessToken) {
-        return { db, user: null }
-    }
-
-    const { data, error } = await supabase.auth.getUser(accessToken)
-
-    if (error) {
-        throw new Error(error.message)
-    }
-
-    return { db, user: data.user }
+export const createContext = async (opts: {
+    req: Request
+    user: AuthUser | null
+}) => {
+    return { db, user: opts.user }
 }
 
 type Context = Awaited<ReturnType<typeof createContext>>
@@ -50,7 +45,7 @@ export const protectedProcedure = publicProcedure.use(({ ctx, next }) => {
     }
     return next({
         ctx: {
-            user: ctx.user, // infers non-optional values of the `user` as non-nullable
+            user: ctx.user,
         },
     })
 })

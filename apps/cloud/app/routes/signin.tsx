@@ -2,7 +2,7 @@ import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import Logo from '@repo/ui/components/Logo'
-import { authClient } from '~/lib/auth.client'
+import { authClient } from '~/lib/auth-client'
 
 export default function Signin() {
     return (

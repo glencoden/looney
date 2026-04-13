@@ -4,7 +4,7 @@ import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import Logo from '@repo/ui/components/Logo'
 import { handleBeforeUnload } from '~/helpers/handle-before-unload'
-import { authClient } from '~/lib/auth.client'
+import { authClient } from '~/lib/auth-client'
 
 export default function Signout() {
     const navigate = useNavigate()

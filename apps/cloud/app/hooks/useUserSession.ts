@@ -1,7 +1,7 @@
 import { api } from '@repo/api/client'
 import { skipToken } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { authClient } from '~/lib/auth.client'
+import { authClient } from '~/lib/auth-client'
 
 export const useUserSession = () => {
     const { data: session, isPending: isSessionLoading } =

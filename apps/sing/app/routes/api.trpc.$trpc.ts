@@ -15,6 +15,6 @@ function handleRequest(args: LoaderFunctionArgs | ActionFunctionArgs) {
         endpoint: '/api/trpc',
         req: args.request,
         router: trpcRouter,
-        createContext,
+        createContext: (opts) => createContext({ req: opts.req, user: null }),
     })
 }

@@ -23,7 +23,14 @@ async function handleRequest(args: LoaderFunctionArgs | ActionFunctionArgs) {
         createContext: (opts) =>
             createContext({
                 req: opts.req,
-                user: session?.user ?? null,
+                user: session?.user
+                    ? {
+                          id: session.user.id,
+                          email: session.user.email,
+                          name: session.user.name,
+                          image: session.user.image ?? null,
+                      }
+                    : null,
             }),
     })
 }

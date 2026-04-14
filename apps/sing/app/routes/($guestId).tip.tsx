@@ -1,6 +1,6 @@
 import { api } from '@repo/api/client'
 import { useEffectEvent } from '@repo/utils/hooks'
-import { StripeEmbeddedCheckout } from '@stripe/stripe-js'
+import type { StripeEmbeddedCheckout } from '@stripe/stripe-js'
 import { useEffect, useRef, useState } from 'react'
 import { z } from 'zod'
 import getStripe from '~/helpers/get-stripe'
@@ -24,7 +24,7 @@ export default function Tip() {
             throw new Error('Stripe is not loaded')
         }
 
-        const checkout = await stripe.initEmbeddedCheckout({
+        const checkout = await stripe.createEmbeddedCheckoutPage({
             fetchClientSecret,
         })
 

@@ -17,7 +17,7 @@ const stripe = new Stripe(STRIPE_SECRET_KEY)
 export const stripeRouter = {
     createCheckoutSession: publicProcedure.mutation(async () => {
         const session = await stripe.checkout.sessions.create({
-            ui_mode: 'embedded',
+            ui_mode: 'embedded_page',
             line_items: [
                 {
                     price: TIP_STRIPE_PRICE,

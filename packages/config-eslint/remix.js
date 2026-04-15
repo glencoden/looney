@@ -1,78 +1,76 @@
-/** @type {import('eslint').Linter.Config} */
-module.exports = {
-    root: true,
-    parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        ecmaFeatures: {
-            jsx: true,
+import js from '@eslint/js'
+import prettier from 'eslint-config-prettier/flat'
+import turbo from 'eslint-config-turbo/flat'
+import importPlugin from 'eslint-plugin-import'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
+import reactPlugin from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
+
+export default [
+    {
+        ignores: ['**/node_modules/**', '**/build/**', '**/dist/**', '**/.vercel/**'],
+    },
+    js.configs.recommended,
+    ...turbo,
+    {
+        files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            globals: {
+                ...globals.browser,
+                ...globals.node,
+            },
+            parserOptions: {
+                ecmaFeatures: { jsx: true },
+            },
         },
     },
-    env: {
-        browser: true,
-        commonjs: true,
-        es6: true,
+    {
+        files: ['**/*.{js,jsx,ts,tsx}'],
+        ...reactPlugin.configs.flat.recommended,
     },
-    ignorePatterns: ['!**/.server', '!**/.client', 'build'],
-
-    // Base config
-    extends: ['eslint:recommended'],
-
-    overrides: [
-        // React
-        {
-            files: ['**/*.{js,jsx,ts,tsx}'],
-            plugins: ['react', 'jsx-a11y'],
-            extends: [
-                'plugin:react/recommended',
-                'plugin:react/jsx-runtime',
-                'plugin:react-hooks/recommended',
-                'plugin:jsx-a11y/recommended',
-            ],
-            settings: {
-                react: {
-                    version: 'detect',
-                },
-                formComponents: ['Form'],
-                linkComponents: [
-                    { name: 'Link', linkAttribute: 'to' },
-                    { name: 'NavLink', linkAttribute: 'to' },
-                ],
-                'import/resolver': {
-                    typescript: {},
-                },
-            },
-        },
-
-        // Typescript
-        {
-            files: ['**/*.{ts,tsx}'],
-            plugins: ['@typescript-eslint', 'import'],
-            parser: '@typescript-eslint/parser',
-            settings: {
-                'import/internal-regex': '^~/',
-                'import/resolver': {
-                    node: {
-                        extensions: ['.ts', '.tsx'],
-                    },
-                    typescript: {
-                        alwaysTryTypes: true,
-                    },
-                },
-            },
-            extends: [
-                'plugin:@typescript-eslint/recommended',
-                'plugin:import/recommended',
-                'plugin:import/typescript',
+    {
+        files: ['**/*.{js,jsx,ts,tsx}'],
+        ...reactPlugin.configs.flat['jsx-runtime'],
+    },
+    reactHooks.configs['recommended-latest'],
+    {
+        files: ['**/*.{js,jsx,ts,tsx}'],
+        ...jsxA11y.flatConfigs.recommended,
+    },
+    {
+        files: ['**/*.{js,jsx,ts,tsx}'],
+        settings: {
+            react: { version: 'detect' },
+            formComponents: ['Form'],
+            linkComponents: [
+                { name: 'Link', linkAttribute: 'to' },
+                { name: 'NavLink', linkAttribute: 'to' },
             ],
         },
-
-        // Node
-        {
-            files: ['.eslintrc.cjs', 'server.js'],
-            env: {
-                node: true,
+    },
+    ...tseslint.configs.recommended.map((config) => ({
+        ...config,
+        files: ['**/*.{ts,tsx}'],
+    })),
+    {
+        files: ['**/*.{ts,tsx}'],
+        ...importPlugin.flatConfigs.recommended,
+    },
+    {
+        files: ['**/*.{ts,tsx}'],
+        ...importPlugin.flatConfigs.typescript,
+        settings: {
+            ...importPlugin.flatConfigs.typescript.settings,
+            'import/internal-regex': '^~/',
+            'import/resolver': {
+                node: { extensions: ['.ts', '.tsx'] },
+                typescript: { alwaysTryTypes: true },
             },
         },
-    ],
-}
+    },
+    prettier,
+]

@@ -1,34 +1,34 @@
-const { resolve } = require('node:path')
+import js from '@eslint/js'
+import prettier from 'eslint-config-prettier/flat'
+import turbo from 'eslint-config-turbo/flat'
+import onlyWarn from 'eslint-plugin-only-warn'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
 
-const project = resolve(process.cwd(), 'tsconfig.json')
-
-/** @type {import("eslint").Linter.Config} */
-module.exports = {
-    extends: ['eslint:recommended', 'prettier', 'turbo'],
-    plugins: ['only-warn'],
-    globals: {
-        React: true,
-        JSX: true,
+export default [
+    {
+        ignores: ['**/node_modules/**', '**/dist/**'],
     },
-    env: {
-        node: true,
-    },
-    settings: {
-        'import/resolver': {
-            typescript: {
-                project,
+    js.configs.recommended,
+    ...turbo,
+    {
+        files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            globals: {
+                ...globals.node,
+                React: true,
+                JSX: true,
             },
         },
-    },
-    ignorePatterns: [
-        // Ignore dotfiles
-        '.*.js',
-        'node_modules/',
-        'dist/',
-    ],
-    overrides: [
-        {
-            files: ['*.js?(x)', '*.ts?(x)'],
+        plugins: {
+            'only-warn': onlyWarn,
         },
-    ],
-}
+    },
+    ...tseslint.configs.recommended.map((config) => ({
+        ...config,
+        files: ['**/*.{ts,tsx}'],
+    })),
+    prettier,
+]

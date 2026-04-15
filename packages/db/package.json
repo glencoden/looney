@@ -37,7 +37,6 @@
         "dotenv-cli": "catalog:",
         "drizzle-kit": "^0.31.10",
         "eslint": "catalog:",
-        "eslint-plugin-drizzle": "^0.2.3",
         "tsx": "^4.21.0",
         "typescript": "catalog:"
     }

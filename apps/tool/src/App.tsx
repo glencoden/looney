@@ -15,7 +15,19 @@ import { useHomeScreenTimer } from '~/hooks/useHomeScreenTimer'
 import type { Index } from '~/types/Index'
 import type { Position } from '~/types/Position'
 
-export default function Index() {
+export default function App() {
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            e.returnValue = false
+        }
+
+        window.addEventListener('beforeunload', handleBeforeUnload)
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload)
+        }
+    }, [])
+
     /**
      *
      * Server state

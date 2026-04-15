@@ -1,17 +1,21 @@
 {
-    "extends": "@repo/config-typescript/remix.json",
+    "extends": "@repo/config-typescript/react-library.json",
     "compilerOptions": {
         "baseUrl": ".",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "allowJs": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "types": ["vite/client", "node"],
         "paths": {
-            "~/*": ["./app/*"]
+            "~/*": ["./src/*"]
         }
     },
     "include": [
-        "./**/*.ts",
-        "./**/*.tsx",
-        "./**/.server/**/*.ts",
-        "./**/.server/**/*.tsx",
-        "./**/.client/**/*.ts",
-        "./**/.client/**/*.tsx"
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "api/**/*.ts",
+        "vite.config.ts"
     ]
 }

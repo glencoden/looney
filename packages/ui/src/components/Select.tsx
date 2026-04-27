@@ -1,10 +1,13 @@
-import { SelectHTMLAttributes, forwardRef } from 'react'
+import { type Ref, type SelectHTMLAttributes } from 'react'
 import { cn } from '../helpers'
 
-const Select = forwardRef<
-    HTMLSelectElement,
-    SelectHTMLAttributes<HTMLSelectElement>
->(({ className, ...props }, ref) => {
+const Select = ({
+    className,
+    ref,
+    ...props
+}: SelectHTMLAttributes<HTMLSelectElement> & {
+    ref?: Ref<HTMLSelectElement>
+}) => {
     return (
         <select
             className={cn(
@@ -15,8 +18,6 @@ const Select = forwardRef<
             {...props}
         />
     )
-})
-
-Select.displayName = 'Select'
+}
 
 export default Select

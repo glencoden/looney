@@ -1,10 +1,14 @@
-import { type InputHTMLAttributes, forwardRef } from 'react'
+import { type InputHTMLAttributes, type Ref } from 'react'
 import { cn } from '../helpers'
 
-const Input = forwardRef<
-    HTMLInputElement,
-    InputHTMLAttributes<HTMLInputElement>
->(({ className, type, ...props }, ref) => {
+const Input = ({
+    className,
+    type,
+    ref,
+    ...props
+}: InputHTMLAttributes<HTMLInputElement> & {
+    ref?: Ref<HTMLInputElement>
+}) => {
     return (
         <input
             type={type}
@@ -16,8 +20,6 @@ const Input = forwardRef<
             {...props}
         />
     )
-})
-
-Input.displayName = 'Input'
+}
 
 export default Input

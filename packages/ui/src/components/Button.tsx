@@ -1,6 +1,6 @@
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { type ButtonHTMLAttributes, forwardRef } from 'react'
+import { type ButtonHTMLAttributes, type Ref } from 'react'
 import { cn } from '../helpers'
 import Spinner from './Spinner'
 
@@ -35,53 +35,46 @@ export interface ButtonProps
         VariantProps<typeof buttonVariants> {
     loading?: boolean
     asChild?: boolean
+    ref?: Ref<HTMLButtonElement>
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-    (
-        {
-            className,
-            variant,
-            size,
-            loading = false,
-            asChild = false,
-            children,
-            ...props
-        },
-        ref,
-    ) => {
-        if (loading) {
-            return (
-                <button
-                    className={cn(buttonVariants({ variant, size, className }))}
-                    {...props}
-                    disabled
-                >
-                    <div className='flex w-full items-center justify-center'>
-                        <Spinner
-                            light={
-                                variant !== 'secondary' && variant !== 'ghost'
-                            }
-                        />
-                    </div>
-                </button>
-            )
-        }
-
-        const Component = asChild ? Slot : 'button'
-
+const Button = ({
+    className,
+    variant,
+    size,
+    loading = false,
+    asChild = false,
+    children,
+    ref,
+    ...props
+}: ButtonProps) => {
+    if (loading) {
         return (
-            <Component
+            <button
                 className={cn(buttonVariants({ variant, size, className }))}
-                ref={ref}
                 {...props}
+                disabled
             >
-                {children}
-            </Component>
+                <div className='flex w-full items-center justify-center'>
+                    <Spinner
+                        light={variant !== 'secondary' && variant !== 'ghost'}
+                    />
+                </div>
+            </button>
         )
-    },
-)
+    }
 
-Button.displayName = 'Button'
+    const Component = asChild ? Slot : 'button'
+
+    return (
+        <Component
+            className={cn(buttonVariants({ variant, size, className }))}
+            ref={ref}
+            {...props}
+        >
+            {children}
+        </Component>
+    )
+}
 
 export default Button

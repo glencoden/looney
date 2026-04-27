@@ -11,8 +11,12 @@ export const useHomeScreenTimer = (
 } => {
     const [showHomeScreen, setShowHomeScreen] = useState(false)
 
-    const songTimerRef = useRef<ReturnType<typeof setTimeout>>()
-    const homeTimerRef = useRef<ReturnType<typeof setTimeout>>()
+    const songTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+        undefined,
+    )
+    const homeTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+        undefined,
+    )
 
     const clearAllTimers = useCallback(() => {
         clearTimeout(songTimerRef.current)

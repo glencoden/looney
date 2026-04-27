@@ -76,7 +76,7 @@ export default function Songs() {
         }
     }, [q])
 
-    const searchTimeoutIdRef = useRef<ReturnType<typeof setTimeout>>()
+    const searchTimeoutIdRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
     return (
         <BoxMain

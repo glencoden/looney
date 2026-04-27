@@ -94,7 +94,7 @@ export default function SetlistEdit() {
         }
     }, [q])
 
-    const searchTimeoutIdRef = useRef<ReturnType<typeof setTimeout>>()
+    const searchTimeoutIdRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
     return (
         <div

@@ -1,0 +1,39 @@
+diff --git a/dist/react-spring_core.modern.mjs b/dist/react-spring_core.modern.mjs
+index 38a4b8e91132e9ceda2182c9b38ab05c63363017..d2440464ef9ed52a01625877beab50c1c8f77c0a 100644
+--- a/dist/react-spring_core.modern.mjs
++++ b/dist/react-spring_core.modern.mjs
+@@ -1724,6 +1724,8 @@ function useSprings(length, props, deps) {
+   );
+   const ctrls = useRef([...state.ctrls]);
+   const updates = useRef([]);
++  const committedUpdates = useRef([]);
++  committedUpdates.current = [];
+   const prevLength = usePrev(length) || 0;
+   useMemo2(() => {
+     each5(ctrls.current.slice(length, prevLength), (ctrl) => {
+@@ -1759,12 +1761,13 @@ function useSprings(length, props, deps) {
+       state.queue = [];
+       each5(queue, (cb) => cb());
+     }
++    const activeUpdates = updates.current.length > 0 ? updates.current : committedUpdates.current;
+     each5(ctrls.current, (ctrl, i) => {
+       ref?.add(ctrl);
+       if (hasContext) {
+         ctrl.start({ default: context });
+       }
+-      const update2 = updates.current[i];
++      const update2 = activeUpdates[i];
+       if (update2) {
+         replaceRef(ctrl, update2.ref);
+         if (ctrl.ref) {
+@@ -1774,6 +1777,10 @@ function useSprings(length, props, deps) {
+         }
+       }
+     });
++    if (updates.current.length > 0) {
++      committedUpdates.current = updates.current;
++    }
++    updates.current = [];
+   });
+   useOnce(() => () => {
+     each5(state.ctrls, (ctrl) => ctrl.stop(true));

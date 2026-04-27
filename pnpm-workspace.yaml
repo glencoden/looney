@@ -13,16 +13,21 @@ catalog:
   '@trpc/react-query': ^11.16.0
   '@trpc/server': ^11.16.0
   '@types/node': ^24.12.2
-  '@types/react': ^18.3.28
-  '@types/react-dom': ^18.3.7
+  '@types/react': ^19.2.14
+  '@types/react-dom': ^19.2.3
   '@vercel/remix': ^2.16.7
   dotenv: ^17.4.1
   dotenv-cli: ^10.0.0
   eslint: ^9.38.0
-  react: ^18.3.1
-  react-dom: ^18.3.1
+  react: ^19.2.5
+  react-dom: ^19.2.5
   tailwindcss: ^4.2.2
   typescript: ^5.9.3
   vite: ^5.4.21
   vite-tsconfig-paths: ^4.3.2
   zod: ^4.3.6
+# Patch source: https://github.com/pmndrs/react-spring/pull/2410
+# Fixes useSprings stale-update bug on React 19 (imperative .start() during drag).
+# Drop this entry once a release of @react-spring/core ships PR #2410.
+patchedDependencies:
+  '@react-spring/core@10.0.3': patches/@react-spring__core@10.0.3.patch

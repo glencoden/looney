@@ -6,7 +6,7 @@
         "dev": "dotenv -- turbo dev",
         "lint": "prettier --write . && turbo lint",
         "typecheck": "turbo typecheck",
-        "db:start": "supabase db start",
+        "db:start": "supabase start -x gotrue,realtime,storage-api,imgproxy,edge-runtime,mailpit,logflare,vector,supavisor",
         "db:stop": "supabase stop",
         "test": "echo \"Error: no test specified\" && exit 1"
     },

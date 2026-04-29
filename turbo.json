@@ -3,6 +3,7 @@
     "ui": "tui",
     "globalEnv": [
         "NODE_ENV",
+        "NEXT_PHASE",
         "VERCEL_URL",
         "PORT",
         "DATABASE_URL",

@@ -1,11 +1,11 @@
 import OpenAI from 'openai'
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-})
+let _openai: OpenAI | null = null
+const getOpenai = () =>
+    (_openai ??= new OpenAI({ apiKey: process.env.OPENAI_API_KEY }))
 
 export const findSyllables = async (content: string) => {
-    return openai.chat.completions.create({
+    return getOpenai().chat.completions.create({
         model: 'gpt-4o-mini',
         messages: [
             {

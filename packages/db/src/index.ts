@@ -100,9 +100,14 @@ const schema = {
 }
 
 const databaseUrl = process.env.DATABASE_URL
+const isNextBuild = process.env.NEXT_PHASE === 'phase-production-build'
 
-assert(databaseUrl !== undefined, 'Database URL is required')
+const resolvedUrl = (() => {
+    if (databaseUrl !== undefined) return databaseUrl
+    if (isNextBuild) return 'postgres://build:build@localhost:5432/build'
+    assert.fail('Database URL is required')
+})()
 
-const client = postgres(databaseUrl, { prepare: false })
+const client = postgres(resolvedUrl, { prepare: false })
 
 export const db = drizzle(client, { schema })

@@ -1,17 +1,26 @@
 import { createContext, trpcRouter } from '@repo/api/server'
-import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
+import { nodeHTTPRequestHandler } from '@trpc/server/adapters/node-http'
+import type { IncomingMessage, ServerResponse } from 'node:http'
 
-export default function handler(
-    req: Request,
-): Response | Promise<Response> {
-    const host = req.headers.get('host') ?? 'localhost'
-    const proto = req.headers.get('x-forwarded-proto') ?? 'https'
-    const absUrl = new URL(req.url, `${proto}://${host}`).toString()
-    const absReq = new Request(absUrl, req)
-    return fetchRequestHandler({
-        endpoint: '/api/trpc',
-        req: absReq,
+export default async function handler(
+    req: IncomingMessage,
+    res: ServerResponse,
+): Promise<void> {
+    const host = req.headers.host ?? 'localhost'
+    const xfp = req.headers['x-forwarded-proto']
+    const proto =
+        (Array.isArray(xfp) ? xfp[0] : xfp) ?? 'https'
+    const url = new URL(req.url ?? '/', `${proto}://${host}`)
+
+    await nodeHTTPRequestHandler({
+        path: url.pathname.replace(/^\/api\/trpc\//, ''),
+        req,
+        res,
         router: trpcRouter,
-        createContext: (opts) => createContext({ req: opts.req, user: null }),
+        createContext: () =>
+            createContext({
+                req: new Request(url, { method: req.method }),
+                user: null,
+            }),
     })
 }

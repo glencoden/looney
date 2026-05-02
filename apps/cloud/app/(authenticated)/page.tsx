@@ -1,4 +1,4 @@
-import { getCurrentSession, getUpcomingSession } from '@repo/db/queries'
+import { getCurrentSession } from '@repo/db/queries'
 import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
@@ -7,12 +7,7 @@ import { ExternalLink, LogOut } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function HomePage() {
-    const [currentSession, upcomingSession] = await Promise.all([
-        getCurrentSession(),
-        getUpcomingSession(),
-    ])
-
-    const session = currentSession ?? upcomingSession
+    const session = await getCurrentSession()
 
     return (
         <BoxMain className='flex flex-col items-center'>

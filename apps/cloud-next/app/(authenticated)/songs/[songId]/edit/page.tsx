@@ -1,6 +1,11 @@
-import { getSong } from '@repo/db/queries'
+import { getSong, getSongs } from '@repo/db/queries'
 import { notFound } from 'next/navigation'
 import { SongEditForm } from './SongEditForm'
+
+export async function generateStaticParams() {
+    const songs = await getSongs()
+    return songs.map(({ id }) => ({ songId: id }))
+}
 
 export default async function SongEditPage({
     params,

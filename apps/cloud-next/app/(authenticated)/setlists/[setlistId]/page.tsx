@@ -1,4 +1,4 @@
-import { getSetlist, getSongsBySetlistId } from '@repo/db/queries'
+import { getSetlist, getSetlists, getSongsBySetlistId } from '@repo/db/queries'
 import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
 import H3 from '@repo/ui/typography/H3'
@@ -8,6 +8,11 @@ import { toNonBreaking } from '@repo/utils/text'
 import { AudioLines } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { SetlistActions, SetlistBackButton } from './SetlistActions'
+
+export async function generateStaticParams() {
+    const setlists = await getSetlists()
+    return setlists.map(({ id }) => ({ setlistId: id }))
+}
 
 export default async function SetlistDetailPage({
     params,

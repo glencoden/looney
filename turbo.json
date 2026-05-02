@@ -18,10 +18,7 @@
         "GOOGLE_CALENDAR_ID",
         "GLEN_CALENDAR_PROJECT_NUMBER",
         "CALENDAR_SCOPES",
-        "OPENAI_API_KEY",
-        "STRIPE_SECRET_KEY",
-        "TIP_STRIPE_PRICE",
-        "VITE_STRIPE_PUBLISHABLE_KEY"
+        "OPENAI_API_KEY"
     ],
     "envMode": "loose",
     "tasks": {

@@ -10,13 +10,13 @@ export const createSession = (session: SessionInsert) => {
 
         if (activeSessions.length > 1) {
             throw new Error(
-                'There should only ever by one or less ongoing or upcoming sessions (endsAt in the future).',
+                'There should only ever be one session with endsAt in the future.',
             )
         }
 
         if (activeSessions.length === 1) {
             throw new Error(
-                'A query to create a session while another session is going on or coming up (endsAt in the future) should never happen.',
+                'Cannot create a session while another session with endsAt in the future exists.',
             )
         }
 

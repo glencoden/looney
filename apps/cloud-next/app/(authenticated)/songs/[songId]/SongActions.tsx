@@ -1,6 +1,5 @@
 'use client'
 
-import { api } from '@repo/api/client'
 import Button from '@repo/ui/components/Button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
@@ -24,7 +23,6 @@ export function SongBackButton() {
 
 export function SongActions({ songId }: { songId: string }) {
     const [isPending, startTransition] = useTransition()
-    const utils = api.useUtils()
 
     return (
         <section className='mt-8 grid grid-cols-2 gap-3'>
@@ -34,13 +32,7 @@ export function SongActions({ songId }: { songId: string }) {
 
             <form
                 action={() =>
-                    startTransition(async () => {
-                        try {
-                            await deleteSongAction(songId)
-                        } finally {
-                            await utils.song.getAll.invalidate()
-                        }
-                    })
+                    startTransition(() => deleteSongAction(songId))
                 }
                 onSubmit={(event) => {
                     const ok = confirm(

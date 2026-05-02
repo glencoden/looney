@@ -15,7 +15,6 @@ import { createSongAction } from '../actions'
 
 export default function SongCreatePage() {
     const [isPending, startTransition] = useTransition()
-    const utils = api.useUtils()
 
     const { mutateAsync: findSyllables, isPending: isFindSyllablesPending } =
         api.openai.findSyllables.useMutation()
@@ -54,13 +53,7 @@ export default function SongCreatePage() {
 
                 <form
                     action={(formData) =>
-                        startTransition(async () => {
-                            try {
-                                await createSongAction(formData)
-                            } finally {
-                                await utils.song.getAll.invalidate()
-                            }
-                        })
+                        startTransition(() => createSongAction(formData))
                     }
                     className='mt-7 flex flex-col gap-3'
                 >

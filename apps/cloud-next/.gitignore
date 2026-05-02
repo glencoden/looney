@@ -7,5 +7,6 @@ out
 .env
 .env*.local
 
+next-env.d.ts
 next-env.d.ts.bak
 *.tsbuildinfo

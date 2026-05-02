@@ -14,6 +14,7 @@ export { getSetlist } from './getSetlist.js'
 export { getSetlists } from './getSetlists.js'
 export { removeSongFromSetlist } from './removeSongFromSetlist.js'
 
+// TODO: remove with apps/cloud (Remix legacy)
 export { getPermission } from './getPermission.js'
 
 export { createGuest } from './createGuest.js'

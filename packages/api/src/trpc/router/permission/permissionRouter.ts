@@ -1,3 +1,4 @@
+// TODO: remove with apps/cloud (Remix legacy)
 import { PermissionSchema } from '@repo/db'
 import { getPermission } from '@repo/db/queries'
 import { protectedProcedure } from '../../index.js'

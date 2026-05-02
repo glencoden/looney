@@ -1,3 +1,4 @@
+// TODO: remove with apps/cloud (Remix legacy)
 import { eq } from 'drizzle-orm'
 import { db, Permission } from '../index.js'
 import { permissionsTable } from '../schema/permissionsTable.js'

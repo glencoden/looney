@@ -4,6 +4,7 @@ import { createTRPCRouter } from '../index.js'
 import { guestRouter } from './guest/guestRouter.js'
 import { lipRouter } from './lip/lipRouter.js'
 import { openaiRouter } from './openai/openaiRouter.js'
+// TODO: remove with apps/cloud (Remix legacy)
 import { permissionRouter } from './permission/permissionRouter.js'
 import { sessionRouter } from './session/sessionRouter.js'
 import { setlistRouter } from './setlist/setlistRouter.js'
@@ -18,7 +19,7 @@ export type RouterOutputs = inferRouterOutputs<TRPCRouter>
 export const trpcRouter = createTRPCRouter({
     setlist: setlistRouter,
     song: songRouter,
-    permission: permissionRouter,
+    permission: permissionRouter, // TODO: remove with apps/cloud (Remix legacy)
     openai: openaiRouter,
     stripe: stripeRouter,
     guest: guestRouter,

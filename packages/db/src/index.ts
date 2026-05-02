@@ -5,6 +5,7 @@ import postgres from 'postgres'
 import { z } from 'zod'
 import { guestsTable as guestsSchema } from './schema/guestsTable.js'
 import { lipsTable as lipsSchema } from './schema/lipsTable.js'
+// TODO: remove with apps/cloud (Remix legacy)
 import { permissionsTable as permissionsSchema } from './schema/permissionsTable.js'
 import { sessionsTable as sessionsSchema } from './schema/sessionsTable.js'
 import { setlistsTable as setlistsSchema } from './schema/setlistsTable.js'
@@ -26,7 +27,7 @@ export const sessionsTable = sessionsSchema
 export const guestsTable = guestsSchema
 export const lipsTable = lipsSchema
 
-export const permissionsTable = permissionsSchema
+export const permissionsTable = permissionsSchema // TODO: remove with apps/cloud (Remix legacy)
 
 export const authUserTable = authUserSchema
 export const authSessionTable = authSessionSchema
@@ -52,6 +53,7 @@ export const GuestInsertSchema = createInsertSchema(guestsTable)
 export const LipSchema = createSelectSchema(lipsTable)
 export const LipInsertSchema = createInsertSchema(lipsTable)
 
+// TODO: remove with apps/cloud (Remix legacy)
 export const PermissionSchema = createSelectSchema(permissionsTable)
 export const PermissionInsertSchema = createInsertSchema(permissionsTable)
 
@@ -73,6 +75,7 @@ export type GuestInsert = z.infer<typeof GuestInsertSchema>
 export type Lip = z.infer<typeof LipSchema>
 export type LipInsert = z.infer<typeof LipInsertSchema>
 
+// TODO: remove with apps/cloud (Remix legacy)
 export type Permission = z.infer<typeof PermissionSchema>
 export type PermissionInsert = z.infer<typeof PermissionInsertSchema>
 

@@ -11,6 +11,7 @@ import { updateGuestFeedbackAction } from './actions'
 
 export function FeedbackPanel({ guestId }: { guestId: string }) {
     const t = useTranslations()
+    const utils = api.useUtils()
     const [isPending, startTransition] = useTransition()
     const [value, setValue] = useState<string | undefined>(undefined)
 
@@ -35,7 +36,11 @@ export function FeedbackPanel({ guestId }: { guestId: string }) {
 
     const onSubmit = (formData: FormData) => {
         startTransition(async () => {
-            await updateGuestFeedbackAction(formData)
+            try {
+                await updateGuestFeedbackAction(formData)
+            } finally {
+                await utils.guest.get.invalidate({ id: guestId })
+            }
         })
     }
 

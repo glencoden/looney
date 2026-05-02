@@ -25,6 +25,7 @@
         "react-dom": "catalog:",
         "server-only": "^0.0.1",
         "superjson": "^2.2.6",
+        "lucide-react": "^1.8.0",
         "vaul": "^1.1.2",
         "zod": "catalog:"
     },

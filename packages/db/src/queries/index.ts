@@ -23,7 +23,6 @@ export { createSession } from './createSession.js'
 export { deleteSession } from './deleteSession.js'
 export { getCurrentSession } from './getCurrentSession.js'
 export { getSession } from './getSession.js'
-export { getUpcomingSession } from './getUpcomingSession.js'
 export { updateSession } from './updateSession.js'
 
 export { createDemoLip } from './createDemoLip.js'

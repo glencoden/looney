@@ -17,9 +17,9 @@ export function FeedbackPanel({ guestId }: { guestId: string }) {
     const { data: guest, isLoading } = api.guest.get.useQuery({ id: guestId })
 
     useEffect(() => {
-        if (isLoading || !guest) return
+        if (isLoading || !guest || value !== undefined) return
         setValue(guest.feedback ?? '')
-    }, [isLoading, guest])
+    }, [isLoading, guest, value])
 
     if (isLoading || guest === undefined) {
         return (

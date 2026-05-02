@@ -88,14 +88,7 @@ export default function Index() {
      *
      */
 
-    const pages = useMemo(() => {
-        return ['songs', 'feedback']
-        // const navigationPages: NavigationPage[] = ['songs', 'feedback', 'tip']
-        // if (session?.hideTipCollection) {
-        //     return navigationPages.filter((page) => page !== 'tip')
-        // }
-        // return navigationPages
-    }, [])
+    const pages = useMemo(() => ['songs', 'feedback'] as const, [])
 
     const drawerBoxRef = useRef<HTMLElement>(null)
     const [drawerBoxElement, setDrawerBoxElement] = useState<HTMLElement>()
@@ -262,13 +255,7 @@ export default function Index() {
                         <div className='absolute inset-x-0 bottom-1 h-24 rounded-t-2xl bg-black' />
 
                         <nav
-                            className={cn(
-                                'pointer-events-auto absolute bottom-0 left-1 right-1 z-20 grid h-24 place-items-center rounded-t-[13px] bg-blue-800',
-                                {
-                                    'grid-cols-2': pages.length === 2,
-                                    'grid-cols-3': pages.length === 3,
-                                },
-                            )}
+                            className='pointer-events-auto absolute bottom-0 left-1 right-1 z-20 grid h-24 place-items-center rounded-t-[13px] bg-blue-800 grid-cols-2'
                         >
                             {pages.includes('songs') && (
                                 <Button
@@ -320,29 +307,7 @@ export default function Index() {
                                     </Link>
                                 </Button>
                             )}
-                            {pages.includes('tip') && (
-                                <Button
-                                    asChild
-                                    size='sm'
-                                    className={cn('px-1', {
-                                        'text-white':
-                                            location.pathname === `${base}/tip`,
-                                    })}
-                                >
-                                    <Link
-                                        to={
-                                            location.pathname === `${base}/tip`
-                                                ? root
-                                                : `${base}/tip`
-                                        }
-                                    >
-                                        {intl.formatMessage({
-                                            id: 'nav.button.tip',
-                                            defaultMessage: 'Tip the band',
-                                        })}
-                                    </Link>
-                                </Button>
-                            )}
+
                         </nav>
 
                         <Drawer.Overlay

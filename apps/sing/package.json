@@ -17,7 +17,7 @@
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
         "@repo/utils": "workspace:*",
-        "@stripe/stripe-js": "^9.2.0",
+
         "@trpc/server": "catalog:",
         "@vercel/remix": "catalog:",
         "accept-language-parser": "^1.5.0",

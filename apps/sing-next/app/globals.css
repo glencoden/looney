@@ -1,0 +1,10 @@
+@import '@repo/config-tailwind/base';
+@source '../../../packages/ui/src/**/*.tsx';
+
+@utility mobile-sim-height {
+    height: 100dvh;
+
+    @media (min-width: 640px) {
+        height: 932px;
+    }
+}

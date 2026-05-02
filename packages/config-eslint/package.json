@@ -6,7 +6,7 @@
     "files": [
         "library.js",
         "react-internal.js",
-        "remix.js",
+        "react.js",
         "astro.js",
         "gitignore.js"
     ],

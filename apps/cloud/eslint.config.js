@@ -1,7 +1,7 @@
 import path from 'node:path'
 import nextPlugin from '@next/eslint-plugin-next'
 import { includeIgnoreFile } from '@repo/config-eslint/gitignore.js'
-import baseConfig from '@repo/config-eslint/remix.js'
+import baseConfig from '@repo/config-eslint/react.js'
 import reactCompiler from 'eslint-plugin-react-compiler'
 
 const gitignorePath = path.resolve(import.meta.dirname, '.gitignore')

@@ -7,7 +7,6 @@ import { openaiRouter } from './openai/openaiRouter.js'
 import { sessionRouter } from './session/sessionRouter.js'
 import { setlistRouter } from './setlist/setlistRouter.js'
 import { songRouter } from './song/songRouter.js'
-import { stripeRouter } from './stripe/stripeRouter.js'
 
 export type TRPCRouter = typeof trpcRouter
 export type ReactQueryOptions = inferReactQueryProcedureOptions<TRPCRouter>
@@ -18,7 +17,6 @@ export const trpcRouter = createTRPCRouter({
     setlist: setlistRouter,
     song: songRouter,
     openai: openaiRouter,
-    stripe: stripeRouter,
     guest: guestRouter,
     session: sessionRouter,
     lip: lipRouter,

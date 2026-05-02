@@ -27,13 +27,15 @@ export async function createSetlistAction(formData: FormData) {
     if (fromSetlistId && typeof fromSetlistId === 'string') {
         await copySongsToSetlist(fromSetlistId, id)
     }
-    revalidatePath('/setlists')
+    revalidatePath('/setlists', 'layout')
+    revalidatePath('/session')
     redirect(`/setlists/${id}`)
 }
 
 export async function deleteSetlistAction(setlistId: string) {
     await deleteSetlist(z.string().parse(setlistId))
-    revalidatePath('/setlists')
+    revalidatePath('/setlists', 'layout')
+    revalidatePath('/session')
     redirect('/setlists')
 }
 

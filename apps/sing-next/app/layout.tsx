@@ -2,6 +2,7 @@ import BoxMain from '@repo/ui/components/BoxMain'
 import { FONT_SANS_URL, FONT_SERIF_URL } from '@repo/ui/constants'
 import '@repo/ui/styles.css'
 import type { Metadata, Viewport } from 'next'
+import { getLocale, getMessages } from 'next-intl/server'
 import type { ReactNode } from 'react'
 import { Providers } from './providers'
 import './globals.css'
@@ -26,9 +27,12 @@ export const viewport: Viewport = {
     initialScale: 1,
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+    const locale = await getLocale()
+    const messages = await getMessages()
+
     return (
-        <html lang='en'>
+        <html lang={locale}>
             <head>
                 <link rel='preconnect' href='https://fonts.googleapis.com' />
                 <link
@@ -40,7 +44,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <link rel='stylesheet' href={FONT_SERIF_URL} />
             </head>
             <body className='bg-pink-600 text-white'>
-                <Providers>
+                <Providers locale={locale} messages={messages as Record<string, string>}>
                     <BoxMain className='flex items-center justify-center p-0'>
                         <div className='mobile-sim-height relative w-full overflow-hidden sm:max-w-md sm:rounded-[32px] sm:border-4 sm:border-black'>
                             {children}

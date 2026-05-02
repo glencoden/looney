@@ -2,7 +2,7 @@
     "name": "looney-monorepo",
     "version": "1.0.0",
     "scripts": {
-        "build": "turbo build",
+        "build": "dotenv -- turbo build",
         "dev": "dotenv -- turbo dev",
         "lint": "prettier --write . && turbo lint",
         "typecheck": "turbo typecheck",

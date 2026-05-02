@@ -132,7 +132,7 @@ export function SetlistEditClient({
                                             searchString={initialQ || null}
                                         />
                                     </Body2>
-                                    &nbsp;&bull;&#32;
+                                    &nbsp;&bull;{' '}
                                     <Body1
                                         className={cn('inline', {
                                             'text-blue-300': !isSelected,

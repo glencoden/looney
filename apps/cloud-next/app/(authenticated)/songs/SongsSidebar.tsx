@@ -104,7 +104,7 @@ export function SongsSidebar({ songs }: { songs: Song[] }) {
                                             searchString={highlight}
                                         />
                                     </Body2>
-                                    &nbsp;&bull;&#32;
+                                    &nbsp;&bull;{' '}
                                     <Body1 className='inline'>
                                         <SearchHighlight
                                             text={toNonBreaking(title)}

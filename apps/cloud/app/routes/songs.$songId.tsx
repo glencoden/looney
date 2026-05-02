@@ -51,7 +51,7 @@ export default function Song() {
             />
 
             <H3 className='min-h-9 px-10'>
-                {toNonBreaking(song.artist)}&nbsp;&bull;&#32;
+                {toNonBreaking(song.artist)}&nbsp;&bull;{' '}
                 {toNonBreaking(song.title)}
             </H3>
 

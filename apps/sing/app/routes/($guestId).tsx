@@ -235,7 +235,7 @@ export default function Index() {
                                                 searchString={q}
                                             />
                                         </Body2>
-                                        &nbsp;&bull;&#32;
+                                        &nbsp;&bull;{' '}
                                         <Body1 className='inline'>
                                             <SearchHighlight
                                                 text={toNonBreaking(title)}

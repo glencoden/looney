@@ -235,7 +235,7 @@ export default async function InsightsPage({
                                 <Body2 className='inline'>
                                     {toNonBreaking(artist)}
                                 </Body2>
-                                &nbsp;&bull;&#32;
+                                &nbsp;&bull;{' '}
                                 <Body1 className='inline'>
                                     {toNonBreaking(title)}
                                 </Body1>

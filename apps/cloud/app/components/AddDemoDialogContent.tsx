@@ -83,7 +83,7 @@ export default function AddDemoDialogContent({
                                             searchString={q}
                                         />
                                     </Body2>
-                                    &nbsp;&bull;&#32;
+                                    &nbsp;&bull;{' '}
                                     <Body1 dark className='inline'>
                                         <SearchHighlight
                                             text={toNonBreaking(title)}

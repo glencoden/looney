@@ -1,31 +1,18 @@
-'use client'
-
+import { getCurrentSession, getUpcomingSession } from '@repo/db/queries'
 import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import Logo from '@repo/ui/components/Logo'
-import { api } from '@repo/api/client'
 import { ExternalLink, LogOut } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useTransition } from 'react'
-import { hasAccess } from '~/lib/has-access'
-import { useUserSession } from '~/hooks/useUserSession'
 
-export default function HomePage() {
-    const router = useRouter()
-    const [isPending, startTransition] = useTransition()
-
-    const { user } = useUserSession()
-    const accessRole = user.accessRole
-
-    const { data: currentSession } = api.session.getCurrent.useQuery()
-    const { data: upcomingSession } = api.session.getUpcoming.useQuery()
+export default async function HomePage() {
+    const [currentSession, upcomingSession] = await Promise.all([
+        getCurrentSession(),
+        getUpcomingSession(),
+    ])
 
     const session = currentSession ?? upcomingSession
-
-    const navigateTo = (href: string) => () =>
-        startTransition(() => router.push(href))
 
     return (
         <BoxMain className='flex flex-col items-center'>
@@ -35,7 +22,6 @@ export default function HomePage() {
                     className='float-end'
                     variant='ghost'
                     size='icon'
-                    disabled={isPending}
                 >
                     <Link href='/signout'>
                         <LogOut className='h-6 w-6 text-white' />
@@ -48,33 +34,20 @@ export default function HomePage() {
             <BoxContentSlot>
                 <nav>
                     <ul className='flex w-full max-w-96 flex-grow flex-col items-center justify-center gap-4'>
-                        {hasAccess(accessRole, 'host') && (
-                            <li className='w-full'>
-                                <Button
-                                    variant='secondary'
-                                    onClick={navigateTo('/songs')}
-                                >
-                                    Songs
-                                </Button>
-                            </li>
-                        )}
-                        {hasAccess(accessRole, 'host') && (
-                            <li className='w-full'>
-                                <Button
-                                    variant='secondary'
-                                    onClick={navigateTo('/setlists')}
-                                >
-                                    Setlists
-                                </Button>
-                            </li>
-                        )}
+                        <li className='w-full'>
+                            <Button variant='secondary' asChild>
+                                <Link href='/songs'>Songs</Link>
+                            </Button>
+                        </li>
+                        <li className='w-full'>
+                            <Button variant='secondary' asChild>
+                                <Link href='/setlists'>Setlists</Link>
+                            </Button>
+                        </li>
 
                         <li className='w-full'>
-                            <Button
-                                variant='secondary'
-                                onClick={navigateTo('/insights')}
-                            >
-                                Insights
+                            <Button variant='secondary' asChild>
+                                <Link href='/insights'>Insights</Link>
                             </Button>
                         </li>
 
@@ -108,12 +81,16 @@ export default function HomePage() {
                         <hr className='w-full border-2 border-transparent' />
 
                         <li className='w-full'>
-                            <Button
-                                onClick={navigateTo(
-                                    session ? `/session/${session.id}` : '/session',
-                                )}
-                            >
-                                Session
+                            <Button asChild>
+                                <Link
+                                    href={
+                                        session
+                                            ? `/session/${session.id}`
+                                            : '/session'
+                                    }
+                                >
+                                    Session
+                                </Link>
                             </Button>
                         </li>
                     </ul>

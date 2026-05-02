@@ -6,11 +6,18 @@ const getOpenai = () =>
 
 export const findSyllables = async (content: string) => {
     return getOpenai().chat.completions.create({
-        model: 'gpt-4o-mini',
+        model: 'gpt-5.2',
         messages: [
             {
                 role: 'system',
-                content: `In the input text, separate all syllables of words with more than one syllable, using hyphens. Don't change any other characters. Example: The input text "I like reading" should output as "I like rea-ding".`,
+                content: `Insert a hyphen between syllables of every word that has more than one syllable. Preserve every other character exactly as given: capitalization, punctuation, whitespace, and line breaks. Output only the transformed text — no commentary, no quoting, no extra formatting.
+
+Examples:
+Input: I like singing along.
+Output: I like sing-ing a-long.
+
+Input: Hello, world!
+Output: Hel-lo, world!`,
             },
             {
                 role: 'user',

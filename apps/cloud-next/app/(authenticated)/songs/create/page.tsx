@@ -104,6 +104,9 @@ export default function SongCreatePage() {
                         >
                             Find syllables
                         </Button>
+                        <p className='mt-2 text-xs opacity-60'>
+                            This may take a moment.
+                        </p>
                         <Textarea
                             id='lyrics'
                             className='mt-4'

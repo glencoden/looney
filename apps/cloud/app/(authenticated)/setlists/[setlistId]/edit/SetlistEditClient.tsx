@@ -9,10 +9,11 @@ import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
-import { AudioLines, Circle } from 'lucide-react'
+import { AudioLines } from 'lucide-react'
 import Link from 'next/link'
 import { useDebouncedSearchNav } from '~/hooks/useDebouncedSearchNav'
 import { toggleSongInSetlistAction } from '../../actions'
+import { SetlistSongToggleButton } from './SetlistSongToggleButton'
 
 type Setlist = { id: string; title: string }
 type Song = { id: string; artist: string; title: string }
@@ -89,31 +90,9 @@ export function SetlistEditClient({
                                         name='songId'
                                         value={id}
                                     />
-                                    <Button
-                                        variant='ghost'
-                                        size='icon'
-                                        className='mt-[1px]'
-                                        aria-label={
-                                            isSelected
-                                                ? 'Remove from setlist'
-                                                : 'Add to setlist'
-                                        }
-                                        name='selected'
-                                        value={isSelected ? 'false' : 'true'}
-                                        type='submit'
-                                    >
-                                        <div className='relative h-4 w-4'>
-                                            <Circle
-                                                className={cn(
-                                                    'h-4 w-4 text-blue-700',
-                                                    {
-                                                        'fill-white text-white':
-                                                            isSelected,
-                                                    },
-                                                )}
-                                            />
-                                        </div>
-                                    </Button>
+                                    <SetlistSongToggleButton
+                                        isSelected={isSelected}
+                                    />
                                 </form>
 
                                 <div

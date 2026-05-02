@@ -4,6 +4,8 @@ import { getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { Countdown } from './_components/Countdown'
+import { DrawerNav } from './_components/DrawerNav'
+import { DrawerShell } from './_components/DrawerShell'
 
 export default async function GuestLayout({
     children,
@@ -39,7 +41,10 @@ export default async function GuestLayout({
     return (
         <>
             {children}
-            {drawer}
+            <section className='absolute inset-x-0 bottom-0 z-10 h-24'>
+                <DrawerNav guestId={guestId} />
+            </section>
+            <DrawerShell guestId={guestId}>{drawer}</DrawerShell>
         </>
     )
 }

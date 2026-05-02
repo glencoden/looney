@@ -3,10 +3,19 @@
 import H2 from '@repo/ui/typography/H2'
 import { useSessionCountdown } from '@repo/utils/hooks'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export function Countdown({ startsAt }: { startsAt: Date }) {
     const t = useTranslations()
+    const router = useRouter()
     const countdown = useSessionCountdown(startsAt)
+
+    useEffect(() => {
+        if (countdown !== null) return
+        if (startsAt.getTime() > Date.now()) return
+        router.refresh()
+    }, [countdown, startsAt, router])
 
     if (!countdown) {
         return null

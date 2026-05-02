@@ -89,6 +89,7 @@ export function SessionStartForm({ setlists }: { setlists: Setlist[] }) {
                             name='startsAt'
                             aria-label='Start time'
                             placeholder='Start time'
+                            className='min-w-0 appearance-none'
                             defaultValue={new Date()
                                 .toLocaleString('sv-SE', {
                                     year: 'numeric',

@@ -16,7 +16,7 @@ export async function toggleFavoriteAction(formData: FormData) {
         isFavorite: formData.get('favorite') === 'true',
     })
     await updateSong(songUpdate)
-    revalidatePath('/songs')
+    revalidatePath('/songs', 'layout')
 }
 
 export async function createSongAction(formData: FormData) {
@@ -26,7 +26,7 @@ export async function createSongAction(formData: FormData) {
     if (id === null) {
         throw new Error('Failed to create song')
     }
-    revalidatePath('/songs')
+    revalidatePath('/songs', 'layout')
     redirect(`/songs/${id}`)
 }
 
@@ -46,13 +46,12 @@ export async function updateSongAction(formData: FormData) {
         lyrics: formData.get('lyrics'),
     })
     await updateSong(update)
-    revalidatePath('/songs')
-    revalidatePath(`/songs/${songId}`)
+    revalidatePath('/songs', 'layout')
     redirect(`/songs/${songId}`)
 }
 
 export async function deleteSongAction(songId: string) {
     await deleteSong(z.string().parse(songId))
-    revalidatePath('/songs')
+    revalidatePath('/songs', 'layout')
     redirect('/songs')
 }

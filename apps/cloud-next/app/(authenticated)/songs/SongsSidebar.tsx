@@ -3,7 +3,6 @@
 import Button from '@repo/ui/components/Button'
 import Input from '@repo/ui/components/Input'
 import SearchHighlight from '@repo/ui/components/SearchHighlight'
-import Spinner from '@repo/ui/components/Spinner'
 import { cn } from '@repo/ui/helpers'
 import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
@@ -13,7 +12,7 @@ import { toNonBreaking } from '@repo/utils/text'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useDebouncedSearchNav } from '~/hooks/useDebouncedSearchNav'
+import { useDeferredValue, useMemo, useState } from 'react'
 import { toggleFavoriteAction } from './actions'
 import { FavoriteToggleButton } from './FavoriteToggleButton'
 
@@ -25,20 +24,26 @@ type Song = {
     isFavorite: boolean
 }
 
-export function SongsSidebar({
-    songs,
-    q,
-}: {
-    songs: Song[]
-    q: string | null
-}) {
-    const pathname = usePathname()
+const filterSongs = (songs: Song[], q: string): Song[] => {
+    const needle = q.trim().toLowerCase()
+    if (!needle) return songs
+    return songs.filter(
+        (song) =>
+            song.artist.toLowerCase().includes(needle) ||
+            song.title.toLowerCase().includes(needle),
+    )
+}
 
-    const search = useDebouncedSearchNav({
-        initialValue: q,
-        buildUrl: (value) =>
-            value ? `/songs?q=${encodeURIComponent(value)}` : '/songs',
-    })
+export function SongsSidebar({ songs }: { songs: Song[] }) {
+    const pathname = usePathname()
+    const [query, setQuery] = useState('')
+    const deferredQuery = useDeferredValue(query)
+
+    const filtered = useMemo(
+        () => filterSongs(songs, deferredQuery),
+        [songs, deferredQuery],
+    )
+    const highlight = deferredQuery.trim() || null
 
     return (
         <section className='max-w-96 flex-grow max-lg:w-full'>
@@ -61,30 +66,23 @@ export function SongsSidebar({
                     name='q'
                     aria-label='Song search input'
                     placeholder='Search'
-                    defaultValue={q ?? ''}
-                    onChange={search.onChange}
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
                 />
-                {search.isPending && (
-                    <Spinner className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' />
-                )}
             </div>
 
             <ul className='mt-8 space-y-2'>
-                {songs.map(
+                {filtered.map(
                     ({ id, artist, title, genre, isFavorite }, index) => (
                         <li key={id}>
-                            {songs[index - 1]?.genre !== genre && (
+                            {filtered[index - 1]?.genre !== genre && (
                                 <H4 className='mb-2 mt-6 text-blue-300'>
                                     {genre ?? 'Unknown'}
                                 </H4>
                             )}
                             <div className='flex gap-3'>
                                 <form action={toggleFavoriteAction}>
-                                    <input
-                                        type='hidden'
-                                        name='id'
-                                        value={id}
-                                    />
+                                    <input type='hidden' name='id' value={id} />
                                     <FavoriteToggleButton
                                         isFavorite={isFavorite}
                                     />
@@ -103,14 +101,14 @@ export function SongsSidebar({
                                     <Body2 className='inline'>
                                         <SearchHighlight
                                             text={toNonBreaking(artist)}
-                                            searchString={q}
+                                            searchString={highlight}
                                         />
                                     </Body2>
                                     &nbsp;&bull;&#32;
                                     <Body1 className='inline'>
                                         <SearchHighlight
                                             text={toNonBreaking(title)}
-                                            searchString={q}
+                                            searchString={highlight}
                                         />
                                     </Body1>
                                 </Link>

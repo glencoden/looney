@@ -6,9 +6,15 @@ import {
     deleteSong,
     updateSong,
 } from '@repo/db/queries'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import { SONGS_CACHE_TAG } from '~/lib/cached-songs'
+
+function revalidateSongs() {
+    updateTag(SONGS_CACHE_TAG)
+    revalidatePath('/songs', 'layout')
+}
 
 export async function toggleFavoriteAction(formData: FormData) {
     const songUpdate = SongSchema.pick({ id: true, isFavorite: true }).parse({
@@ -16,7 +22,7 @@ export async function toggleFavoriteAction(formData: FormData) {
         isFavorite: formData.get('favorite') === 'true',
     })
     await updateSong(songUpdate)
-    revalidatePath('/songs', 'layout')
+    revalidateSongs()
 }
 
 export async function createSongAction(formData: FormData) {
@@ -26,7 +32,7 @@ export async function createSongAction(formData: FormData) {
     if (id === null) {
         throw new Error('Failed to create song')
     }
-    revalidatePath('/songs', 'layout')
+    revalidateSongs()
     redirect(`/songs/${id}`)
 }
 
@@ -46,12 +52,12 @@ export async function updateSongAction(formData: FormData) {
         lyrics: formData.get('lyrics'),
     })
     await updateSong(update)
-    revalidatePath('/songs', 'layout')
+    revalidateSongs()
     redirect(`/songs/${songId}`)
 }
 
 export async function deleteSongAction(songId: string) {
     await deleteSong(z.string().parse(songId))
-    revalidatePath('/songs', 'layout')
+    revalidateSongs()
     redirect('/songs')
 }

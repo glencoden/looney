@@ -1,14 +1,14 @@
-import { getSong, getSongs } from '@repo/db/queries'
 import Body1 from '@repo/ui/typography/Body1'
 import H3 from '@repo/ui/typography/H3'
 import { toNonBreaking } from '@repo/utils/text'
 import { notFound } from 'next/navigation'
 import { Star } from 'lucide-react'
 import { cn } from '@repo/ui/helpers'
+import { getCachedSongsWithLyrics } from '~/lib/cached-songs'
 import { SongActions, SongBackButton } from './SongActions'
 
 export async function generateStaticParams() {
-    const songs = await getSongs()
+    const songs = await getCachedSongsWithLyrics()
     return songs.map(({ id }) => ({ songId: id }))
 }
 
@@ -18,7 +18,8 @@ export default async function SongDetailPage({
     params: Promise<{ songId: string }>
 }) {
     const { songId } = await params
-    const song = await getSong(songId)
+    const songs = await getCachedSongsWithLyrics()
+    const song = songs.find((s) => s.id === songId)
     if (!song) notFound()
 
     return (

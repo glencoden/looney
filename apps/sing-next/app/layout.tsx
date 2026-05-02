@@ -44,7 +44,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                 <link rel='stylesheet' href={FONT_SERIF_URL} />
             </head>
             <body className='bg-pink-600 text-white'>
-                <Providers locale={locale} messages={messages as Record<string, string>}>
+                <Providers locale={locale} messages={messages}>
                     <BoxMain className='flex items-center justify-center p-0'>
                         <div className='mobile-sim-height relative w-full overflow-hidden sm:max-w-md sm:rounded-[32px] sm:border-4 sm:border-black'>
                             {children}

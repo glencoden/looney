@@ -1,7 +1,7 @@
 'use client'
 
 import { TRPCQueryClientProvider } from '@repo/api/client'
-import { NextIntlClientProvider } from 'next-intl'
+import { NextIntlClientProvider, type AbstractIntlMessages } from 'next-intl'
 import type { ReactNode } from 'react'
 
 export function Providers({
@@ -10,7 +10,7 @@ export function Providers({
     children,
 }: {
     locale: string
-    messages: Record<string, string>
+    messages: AbstractIntlMessages
     children: ReactNode
 }) {
     return (

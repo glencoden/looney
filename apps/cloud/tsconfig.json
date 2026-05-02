@@ -1,17 +1,26 @@
 {
-    "extends": "@repo/config-typescript/remix.json",
+    "extends": "@repo/config-typescript/base.json",
     "compilerOptions": {
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "jsx": "preserve",
+        "allowJs": true,
+        "noEmit": true,
+        "incremental": true,
+        "declaration": false,
+        "declarationMap": false,
+        "plugins": [{ "name": "next" }],
         "baseUrl": ".",
         "paths": {
-            "~/*": ["./app/*"]
+            "~/*": ["./*"]
         }
     },
     "include": [
-        "./**/*.ts",
-        "./**/*.tsx",
-        "./**/.server/**/*.ts",
-        "./**/.server/**/*.tsx",
-        "./**/.client/**/*.ts",
-        "./**/.client/**/*.tsx"
-    ]
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts"
+    ],
+    "exclude": ["node_modules", ".next"]
 }

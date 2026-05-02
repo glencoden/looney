@@ -1,4 +1,3 @@
-// TODO: remove with apps/cloud (Remix legacy)
 import { pgTable, text, uuid, varchar } from 'drizzle-orm/pg-core'
 
 export const permissionsTable = pgTable('permission', {

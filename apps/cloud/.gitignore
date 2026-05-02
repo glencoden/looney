@@ -1,5 +1,12 @@
 node_modules
 
-/.cache
-# /build # ignored on workspace level so that pnpm deploy will copy the build folder
+.next
+out
+.vercel
+
 .env
+.env*.local
+
+next-env.d.ts
+next-env.d.ts.bak
+*.tsbuildinfo

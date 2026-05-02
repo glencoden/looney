@@ -1,46 +1,48 @@
 {
     "name": "cloud",
     "private": true,
-    "sideEffects": false,
     "type": "module",
     "scripts": {
-        "build": "remix vite:build",
-        "dev": "remix vite:dev",
+        "build": "next build",
+        "dev": "next dev --port 3000",
+        "start": "next start --port 3000",
         "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
-        "typecheck": "tsc"
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "@react-spring/web": "^10.0.3",
-        "@remix-run/react": "catalog:",
         "@repo/api": "workspace:*",
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
         "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:",
+        "@trpc/client": "catalog:",
         "@trpc/server": "catalog:",
         "@use-gesture/react": "^10.3.1",
-        "@vercel/remix": "catalog:",
         "better-auth": "^1.6.2",
         "date-fns": "^4.1.0",
         "lucide-react": "^1.8.0",
+        "next": "^16.2.2",
         "react": "catalog:",
         "react-dom": "catalog:",
+        "server-only": "^0.0.1",
+        "superjson": "^2.2.6",
         "zod": "catalog:"
     },
     "devDependencies": {
-        "@remix-run/dev": "catalog:",
-        "@remix-run/node": "catalog:",
+        "@next/eslint-plugin-next": "^16.2.4",
         "@repo/config-eslint": "workspace:*",
         "@repo/config-tailwind": "workspace:*",
         "@repo/config-typescript": "workspace:*",
-        "@tailwindcss/vite": "catalog:",
+        "@tailwindcss/postcss": "^4.2.2",
+        "babel-plugin-react-compiler": "^1.0.0",
+        "@types/node": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
         "eslint": "catalog:",
+        "eslint-plugin-react-compiler": "19.1.0-rc.2",
         "tailwindcss": "catalog:",
-        "typescript": "catalog:",
-        "vite": "catalog:",
-        "vite-tsconfig-paths": "catalog:"
+        "typescript": "catalog:"
     },
     "engines": {
         "node": ">=24.0.0"

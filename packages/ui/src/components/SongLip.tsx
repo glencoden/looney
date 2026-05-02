@@ -1,5 +1,4 @@
 import type { LipDTO } from '@repo/api/types'
-import { toNonBreaking } from '@repo/utils/text'
 import { formatDistanceToNow } from 'date-fns'
 import { Star } from 'lucide-react'
 import Small from '../typography/Small'
@@ -34,19 +33,19 @@ export default function SongLip({
                 )}
                 <Subtitle2 className='max-w-[70%] overflow-hidden text-ellipsis whitespace-nowrap text-black'>
                     <SearchHighlight
-                        text={toNonBreaking(lip.singerName)}
+                        text={lip.singerName}
                         searchString={searchString}
                     />
                 </Subtitle2>
                 <Small className='mt-2 max-w-[80%] overflow-hidden text-ellipsis whitespace-nowrap text-black'>
                     <SearchHighlight
-                        text={toNonBreaking(lip.artist)}
+                        text={lip.artist}
                         searchString={searchString}
                     />
                 </Small>
                 <Subtitle1 className='max-w-[80%] overflow-hidden text-ellipsis whitespace-nowrap text-black'>
                     <SearchHighlight
-                        text={toNonBreaking(lip.songTitle)}
+                        text={lip.songTitle}
                         searchString={searchString}
                     />
                 </Subtitle1>

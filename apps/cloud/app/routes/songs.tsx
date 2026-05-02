@@ -22,7 +22,6 @@ import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
 import H2 from '@repo/ui/typography/H2'
 import H4 from '@repo/ui/typography/H4'
-import { toNonBreaking } from '@repo/utils/text'
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@vercel/remix'
 import { ArrowLeft, Star } from 'lucide-react'
 import { useEffect, useRef } from 'react'
@@ -76,7 +75,9 @@ export default function Songs() {
         }
     }, [q])
 
-    const searchTimeoutIdRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+    const searchTimeoutIdRef = useRef<
+        ReturnType<typeof setTimeout> | undefined
+    >(undefined)
 
     return (
         <BoxMain
@@ -214,16 +215,16 @@ export default function Songs() {
                                                 })
                                             }
                                         >
-                                            <Body2 className='inline'>
+                                            <Body2 className='inline whitespace-nowrap'>
                                                 <SearchHighlight
-                                                    text={toNonBreaking(artist)}
+                                                    text={artist}
                                                     searchString={q}
                                                 />
                                             </Body2>
                                             &nbsp;&bull;{' '}
-                                            <Body1 className='inline'>
+                                            <Body1 className='inline whitespace-nowrap'>
                                                 <SearchHighlight
-                                                    text={toNonBreaking(title)}
+                                                    text={title}
                                                     searchString={q}
                                                 />
                                             </Body1>

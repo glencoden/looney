@@ -8,7 +8,6 @@ import { cn } from '@repo/ui/helpers'
 import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
 import H4 from '@repo/ui/typography/H4'
-import { toNonBreaking } from '@repo/utils/text'
 import { Star } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
@@ -78,16 +77,22 @@ export default function AddDemoDialogContent({
                                     className='cursor-pointer text-left'
                                     onClick={() => handleSongClick(id)}
                                 >
-                                    <Body2 dark className='inline'>
+                                    <Body2
+                                        dark
+                                        className='inline whitespace-nowrap'
+                                    >
                                         <SearchHighlight
-                                            text={toNonBreaking(artist)}
+                                            text={artist}
                                             searchString={q}
                                         />
                                     </Body2>
                                     &nbsp;&bull;{' '}
-                                    <Body1 dark className='inline'>
+                                    <Body1
+                                        dark
+                                        className='inline whitespace-nowrap'
+                                    >
                                         <SearchHighlight
-                                            text={toNonBreaking(title)}
+                                            text={title}
                                             searchString={q}
                                         />
                                     </Body1>

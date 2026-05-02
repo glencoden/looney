@@ -4,7 +4,6 @@ import Button from '@repo/ui/components/Button'
 import { cn } from '@repo/ui/helpers'
 import Body1 from '@repo/ui/typography/Body1'
 import H3 from '@repo/ui/typography/H3'
-import { toNonBreaking } from '@repo/utils/text'
 import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { ArrowLeft, Star } from 'lucide-react'
 import { z } from 'zod'
@@ -51,8 +50,9 @@ export default function Song() {
             />
 
             <H3 className='min-h-9 px-10'>
-                {toNonBreaking(song.artist)}&nbsp;&bull;{' '}
-                {toNonBreaking(song.title)}
+                <span className='whitespace-nowrap'>{song.artist}</span>
+                &nbsp;&bull;{' '}
+                <span className='whitespace-nowrap'>{song.title}</span>
             </H3>
 
             <section className='mt-8 grid grid-cols-2 gap-3'>

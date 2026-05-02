@@ -1,4 +1,3 @@
-import { toNonBreaking } from '@repo/utils/text'
 import { Line } from '~/classes/Line'
 
 export class Text {
@@ -7,9 +6,13 @@ export class Text {
     private _lines: Line[] = []
 
     constructor(artist: string, title: string, lines: Line[]) {
-        this._artist = toNonBreaking(artist)
-        this._title = toNonBreaking(title)
+        this._artist = Text.toNonBreaking(artist)
+        this._title = Text.toNonBreaking(title)
         this._lines = lines
+    }
+
+    private static toNonBreaking(value: string) {
+        return value.replace(/\s/g, '\xa0')
     }
 
     get title(): string {

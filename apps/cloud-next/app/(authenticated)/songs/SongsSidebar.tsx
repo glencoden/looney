@@ -8,7 +8,6 @@ import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
 import H2 from '@repo/ui/typography/H2'
 import H4 from '@repo/ui/typography/H4'
-import { toNonBreaking } from '@repo/utils/text'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -98,16 +97,16 @@ export function SongsSidebar({ songs }: { songs: Song[] }) {
                                             ),
                                     })}
                                 >
-                                    <Body2 className='inline'>
+                                    <Body2 className='inline whitespace-nowrap'>
                                         <SearchHighlight
-                                            text={toNonBreaking(artist)}
+                                            text={artist}
                                             searchString={highlight}
                                         />
                                     </Body2>
                                     &nbsp;&bull;{' '}
-                                    <Body1 className='inline'>
+                                    <Body1 className='inline whitespace-nowrap'>
                                         <SearchHighlight
-                                            text={toNonBreaking(title)}
+                                            text={title}
                                             searchString={highlight}
                                         />
                                     </Body1>

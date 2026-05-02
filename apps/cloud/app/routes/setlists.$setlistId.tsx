@@ -7,7 +7,6 @@ import Body2 from '@repo/ui/typography/Body2'
 import H3 from '@repo/ui/typography/H3'
 import H4 from '@repo/ui/typography/H4'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
-import { toNonBreaking } from '@repo/utils/text'
 import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { ArrowLeft, AudioLines } from 'lucide-react'
 import { z } from 'zod'
@@ -55,7 +54,7 @@ export default function Setlist() {
                 <AudioLines className='h-4 w-4' />
             </Subtitle2>
 
-            <H3 className='min-h-9 px-10'>{toNonBreaking(setlist.title)}</H3>
+            <H3 className='min-h-9 whitespace-nowrap px-10'>{setlist.title}</H3>
 
             <section className='mt-8 grid grid-cols-2 gap-3'>
                 {isLoading ? (
@@ -100,12 +99,12 @@ export default function Setlist() {
                                 </H4>
                             )}
                             <div>
-                                <Body2 className='inline'>
-                                    {toNonBreaking(artist)}
+                                <Body2 className='inline whitespace-nowrap'>
+                                    {artist}
                                 </Body2>
                                 &nbsp;&bull;{' '}
-                                <Body1 className='inline'>
-                                    {toNonBreaking(title)}
+                                <Body1 className='inline whitespace-nowrap'>
+                                    {title}
                                 </Body1>
                             </div>
                         </li>

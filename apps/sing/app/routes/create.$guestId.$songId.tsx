@@ -8,9 +8,8 @@ import Spinner from '@repo/ui/components/Spinner'
 import H2 from '@repo/ui/typography/H2'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
-import { toNonBreaking } from '@repo/utils/text'
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@vercel/remix'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { z } from 'zod'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -91,16 +90,22 @@ export default function Create() {
     return (
         <Form method='post' className='mx-6 mb-16 mt-7 flex flex-col gap-3'>
             <H3 className='mb-10 leading-10'>
-                {intl.formatMessage(
-                    {
-                        id: 'create.heading',
-                        defaultMessage: 'Sing {songTitle} by {artistName}',
-                    },
-                    {
-                        songTitle: toNonBreaking(song.title),
-                        artistName: toNonBreaking(song.artist),
-                    },
-                )}
+                <FormattedMessage
+                    id='create.heading'
+                    defaultMessage='Sing {songTitle} by {artistName}'
+                    values={{
+                        songTitle: (
+                            <span className='whitespace-nowrap'>
+                                {song.title}
+                            </span>
+                        ),
+                        artistName: (
+                            <span className='whitespace-nowrap'>
+                                {song.artist}
+                            </span>
+                        ),
+                    }}
+                />
             </H3>
 
             <Input

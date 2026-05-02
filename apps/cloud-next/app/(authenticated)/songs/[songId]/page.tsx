@@ -1,6 +1,5 @@
 import Body1 from '@repo/ui/typography/Body1'
 import H3 from '@repo/ui/typography/H3'
-import { toNonBreaking } from '@repo/utils/text'
 import { notFound } from 'next/navigation'
 import { Star } from 'lucide-react'
 import { cn } from '@repo/ui/helpers'
@@ -33,8 +32,9 @@ export default async function SongDetailPage({
             />
 
             <H3 className='min-h-9 px-10'>
-                {toNonBreaking(song.artist)}&nbsp;&bull;{' '}
-                {toNonBreaking(song.title)}
+                <span className='whitespace-nowrap'>{song.artist}</span>
+                &nbsp;&bull;{' '}
+                <span className='whitespace-nowrap'>{song.title}</span>
             </H3>
 
             <SongActions songId={song.id} />

@@ -22,7 +22,6 @@ import Body2 from '@repo/ui/typography/Body2'
 import H2 from '@repo/ui/typography/H2'
 import H4 from '@repo/ui/typography/H4'
 import { useSessionCountdown } from '@repo/utils/hooks'
-import { toNonBreaking } from '@repo/utils/text'
 import { json, LoaderFunctionArgs } from '@vercel/remix'
 import { Star } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -229,16 +228,16 @@ export default function Index() {
                                         })}
                                     />
                                     <div>
-                                        <Body2 className='inline'>
+                                        <Body2 className='inline whitespace-nowrap'>
                                             <SearchHighlight
-                                                text={toNonBreaking(artist)}
+                                                text={artist}
                                                 searchString={q}
                                             />
                                         </Body2>
                                         &nbsp;&bull;{' '}
-                                        <Body1 className='inline'>
+                                        <Body1 className='inline whitespace-nowrap'>
                                             <SearchHighlight
-                                                text={toNonBreaking(title)}
+                                                text={title}
                                                 searchString={q}
                                             />
                                         </Body1>

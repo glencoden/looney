@@ -17,7 +17,6 @@ import {
     ArrowLeft,
     ArrowUp,
 } from 'lucide-react'
-import { toNonBreaking } from 'node_modules/@repo/utils/dist/text/to-non-breaking'
 import { useState } from 'react'
 
 export const loader = async ({ request }: { request: Request }) => {
@@ -234,12 +233,12 @@ export default function Insights() {
                                     <Body1 className='inline-block w-10 text-blue-300'>
                                         {index + 1}
                                     </Body1>
-                                    <Body2 className='inline'>
-                                        {toNonBreaking(artist)}
+                                    <Body2 className='inline whitespace-nowrap'>
+                                        {artist}
                                     </Body2>
                                     &nbsp;&bull;{' '}
-                                    <Body1 className='inline'>
-                                        {toNonBreaking(title)}
+                                    <Body1 className='inline whitespace-nowrap'>
+                                        {title}
                                     </Body1>
                                 </div>
                                 <div className='flex w-full shrink-0 items-center justify-between gap-2 sm:w-80 lg:w-96'>

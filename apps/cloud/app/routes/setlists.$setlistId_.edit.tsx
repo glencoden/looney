@@ -23,7 +23,6 @@ import Body1 from '@repo/ui/typography/Body1'
 import Body2 from '@repo/ui/typography/Body2'
 import H3 from '@repo/ui/typography/H3'
 import Subtitle2 from '@repo/ui/typography/Subtitle2'
-import { toNonBreaking } from '@repo/utils/text'
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@vercel/remix'
 import { AudioLines, Circle } from 'lucide-react'
 import { useEffect, useRef } from 'react'
@@ -94,7 +93,9 @@ export default function SetlistEdit() {
         }
     }, [q])
 
-    const searchTimeoutIdRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+    const searchTimeoutIdRef = useRef<
+        ReturnType<typeof setTimeout> | undefined
+    >(undefined)
 
     return (
         <div
@@ -107,8 +108,8 @@ export default function SetlistEdit() {
                 <AudioLines className='h-4 w-4' />
             </Subtitle2>
 
-            <H3 className='min-h-9 px-10'>
-                Edit&nbsp;{toNonBreaking(setlist.title)}
+            <H3 className='min-h-9 whitespace-nowrap px-10'>
+                Edit {setlist.title}
             </H3>
 
             <section className='mt-8 flex gap-3'>
@@ -214,23 +215,29 @@ export default function SetlistEdit() {
                                     })}
                                 >
                                     <Body2
-                                        className={cn('inline', {
-                                            'text-blue-300': !isSelected,
-                                        })}
+                                        className={cn(
+                                            'inline whitespace-nowrap',
+                                            {
+                                                'text-blue-300': !isSelected,
+                                            },
+                                        )}
                                     >
                                         <SearchHighlight
-                                            text={toNonBreaking(artist)}
+                                            text={artist}
                                             searchString={q}
                                         />
                                     </Body2>
                                     &nbsp;&bull;{' '}
                                     <Body1
-                                        className={cn('inline', {
-                                            'text-blue-300': !isSelected,
-                                        })}
+                                        className={cn(
+                                            'inline whitespace-nowrap',
+                                            {
+                                                'text-blue-300': !isSelected,
+                                            },
+                                        )}
                                     >
                                         <SearchHighlight
-                                            text={toNonBreaking(title)}
+                                            text={title}
                                             searchString={q}
                                         />
                                     </Body1>

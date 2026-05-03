@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-import type { ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { Drawer } from 'vaul'
 
 export function DrawerShell({
@@ -15,6 +15,13 @@ export function DrawerShell({
     const router = useRouter()
     const root = `/${guestId}`
     const open = pathname !== root
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) return null
 
     return (
         <Drawer.Root
@@ -32,15 +39,13 @@ export function DrawerShell({
                     onClick={() => router.push(root)}
                 />
             )}
-            <Drawer.Portal>
-                <Drawer.Content className='fixed inset-x-0 bottom-24 z-20 mx-auto box-content flex h-auto max-w-md flex-col items-center gap-8 rounded-t-2xl border-l-4 border-r-4 border-t-4 border-black bg-blue-800 px-6 py-12 pb-4 shadow-[0_-6px_14px_rgba(0,0,0,0.25)] outline-0'>
-                    <Drawer.Title className='sr-only'>Drawer</Drawer.Title>
-                    <Drawer.Description className='sr-only'>
-                        Drawer content
-                    </Drawer.Description>
-                    <div className='min-h-80 w-full'>{children}</div>
-                </Drawer.Content>
-            </Drawer.Portal>
+            <Drawer.Content className='absolute inset-x-0 bottom-24 z-20 box-content flex h-auto flex-col items-center gap-8 overflow-y-auto rounded-t-2xl border-l-4 border-r-4 border-t-4 border-black bg-blue-800 px-6 py-12 pb-4 shadow-[0_-6px_14px_rgba(0,0,0,0.25)] outline-0'>
+                <Drawer.Title className='sr-only'>Drawer</Drawer.Title>
+                <Drawer.Description className='sr-only'>
+                    Drawer content
+                </Drawer.Description>
+                <div className='w-full'>{children}</div>
+            </Drawer.Content>
         </Drawer.Root>
     )
 }

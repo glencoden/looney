@@ -11,7 +11,9 @@ export function SearchInput() {
     const searchParams = useSearchParams()
     const [, startTransition] = useTransition()
     const [value, setValue] = useState(searchParams.get('q') ?? '')
-    const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+    const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+        undefined,
+    )
 
     useEffect(() => {
         return () => {

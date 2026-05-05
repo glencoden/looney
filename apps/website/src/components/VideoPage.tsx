@@ -24,8 +24,8 @@ export function VideoPage() {
 
             <div className={`video-box ${showVideo ? 'show-video' : ''}`}>
                 <video
-                    className="video-element"
-                    src="/teaser-1v5.m4v"
+                    className='video-element'
+                    src='/teaser-1v5.m4v'
                     autoPlay
                     playsInline
                     muted

@@ -47,7 +47,7 @@ export function ReferencesPage() {
         <>
             <VerticalSpacer />
 
-            <div className="logos">
+            <div className='logos'>
                 {logosList.map((logo) => {
                     if (logo.length === 2) {
                         return (
@@ -60,8 +60,14 @@ export function ReferencesPage() {
                         )
                     } else {
                         return (
-                            <div key={logo} className={`logo-box ${getRandomAnimation()}`}>
-                                <img src={`/images/${logo}`} alt={`reference ${logo}`} />
+                            <div
+                                key={logo}
+                                className={`logo-box ${getRandomAnimation()}`}
+                            >
+                                <img
+                                    src={`/images/${logo}`}
+                                    alt={`reference ${logo}`}
+                                />
                             </div>
                         )
                     }

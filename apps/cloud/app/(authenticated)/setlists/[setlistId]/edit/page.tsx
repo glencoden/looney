@@ -1,8 +1,4 @@
-import {
-    getSetlist,
-    getSongs,
-    getSongsBySetlistId,
-} from '@repo/db/queries'
+import { getSetlist, getSongs, getSongsBySetlistId } from '@repo/db/queries'
 import { notFound } from 'next/navigation'
 import { SetlistEditClient } from './SetlistEditClient'
 

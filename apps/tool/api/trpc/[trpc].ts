@@ -8,8 +8,7 @@ export default async function handler(
 ): Promise<void> {
     const host = req.headers.host ?? 'localhost'
     const xfp = req.headers['x-forwarded-proto']
-    const proto =
-        (Array.isArray(xfp) ? xfp[0] : xfp) ?? 'https'
+    const proto = (Array.isArray(xfp) ? xfp[0] : xfp) ?? 'https'
     const url = new URL(req.url ?? '/', `${proto}://${host}`)
 
     await nodeHTTPRequestHandler({

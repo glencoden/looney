@@ -20,9 +20,9 @@ export function SongsPage({ songs }: SongsPageProps) {
             {songs.map((song) => {
                 if (song.artist.length > 0 && song.title.length > 0) {
                     return (
-                        <div key={song.id} className="song-box">
-                            <p className="artist-name">{song.artist}</p>
-                            <p className="song-title">{song.title}</p>
+                        <div key={song.id} className='song-box'>
+                            <p className='artist-name'>{song.artist}</p>
+                            <p className='song-title'>{song.title}</p>
                         </div>
                     )
                 }

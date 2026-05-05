@@ -91,15 +91,13 @@ export const meta: MetaFunction = () => {
 const getTranslations = async (locale: string) => {
     switch (locale) {
         case 'en': {
-            const translations = await import(
-                '~/translations/compiled-messages/en.json'
-            )
+            const translations =
+                await import('~/translations/compiled-messages/en.json')
             return translations.default
         }
         case 'de': {
-            const translations = await import(
-                '~/translations/compiled-messages/de.json'
-            )
+            const translations =
+                await import('~/translations/compiled-messages/de.json')
             return translations.default
         }
         default:

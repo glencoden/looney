@@ -12,10 +12,5 @@
             "~/*": ["./src/*"]
         }
     },
-    "include": [
-        "src/**/*.ts",
-        "src/**/*.tsx",
-        "api/**/*.ts",
-        "vite.config.ts"
-    ]
+    "include": ["src/**/*.ts", "src/**/*.tsx", "api/**/*.ts", "vite.config.ts"]
 }

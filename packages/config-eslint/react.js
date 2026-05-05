@@ -10,7 +10,12 @@ import tseslint from 'typescript-eslint'
 
 export default [
     {
-        ignores: ['**/node_modules/**', '**/build/**', '**/dist/**', '**/.vercel/**'],
+        ignores: [
+            '**/node_modules/**',
+            '**/build/**',
+            '**/dist/**',
+            '**/.vercel/**',
+        ],
     },
     js.configs.recommended,
     ...turbo,

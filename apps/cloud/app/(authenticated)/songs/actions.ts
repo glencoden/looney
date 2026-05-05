@@ -1,11 +1,7 @@
 'use server'
 
 import { SongInsertSchema, SongSchema } from '@repo/db'
-import {
-    createSong,
-    deleteSong,
-    updateSong,
-} from '@repo/db/queries'
+import { createSong, deleteSong, updateSong } from '@repo/db/queries'
 import { revalidatePath, updateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'

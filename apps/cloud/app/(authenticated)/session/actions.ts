@@ -1,11 +1,7 @@
 'use server'
 
 import { SessionInsertSchema } from '@repo/db'
-import {
-    closeSession,
-    createSession,
-    deleteSession,
-} from '@repo/db/queries'
+import { closeSession, createSession, deleteSession } from '@repo/db/queries'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'

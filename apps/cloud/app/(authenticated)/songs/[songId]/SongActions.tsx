@@ -31,9 +31,7 @@ export function SongActions({ songId }: { songId: string }) {
             </Button>
 
             <form
-                action={() =>
-                    startTransition(() => deleteSongAction(songId))
-                }
+                action={() => startTransition(() => deleteSongAction(songId))}
                 onSubmit={(event) => {
                     const ok = confirm(
                         'Please confirm you want to delete this song.',

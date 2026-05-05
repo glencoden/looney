@@ -21,7 +21,9 @@ export default [
         files: ['**/*.{ts,tsx}'],
         settings: {
             'import/resolver': {
-                node: { extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'] },
+                node: {
+                    extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'],
+                },
                 typescript: { alwaysTryTypes: true },
             },
         },

@@ -23,21 +23,17 @@ export function EventsPage({ events }: EventsPageProps) {
 
             {[...events].reverse().map((event) => {
                 const venueParts = event.venue.split('/')
-                const venueName = venueParts[0]
-                    .trim()
-                    .replace(/\s/g, '\u00a0')
+                const venueName = venueParts[0].trim().replace(/\s/g, '\u00a0')
                 const venueLocation = venueParts[1]
                     ? `in ${venueParts[1].trim()}`
                     : ''
 
                 return (
-                    <div key={event.start} className="event-box">
+                    <div key={event.start} className='event-box'>
                         <p className={`date ${getRandomAnimation()}`}>
-                            {formatRelative(
-                                new Date(event.start),
-                                new Date(),
-                                { locale: de },
-                            )}
+                            {formatRelative(new Date(event.start), new Date(), {
+                                locale: de,
+                            })}
                             {venueLocation && ` ${venueLocation}`}
                         </p>
                         <h3 className={`venue ${getRandomAnimation()}`}>

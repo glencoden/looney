@@ -46,34 +46,42 @@ export default async function GuestPage({
             <H2 className='mt-6'>{t('home.heading')}</H2>
 
             <ul className='mt-8 space-y-2 pb-48'>
-                {filteredSongs.map(({ id, artist, title, genre, isFavorite }, index) => (
-                    <li key={id}>
-                        {filteredSongs[index - 1]?.genre !== genre && (
-                            <H4 className='mb-2 mt-6 text-blue-800'>
-                                {genre ?? 'Unknown'}
-                            </H4>
-                        )}
-                        <Link
-                            href={`/create/${guest.id}/${id}`}
-                            className='flex items-center gap-3'
-                        >
-                            <Star
-                                className={cn('h-4 w-4 text-pink-500', {
-                                    'fill-white text-white': isFavorite,
-                                })}
-                            />
-                            <div>
-                                <Body2 className='inline whitespace-nowrap'>
-                                    <SearchHighlight text={artist} searchString={q} />
-                                </Body2>
-                                &nbsp;&bull;{' '}
-                                <Body1 className='inline whitespace-nowrap'>
-                                    <SearchHighlight text={title} searchString={q} />
-                                </Body1>
-                            </div>
-                        </Link>
-                    </li>
-                ))}
+                {filteredSongs.map(
+                    ({ id, artist, title, genre, isFavorite }, index) => (
+                        <li key={id}>
+                            {filteredSongs[index - 1]?.genre !== genre && (
+                                <H4 className='mb-2 mt-6 text-blue-800'>
+                                    {genre ?? 'Unknown'}
+                                </H4>
+                            )}
+                            <Link
+                                href={`/create/${guest.id}/${id}`}
+                                className='flex items-center gap-3'
+                            >
+                                <Star
+                                    className={cn('h-4 w-4 text-pink-500', {
+                                        'fill-white text-white': isFavorite,
+                                    })}
+                                />
+                                <div>
+                                    <Body2 className='inline whitespace-nowrap'>
+                                        <SearchHighlight
+                                            text={artist}
+                                            searchString={q}
+                                        />
+                                    </Body2>
+                                    &nbsp;&bull;{' '}
+                                    <Body1 className='inline whitespace-nowrap'>
+                                        <SearchHighlight
+                                            text={title}
+                                            searchString={q}
+                                        />
+                                    </Body1>
+                                </div>
+                            </Link>
+                        </li>
+                    ),
+                )}
             </ul>
         </section>
     )

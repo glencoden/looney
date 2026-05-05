@@ -58,7 +58,12 @@ export default function SessionMenu({
                         if (!ok) event.preventDefault()
                     }}
                 >
-                    <Button variant='ghost' size='icon' type='submit' disabled={isPending}>
+                    <Button
+                        variant='ghost'
+                        size='icon'
+                        type='submit'
+                        disabled={isPending}
+                    >
                         {countdown ? (
                             <Trash className='h-6 w-6 text-white' />
                         ) : (

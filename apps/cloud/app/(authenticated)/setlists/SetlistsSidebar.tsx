@@ -30,7 +30,12 @@ export function SetlistsSidebar({
     return (
         <BoxHorizontalPagination isLeft={pathname === '/setlists'}>
             <section className='max-w-96 flex-grow max-lg:w-full'>
-                <Button asChild className='float-start' variant='ghost' size='icon'>
+                <Button
+                    asChild
+                    className='float-start'
+                    variant='ghost'
+                    size='icon'
+                >
                     <Link href='/'>
                         <ArrowLeft className='h-6 w-6 text-white' />
                     </Link>

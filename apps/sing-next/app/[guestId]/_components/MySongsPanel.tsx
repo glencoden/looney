@@ -9,7 +9,9 @@ import { useTranslations } from 'next-intl'
 export function MySongsPanel({ guestId }: { guestId: string }) {
     const t = useTranslations()
 
-    const { data: lips, isLoading } = api.lip.getByGuestId.useQuery({ id: guestId })
+    const { data: lips, isLoading } = api.lip.getByGuestId.useQuery({
+        id: guestId,
+    })
 
     if (isLoading || lips === undefined) {
         return (

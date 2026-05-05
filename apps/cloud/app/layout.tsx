@@ -22,9 +22,7 @@ export const metadata: Metadata = {
                 type: 'image/png',
             },
         ],
-        apple: [
-            { url: '/apple-touch-icon.png', sizes: '180x180' },
-        ],
+        apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
     },
     manifest: '/site.webmanifest',
 }

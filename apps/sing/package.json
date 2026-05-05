@@ -17,7 +17,6 @@
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
         "@repo/utils": "workspace:*",
-
         "@trpc/server": "catalog:",
         "@vercel/remix": "catalog:",
         "accept-language-parser": "^1.5.0",

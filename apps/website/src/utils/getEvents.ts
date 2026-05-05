@@ -36,7 +36,11 @@ export async function getEvents(): Promise<LiveEvent[]> {
         GOOGLE_CLIENT_EMAIL,
     } = process.env
 
-    if (!GOOGLE_PRIVATE_KEY_BASE64 || !GOOGLE_CLIENT_EMAIL || !GOOGLE_CALENDAR_ID) {
+    if (
+        !GOOGLE_PRIVATE_KEY_BASE64 ||
+        !GOOGLE_CLIENT_EMAIL ||
+        !GOOGLE_CALENDAR_ID
+    ) {
         console.warn('Missing Google Calendar credentials')
         return []
     }
@@ -78,7 +82,10 @@ export async function getEvents(): Promise<LiveEvent[]> {
         for (const item of items) {
             const start = item?.start?.dateTime || item?.start?.date
 
-            if (typeof item?.summary !== 'string' || typeof start !== 'string') {
+            if (
+                typeof item?.summary !== 'string' ||
+                typeof start !== 'string'
+            ) {
                 console.warn('unexpected google calendar event item', item)
                 continue
             }

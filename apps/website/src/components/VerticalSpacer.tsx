@@ -1,3 +1,3 @@
 export function VerticalSpacer() {
-    return <div className="vertical-spacer"></div>
+    return <div className='vertical-spacer'></div>
 }

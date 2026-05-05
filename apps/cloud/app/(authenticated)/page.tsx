@@ -1,14 +1,12 @@
-import { getCurrentSession } from '@repo/db/queries'
 import BoxContentSlot from '@repo/ui/components/BoxContentSlot'
 import BoxMain from '@repo/ui/components/BoxMain'
 import Button from '@repo/ui/components/Button'
 import Logo from '@repo/ui/components/Logo'
 import { ExternalLink, LogOut } from 'lucide-react'
 import Link from 'next/link'
+import { SessionLinkButton } from './SessionLinkButton'
 
-export default async function HomePage() {
-    const session = await getCurrentSession()
-
+export default function HomePage() {
     return (
         <BoxMain className='flex flex-col items-center'>
             <header className='w-full'>
@@ -76,17 +74,7 @@ export default async function HomePage() {
                         <hr className='w-full border-2 border-transparent' />
 
                         <li className='w-full'>
-                            <Button asChild>
-                                <Link
-                                    href={
-                                        session
-                                            ? `/session/${session.id}`
-                                            : '/session'
-                                    }
-                                >
-                                    Session
-                                </Link>
-                            </Button>
+                            <SessionLinkButton />
                         </li>
                     </ul>
                 </nav>

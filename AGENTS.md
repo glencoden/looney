@@ -1,0 +1,1 @@
+- Run `pnpm lint` from the project root before committing mid-to-large change sets, and include the resulting formatting fixes in the commit

@@ -29,8 +29,8 @@ export default function SessionMenu({
     return (
         <div className='flex justify-between'>
             <section className='flex items-center gap-4'>
-                {countdown && <Subtitle2>Start in {countdown}</Subtitle2>}
                 <AddDemoLipButton session={session} />
+                {countdown && <Subtitle2>Start in {countdown}</Subtitle2>}
             </section>
 
             <section className='flex items-center gap-4'>

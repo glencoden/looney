@@ -586,7 +586,7 @@ export function ActiveSession({ initialSession }: { initialSession: Session }) {
                 >
                     <section
                         className={cn(
-                            'flex h-dvh flex-col items-center gap-3 transition-transform duration-200 max-md:w-[100vw]',
+                            'flex h-dvh flex-col items-center gap-3 transition-transform duration-200 max-md:w-screen',
                             {
                                 'max-md:scale-95': isPageDragging,
                             },
@@ -636,7 +636,7 @@ export function ActiveSession({ initialSession }: { initialSession: Session }) {
 
                     <section
                         className={cn(
-                            'flex h-dvh flex-col items-center gap-3 transition-transform duration-200 max-md:w-[100vw]',
+                            'flex h-dvh flex-col items-center gap-3 transition-transform duration-200 max-md:w-screen',
                             {
                                 'max-md:scale-95': isPageDragging,
                             },

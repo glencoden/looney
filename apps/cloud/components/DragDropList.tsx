@@ -4,7 +4,7 @@ import { SpringValue } from '@react-spring/web'
 import type { LipDTO } from '@repo/api/types'
 import { cn } from '@repo/ui/helpers'
 import { ReactDOMAttributes } from '@use-gesture/react/dist/declarations/src/types'
-import { type Ref, type ReactNode } from 'react'
+import { type ReactNode, type Ref } from 'react'
 import DragDropListItem from './DragDropListItem'
 
 type Spring = {
@@ -57,7 +57,7 @@ export default function DragDropList({
                 )}
                 style={fixTop ? { top: `${fixTop}px` } : {}}
             >
-                <div className='absolute bottom-0 left-1/2 h-64 w-full -translate-x-1/2 bg-blue-800 max-lg:w-[50vw] max-md:w-[100vw]' />
+                <div className='absolute bottom-0 left-1/2 h-64 w-full -translate-x-1/2 bg-blue-800 max-lg:w-[50vw] max-md:w-screen' />
                 <div className='relative mt-8 flex h-28 w-full items-center justify-center lg:mt-12'>
                     {header}
                 </div>

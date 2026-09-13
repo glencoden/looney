@@ -6,6 +6,7 @@ import { revalidatePath, updateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { SONGS_CACHE_TAG } from '~/lib/cached-songs'
+import { requirePermission } from '~/lib/require-permission'
 
 function revalidateSongs() {
     updateTag(SONGS_CACHE_TAG)
@@ -13,6 +14,7 @@ function revalidateSongs() {
 }
 
 export async function toggleFavoriteAction(formData: FormData) {
+    await requirePermission('admin')
     const songUpdate = SongSchema.pick({ id: true, isFavorite: true }).parse({
         id: formData.get('id'),
         isFavorite: formData.get('favorite') === 'true',
@@ -22,6 +24,7 @@ export async function toggleFavoriteAction(formData: FormData) {
 }
 
 export async function createSongAction(formData: FormData) {
+    await requirePermission('admin')
     const id = await createSong(
         SongInsertSchema.parse(Object.fromEntries(formData)),
     )
@@ -33,6 +36,7 @@ export async function createSongAction(formData: FormData) {
 }
 
 export async function updateSongAction(formData: FormData) {
+    await requirePermission('admin')
     const songId = z.string().parse(formData.get('id'))
     const update = SongSchema.pick({
         id: true,
@@ -53,6 +57,7 @@ export async function updateSongAction(formData: FormData) {
 }
 
 export async function deleteSongAction(songId: string) {
+    await requirePermission('admin')
     await deleteSong(z.string().parse(songId))
     revalidateSongs()
     redirect('/songs')

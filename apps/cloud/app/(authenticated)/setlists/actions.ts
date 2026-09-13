@@ -15,8 +15,10 @@ import {
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import { requirePermission } from '~/lib/require-permission'
 
 export async function createSetlistAction(formData: FormData) {
+    await requirePermission('admin')
     const id = await createSetlist(
         SetlistInsertSchema.parse({ title: formData.get('title') }),
     )
@@ -33,6 +35,7 @@ export async function createSetlistAction(formData: FormData) {
 }
 
 export async function deleteSetlistAction(setlistId: string) {
+    await requirePermission('admin')
     await deleteSetlist(z.string().parse(setlistId))
     revalidatePath('/setlists', 'layout')
     revalidatePath('/session')
@@ -40,6 +43,7 @@ export async function deleteSetlistAction(setlistId: string) {
 }
 
 export async function toggleSongInSetlistAction(formData: FormData) {
+    await requirePermission('admin')
     const setlistId = z.string().parse(formData.get('setlistId'))
     const songId = z.string().parse(formData.get('songId'))
     const selected = formData.get('selected') === 'true'

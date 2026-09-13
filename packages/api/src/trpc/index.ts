@@ -1,4 +1,4 @@
-import { db } from '@repo/db'
+import { db, hasPermission, type PermissionRole } from '@repo/db'
 import { initTRPC, TRPCError } from '@trpc/server'
 import superjson from 'superjson'
 import { ZodError } from 'zod'
@@ -8,6 +8,7 @@ type AuthUser = {
     email: string
     name: string
     image: string | null
+    permissionRole: PermissionRole
 }
 
 export const createContext = async (opts: {
@@ -49,3 +50,18 @@ export const protectedProcedure = publicProcedure.use(({ ctx, next }) => {
         },
     })
 })
+
+export const requirePermission = (role: PermissionRole) =>
+    protectedProcedure.use(({ ctx, next }) => {
+        if (!hasPermission(ctx.user.permissionRole, role)) {
+            throw new TRPCError({
+                code: 'FORBIDDEN',
+                message: `Your role '${ctx.user.permissionRole}' does not have permission for this action. It requires the '${role}' role.`,
+            })
+        }
+        return next()
+    })
+
+export const hostProcedure = requirePermission('host')
+
+export const adminProcedure = requirePermission('admin')

@@ -13,6 +13,8 @@ import { authUserTable as authUserSchema } from './schema/authUserTable.js'
 import { authSessionTable as authSessionSchema } from './schema/authSessionTable.js'
 import { authAccountTable as authAccountSchema } from './schema/authAccountTable.js'
 import { authVerificationTable as authVerificationSchema } from './schema/authVerificationTable.js'
+export * from './permission.js'
+
 /**
  * Table schema
  */

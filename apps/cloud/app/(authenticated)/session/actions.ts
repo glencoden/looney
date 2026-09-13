@@ -5,10 +5,12 @@ import { closeSession, createSession, deleteSession } from '@repo/db/queries'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import { requirePermission } from '~/lib/require-permission'
 
 const LIVE_SESSION_LENGTH = 1000 * 60 * 60 * 12
 
 export async function createSessionAction(formData: FormData) {
+    await requirePermission('host')
     const title = formData.get('title')
     const setlistId = formData.get('setlistId')
     const startsAt = formData.get('startsAt')
@@ -49,6 +51,7 @@ export async function createSessionAction(formData: FormData) {
 }
 
 export async function closeSessionAction(sessionId: string) {
+    await requirePermission('host')
     const id = z.string().parse(sessionId)
     await closeSession(id)
     revalidatePath('/')
@@ -57,6 +60,7 @@ export async function closeSessionAction(sessionId: string) {
 }
 
 export async function deleteSessionAction(sessionId: string) {
+    await requirePermission('host')
     const id = z.string().parse(sessionId)
     await deleteSession(id)
     revalidatePath('/')

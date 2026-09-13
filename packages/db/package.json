@@ -12,6 +12,11 @@
             "import": "./dist/queries/index.js",
             "require": "./dist/queries/index.js",
             "types": "./dist/queries/index.d.ts"
+        },
+        "./permission": {
+            "import": "./dist/permission.js",
+            "require": "./dist/permission.js",
+            "types": "./dist/permission.d.ts"
         }
     },
     "scripts": {

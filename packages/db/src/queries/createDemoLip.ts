@@ -2,7 +2,7 @@ import { and, count, eq } from 'drizzle-orm'
 import { LipInsert, db } from '../index.js'
 import { guestsTable } from '../schema/guestsTable.js'
 import { lipsTable } from '../schema/lipsTable.js'
-import { permissionsTable } from '../schema/permissionsTable.js'
+import { authUserTable } from '../schema/authUserTable.js'
 
 const getSingerNameByEmail = (email: string) => {
     switch (email) {
@@ -33,14 +33,14 @@ export const createDemoLip = ({
     songId: LipInsert['songId']
 }) => {
     return db.transaction(async (tx) => {
-        const [permission] = await tx
-            .select({ id: permissionsTable.id, role: permissionsTable.role })
-            .from(permissionsTable)
-            .where(eq(permissionsTable.email, email))
+        const [user] = await tx
+            .select({ id: authUserTable.id })
+            .from(authUserTable)
+            .where(eq(authUserTable.email, email))
             .limit(1)
 
-        if (!permission) {
-            throw new Error('No permission to create a demo lip')
+        if (!user) {
+            throw new Error('No user found to create a demo lip')
         }
 
         const [guest] = await tx
@@ -48,7 +48,7 @@ export const createDemoLip = ({
             .from(guestsTable)
             .where(
                 and(
-                    eq(guestsTable.internalId, permission.id),
+                    eq(guestsTable.internalId, user.id),
                     eq(guestsTable.sessionId, sessionId),
                 ),
             )
@@ -60,7 +60,7 @@ export const createDemoLip = ({
             const [insertedGuest] = await tx
                 .insert(guestsTable)
                 .values({
-                    internalId: permission.id,
+                    internalId: user.id,
                     sessionId: sessionId,
                 })
                 .returning({ id: guestsTable.id })

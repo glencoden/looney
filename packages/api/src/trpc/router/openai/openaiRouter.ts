@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { findSyllables } from '../../../lib/openai.js'
-import { protectedProcedure } from '../../index.js'
+import { adminProcedure } from '../../index.js'
 
 const normalize = (text: string) =>
     text
@@ -11,7 +11,7 @@ const normalize = (text: string) =>
 const stripHyphens = (text: string) => text.replace(/-/g, '')
 
 export const openaiRouter = {
-    findSyllables: protectedProcedure
+    findSyllables: adminProcedure
         .input(z.string())
         .mutation(async ({ input }) => {
             const expected = stripHyphens(normalize(input))

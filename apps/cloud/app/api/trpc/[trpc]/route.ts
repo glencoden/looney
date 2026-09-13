@@ -18,6 +18,7 @@ const handler = async (req: Request) => {
                           email: session.user.email,
                           name: session.user.name,
                           image: session.user.image ?? null,
+                          permissionRole: session.user.permissionRole,
                       }
                     : null,
             }),

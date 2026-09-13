@@ -15,7 +15,7 @@ import {
     updateLip,
 } from '@repo/db/queries'
 import { z } from 'zod'
-import { protectedProcedure, publicProcedure } from '../../index.js'
+import { hostProcedure, publicProcedure } from '../../index.js'
 
 export const lipRouter = {
     getByGuestId: publicProcedure
@@ -46,7 +46,7 @@ export const lipRouter = {
         return createLip(input)
     }),
 
-    update: protectedProcedure
+    update: hostProcedure
         .input(
             LipSchema.omit({ id: true })
                 .partial()
@@ -56,7 +56,7 @@ export const lipRouter = {
             return updateLip(input)
         }),
 
-    move: protectedProcedure
+    move: hostProcedure
         .input(
             z.object({
                 lips: z.array(
@@ -76,7 +76,7 @@ export const lipRouter = {
             return moveLip(input.lips, input.movedLip)
         }),
 
-    createDemo: protectedProcedure
+    createDemo: hostProcedure
         .input(LipInsertSchema.pick({ sessionId: true, songId: true }))
         .mutation(({ input, ctx }) => {
             const email = ctx.user.email

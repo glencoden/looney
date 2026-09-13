@@ -36,5 +36,21 @@ export const auth = betterAuth({
             clientSecret: required('GOOGLE_CLIENT_SECRET'),
         },
     },
+    user: {
+        additionalFields: {
+            permissionRole: {
+                type: ['admin', 'host', 'user'],
+                required: true,
+                defaultValue: 'user',
+                input: false,
+            },
+        },
+    },
+    session: {
+        cookieCache: {
+            enabled: true,
+            maxAge: 5 * 60,
+        },
+    },
     plugins: [nextCookies()],
 })

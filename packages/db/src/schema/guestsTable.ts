@@ -6,7 +6,7 @@ import {
     timestamp,
     uuid,
 } from 'drizzle-orm/pg-core'
-import { permissionsTable } from './permissionsTable.js'
+import { authUserTable } from './authUserTable.js'
 import { sessionsTable } from './sessionsTable.js'
 
 export const guestsTable = pgTable(
@@ -16,7 +16,7 @@ export const guestsTable = pgTable(
         sessionId: uuid('session_id').references(() => sessionsTable.id, {
             onDelete: 'cascade',
         }),
-        internalId: uuid('internal_id').references(() => permissionsTable.id),
+        internalId: text('internal_id').references(() => authUserTable.id),
         feedback: text('feedback'),
         tip: integer('tip').default(0),
         createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),

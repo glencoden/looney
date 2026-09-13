@@ -1,48 +1,49 @@
 {
     "name": "sing",
     "private": true,
-    "sideEffects": false,
     "type": "module",
     "scripts": {
-        "build": "remix vite:build",
-        "dev": "remix vite:dev",
+        "build": "next build",
+        "dev": "next dev --port 3001",
+        "start": "next start --port 3001",
         "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
-        "typecheck": "tsc",
-        "i18n:extract": "formatjs extract 'app/**/*.ts*' --ignore='**/*.d.ts' --out-file app/translations/extracted-messages/en.json && node scripts/extract-translations.js && prettier --write app/translations/extracted-messages",
-        "i18n:compile": "formatjs compile-folder app/translations/extracted-messages app/translations/compiled-messages"
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
-        "@remix-run/react": "catalog:",
+        "@formatjs/intl-localematcher": "^0.5.10",
         "@repo/api": "workspace:*",
         "@repo/db": "workspace:*",
         "@repo/ui": "workspace:*",
         "@repo/utils": "workspace:*",
+        "@tanstack/react-query": "catalog:",
+        "@trpc/client": "catalog:",
         "@trpc/server": "catalog:",
-        "@vercel/remix": "catalog:",
-        "accept-language-parser": "^1.5.0",
         "lucide-react": "^1.45.0",
+        "negotiator": "^1.1.0",
+        "next": "^16.3.5",
+        "next-intl": "^4.14.4",
         "react": "catalog:",
         "react-dom": "catalog:",
-        "react-intl": "^7.1.14",
+        "server-only": "^0.0.1",
+        "superjson": "^2.2.6",
         "vaul": "^1.1.2",
-        "zod": "^4.6.2"
+        "zod": "catalog:"
     },
     "devDependencies": {
-        "@formatjs/cli": "^6.16.26",
-        "@remix-run/dev": "catalog:",
-        "@remix-run/node": "catalog:",
+        "@next/eslint-plugin-next": "^16.3.5",
         "@repo/config-eslint": "workspace:*",
         "@repo/config-tailwind": "workspace:*",
         "@repo/config-typescript": "workspace:*",
-        "@tailwindcss/vite": "catalog:",
-        "@types/accept-language-parser": "^1.5.8",
+        "@tailwindcss/postcss": "^4.3.3",
+        "@types/negotiator": "^0.6.5",
+        "@types/node": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
+        "babel-plugin-react-compiler": "^1.0.0",
         "eslint": "catalog:",
+        "eslint-plugin-react-compiler": "19.1.0-rc.2",
         "tailwindcss": "catalog:",
-        "typescript": "catalog:",
-        "vite": "catalog:",
-        "vite-tsconfig-paths": "catalog:"
+        "typescript": "catalog:"
     },
     "engines": {
         "node": ">=24.0.0"

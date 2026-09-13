@@ -4,6 +4,7 @@ import type { NextConfig } from 'next'
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
 
 const nextConfig: NextConfig = {
+    agentRules: false,
     reactCompiler: true,
     transpilePackages: ['@repo/ui'],
     typedRoutes: false,

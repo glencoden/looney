@@ -10,11 +10,11 @@
         "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint ."
     },
     "dependencies": {
-        "@astrojs/react": "^5.0.3",
-        "@astrojs/sitemap": "^3.7.2",
+        "@astrojs/react": "^5.0.7",
+        "@astrojs/sitemap": "^3.7.4",
         "@repo/db": "workspace:*",
-        "astro": "^6.1.6",
-        "date-fns": "^4.1.0",
+        "astro": "^6.4.8",
+        "date-fns": "^4.4.0",
         "googleapis": "^171.4.0",
         "react": "catalog:",
         "react-dom": "catalog:",

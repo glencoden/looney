@@ -32,7 +32,7 @@
         "@trpc/react-query": "catalog:",
         "@trpc/server": "catalog:",
         "node-telegram-bot-api": "^0.66.0",
-        "openai": "^6.34.0",
+        "openai": "^6.49.0",
         "react": "catalog:",
         "superjson": "^2.2.6",
         "zod": "catalog:"
@@ -40,6 +40,7 @@
     "devDependencies": {
         "@repo/config-eslint": "workspace:*",
         "@repo/config-typescript": "workspace:*",
+        "@types/node": "catalog:",
         "@types/react": "catalog:",
         "eslint": "catalog:",
         "typescript": "catalog:"

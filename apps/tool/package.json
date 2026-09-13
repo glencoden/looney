@@ -28,7 +28,7 @@
         "@types/node": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
-        "@vitejs/plugin-react": "^4.3.4",
+        "@vitejs/plugin-react": "^4.7.0",
         "eslint": "catalog:",
         "tailwindcss": "catalog:",
         "typescript": "catalog:",

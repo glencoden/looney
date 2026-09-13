@@ -19,8 +19,8 @@
     "devDependencies": {
         "dotenv": "catalog:",
         "dotenv-cli": "catalog:",
-        "prettier": "^3.8.1",
+        "prettier": "^3.9.6",
         "prettier-plugin-tailwindcss": "^0.6.14",
-        "turbo": "^2.9.5"
+        "turbo": "^2.10.12"
     }
 }

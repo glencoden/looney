@@ -3,37 +3,32 @@ packages:
   - 'packages/*'
 
 allowBuilds:
-  '@parcel/watcher': set this to true or false
-  '@swc/core': set this to true or false
-  esbuild: set this to true or false
-  sharp: set this to true or false
-  unrs-resolver: set this to true or false
+  '@parcel/watcher': true
+  '@swc/core': true
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
 catalog:
-  '@remix-run/dev': ^2.17.4
-  '@remix-run/node': ^2.17.4
-  '@remix-run/react': ^2.17.4
-  '@tailwindcss/cli': ^4.2.2
-  '@tailwindcss/vite': ^4.2.2
-  '@tanstack/react-query': ^5.96.2
-  '@trpc/client': ^11.16.0
-  '@trpc/react-query': ^11.16.0
-  '@trpc/server': ^11.16.0
-  '@types/node': ^24.12.2
-  '@types/react': ^19.2.14
-  '@types/react-dom': ^19.2.3
+  '@remix-run/dev': ^2.17.5
+  '@remix-run/node': ^2.17.5
+  '@remix-run/react': ^2.17.5
+  '@tailwindcss/cli': ^4.3.3
+  '@tailwindcss/vite': ^4.3.3
+  '@tanstack/react-query': ^5.102.8
+  '@trpc/client': ^11.18.0
+  '@trpc/react-query': ^11.18.0
+  '@trpc/server': ^11.18.0
+  '@types/node': ^24.13.4
+  '@types/react': ^19.3.0
+  '@types/react-dom': ^19.3.0
   '@vercel/remix': ^2.16.7
-  dotenv: ^17.4.1
+  dotenv: ^17.4.2
   dotenv-cli: ^10.0.0
-  eslint: ^9.38.0
-  react: ^19.2.5
-  react-dom: ^19.2.5
-  tailwindcss: ^4.2.2
+  eslint: ^9.39.5
+  react: ^19.3.0
+  react-dom: ^19.3.0
+  tailwindcss: ^4.3.3
   typescript: ^5.9.3
   vite: ^5.4.21
   vite-tsconfig-paths: ^4.3.2
-  zod: ^4.3.6
-# Patch source: https://github.com/pmndrs/react-spring/pull/2410
-# Fixes useSprings stale-update bug on React 19 (imperative .start() during drag).
-# Drop this entry once a release of @react-spring/core ships PR #2410.
-patchedDependencies:
-  '@react-spring/core@10.0.3': patches/@react-spring__core@10.0.3.patch
+  zod: ^4.6.2

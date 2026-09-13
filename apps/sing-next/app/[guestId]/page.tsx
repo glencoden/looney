@@ -8,7 +8,6 @@ import H4 from '@repo/ui/typography/H4'
 import { Star } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
 import { SearchInput } from './_components/SearchInput'
 
 export default async function GuestPage({
@@ -22,10 +21,11 @@ export default async function GuestPage({
     const { q = '' } = await searchParams
 
     const guest = await getGuest(guestId)
-    if (!guest) notFound()
+    const session = guest?.sessionId ? await getSession(guest.sessionId) : null
 
-    const session = guest.sessionId ? await getSession(guest.sessionId) : null
-    if (!session) notFound()
+    if (!guest || !session) {
+        return null
+    }
 
     const allSongs = await getSongsBySetlistId(session.setlistId)
     const t = await getTranslations()

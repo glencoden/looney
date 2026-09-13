@@ -33,7 +33,13 @@ export function CreateLipForm({
     return (
         <form action={onSubmit} className='mx-6 mb-16 mt-7 flex flex-col gap-3'>
             <H3 className='mb-10 leading-10'>
-                {t('create.heading', { songTitle, artistName })}
+                {t.rich('create.heading', {
+                    songTitle,
+                    artistName,
+                    nowrap: (chunks) => (
+                        <span className='whitespace-nowrap'>{chunks}</span>
+                    ),
+                })}
             </H3>
 
             <input type='hidden' name='sessionId' value={sessionId} />

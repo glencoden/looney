@@ -1,11 +1,10 @@
 import { getGuest, getSession } from '@repo/db/queries'
-import H2 from '@repo/ui/typography/H2'
-import { getTranslations } from 'next-intl/server'
-import { notFound } from 'next/navigation'
-import type { ReactNode } from 'react'
+import { Suspense, type ReactNode } from 'react'
+import { WaitingScreen } from '../_components/WaitingScreen'
 import { Countdown } from './_components/Countdown'
 import { DrawerNav } from './_components/DrawerNav'
 import { DrawerShell } from './_components/DrawerShell'
+import { SessionPoll } from './_components/SessionPoll'
 
 export default async function GuestLayout({
     children,
@@ -19,19 +18,10 @@ export default async function GuestLayout({
     const { guestId } = await params
     const guest = await getGuest(guestId)
 
-    if (!guest) {
-        notFound()
-    }
-
-    const session = guest.sessionId ? await getSession(guest.sessionId) : null
-    const t = await getTranslations()
+    const session = guest?.sessionId ? await getSession(guest.sessionId) : null
 
     if (!session || session.endsAt < new Date()) {
-        return (
-            <div className='mobile-sim-height flex items-center justify-center'>
-                <H2>{t('root.waiting.headline')}</H2>
-            </div>
-        )
+        return <WaitingScreen />
     }
 
     if (session.startsAt > new Date()) {
@@ -41,10 +31,15 @@ export default async function GuestLayout({
     return (
         <>
             {children}
-            <section className='absolute inset-x-0 bottom-0 z-10 h-24'>
-                <DrawerNav guestId={guestId} />
+            <SessionPoll />
+            <section className='absolute inset-x-0 bottom-0 h-24'>
+                <Suspense>
+                    <DrawerNav guestId={guestId} />
+                </Suspense>
             </section>
-            <DrawerShell guestId={guestId}>{drawer}</DrawerShell>
+            <Suspense>
+                <DrawerShell guestId={guestId}>{drawer}</DrawerShell>
+            </Suspense>
         </>
     )
 }

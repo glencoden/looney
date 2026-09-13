@@ -4,11 +4,15 @@ import Button from '@repo/ui/components/Button'
 import { cn } from '@repo/ui/helpers'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 export function DrawerNav({ guestId }: { guestId: string }) {
     const pathname = usePathname()
+    const searchParams = useSearchParams()
     const t = useTranslations()
+
+    const query = searchParams.toString()
+    const withQuery = (path: string) => (query ? `${path}?${query}` : path)
 
     const root = `/${guestId}`
     const songsHref = `${root}/songs`
@@ -27,7 +31,7 @@ export function DrawerNav({ guestId }: { guestId: string }) {
                     size='sm'
                     className={cn('px-1', { 'text-white': onSongs })}
                 >
-                    <Link href={onSongs ? root : songsHref}>
+                    <Link href={withQuery(onSongs ? root : songsHref)}>
                         {t('nav.button.songs')}
                     </Link>
                 </Button>
@@ -36,7 +40,7 @@ export function DrawerNav({ guestId }: { guestId: string }) {
                     size='sm'
                     className={cn('px-1', { 'text-white': onFeedback })}
                 >
-                    <Link href={onFeedback ? root : feedbackHref}>
+                    <Link href={withQuery(onFeedback ? root : feedbackHref)}>
                         {t('nav.button.feedback')}
                     </Link>
                 </Button>

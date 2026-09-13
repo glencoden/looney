@@ -1,5 +1,5 @@
 import { WaitingScreen } from './_components/WaitingScreen'
 
-export default function RootPage() {
+export default function NotFound() {
     return <WaitingScreen />
 }

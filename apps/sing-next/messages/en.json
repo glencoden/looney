@@ -3,7 +3,7 @@
         "button": {
             "submit": "Let's go!"
         },
-        "heading": "Sing {songTitle} by {artistName}",
+        "heading": "Sing <nowrap>{songTitle}</nowrap> by <nowrap>{artistName}</nowrap>",
         "input": {
             "name": "What's your name?"
         },

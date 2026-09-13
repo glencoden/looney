@@ -1,6 +1,6 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState, type ReactNode } from 'react'
 import { Drawer } from 'vaul'
 
@@ -13,8 +13,10 @@ export function DrawerShell({
 }) {
     const pathname = usePathname()
     const router = useRouter()
-    const root = `/${guestId}`
-    const open = pathname !== root
+    const searchParams = useSearchParams()
+    const query = searchParams.toString()
+    const root = query ? `/${guestId}?${query}` : `/${guestId}`
+    const open = pathname !== `/${guestId}`
     const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
@@ -35,16 +37,16 @@ export function DrawerShell({
                 <button
                     type='button'
                     aria-label='Close drawer'
-                    className='absolute inset-x-0 bottom-24 top-0 z-10 bg-black/40'
+                    className='absolute inset-x-0 bottom-24 top-0 z-10'
                     onClick={() => router.push(root)}
                 />
             )}
-            <Drawer.Content className='absolute inset-x-0 bottom-24 z-20 box-content flex h-auto flex-col items-center gap-8 overflow-y-auto rounded-t-2xl border-l-4 border-r-4 border-t-4 border-black bg-blue-800 px-6 py-12 pb-4 shadow-[0_-6px_14px_rgba(0,0,0,0.25)] outline-0'>
+            <Drawer.Content className='absolute inset-x-0 bottom-20 z-10 box-content flex h-auto flex-col items-center gap-8 rounded-t-2xl border-l-4 border-r-4 border-t-4 border-black bg-blue-800 px-6 py-12 pb-4 shadow-[0_-6px_14px_rgba(0,0,0,0.25)] outline-0'>
                 <Drawer.Title className='sr-only'>Drawer</Drawer.Title>
                 <Drawer.Description className='sr-only'>
                     Drawer content
                 </Drawer.Description>
-                <div className='w-full'>{children}</div>
+                <div className='min-h-80 w-full'>{children}</div>
             </Drawer.Content>
         </Drawer.Root>
     )

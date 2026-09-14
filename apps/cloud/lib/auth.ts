@@ -46,6 +46,11 @@ export const auth = betterAuth({
             },
         },
     },
+    account: {
+        accountLinking: {
+            updateUserInfoOnLink: true,
+        },
+    },
     session: {
         cookieCache: {
             enabled: true,
